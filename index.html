@@ -4,12 +4,18 @@
 <head data-page-node-id="67eENgOXYyBXBEtJiKMfnP">
 <meta data-page-node-id="ZnhSPolWHecCjOB28iGhCU" charset="UTF-8">
 <meta data-page-node-id="uFlZJFtJAJc0lOjMmi2ucq" content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
-<meta data-page-node-id="MyVBu2wrreNaM2WTxZFG1w" content="#0e2b29" name="theme-color">
+<meta data-page-node-id="MyVBu2wrreNaM2WTxZFG1w" content="#0d9488" name="theme-color">
 <meta data-page-node-id="D6wUOBUu9zNqm8hYGraacE" content="yes" name="mobile-web-app-capable">
 <meta data-page-node-id="il63wpNR7ZfVqV1cGNf7th" content="yes" name="apple-mobile-web-app-capable">
 <meta data-page-node-id="wm7q7X0oTixrZhYDCfZ99J" content="default" name="apple-mobile-web-app-status-bar-style">
-<meta data-page-node-id="F284fsIa04SyNESsHNt3iq" content="成长工作台" name="apple-mobile-web-app-title">
-<title data-page-node-id="FEdqJFb649kGhkwMK6dRQ5" data-pnid-children="VjP3CEBmDll0ZGKbixjpez">个人成长工作台 · Work / Study / Save / Review</title>
+<meta data-page-node-id="F284fsIa04SyNESsHNt3iq" content="XCX工作台" name="apple-mobile-web-app-title">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="application-name" content="XCX工作台">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230d9488'/%3E%3Cpath d='M14 42l10-10 8 8 18-18' fill='none' stroke='%23fff' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<title data-page-node-id="FEdqJFb649kGhkwMK6dRQ5" data-pnid-children="VjP3CEBmDll0ZGKbixjpez">XCX工作台 · Work / Study / Save / Review</title>
 <script data-page-node-id="Je4vVpjRe7PXVwYUbGaFtE" src="/page/page_comm/inject.js"></script>
 <style data-page-node-id="TPUlCK2oGLm9vrfPHx7GrX" data-pnid-children="QcKmIE6tcmMwDFPhm4E777">
 :root{
@@ -500,9 +506,247 @@ select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns=
 }
 @media (min-width:861px){ .nav-scroll{display:block} }
 @media print{ .nav,.topbar-act,.it-act,.ico-btn,.nav-foot{display:none} .card,.focus{box-shadow:none;break-inside:avoid} }
+
+/* ================= App shell（手机形态） ================= */
+:root{--mh:52px}
+.mtop,.mbar{display:none}
+
+@media (max-width:860px){
+  body{overscroll-behavior-y:contain;background:var(--bg)}
+  .app{display:block;min-height:100vh;min-height:100dvh}
+  .nav{display:none!important}
+
+  /* ---------- 顶部 App Bar ---------- */
+  .mtop{
+    display:flex;align-items:center;gap:10px;
+    position:fixed;left:0;right:0;top:0;z-index:70;
+    padding:calc(env(safe-area-inset-top) + 7px) 14px 7px;
+    min-height:calc(var(--mh) + env(safe-area-inset-top));
+    background:rgba(255,255,255,.9);
+    -webkit-backdrop-filter:saturate(180%) blur(16px);
+    backdrop-filter:saturate(180%) blur(16px);
+    border-bottom:1px solid rgba(226,235,235,.9);
+    -webkit-user-select:none;user-select:none;
+  }
+  .mtop-mark{
+    width:30px;height:30px;border-radius:9px;flex:0 0 30px;
+    background:linear-gradient(145deg,#12a89a 0%,var(--accent) 45%,#0b7fa0 100%);
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 8px rgba(13,148,136,.3),inset 0 1px 0 rgba(255,255,255,.3);
+  }
+  .mtop-mark svg{width:16px;height:16px}
+  .mtop-t{min-width:0;flex:1}
+  .mtop-name{font-size:14.5px;font-weight:700;letter-spacing:-.1px;line-height:1.2}
+  .mtop-date{font-size:10.5px;color:var(--text-3);line-height:1.35;margin-top:1px}
+  .mtop .sync-line{
+    margin-left:auto;flex:0 0 auto;max-width:46vw;min-width:0;
+    padding:5px 10px;border-radius:20px;background:var(--bg-2);
+    font-size:10.5px;font-weight:650;color:var(--text-2);
+    overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+    touch-action:manipulation;
+  }
+  .mtop .sync-line .sync-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mtop .sync-line:active{background:var(--accent-soft)}
+
+  /* ---------- 底部 Tab ---------- */
+  .mbar{
+    display:flex;position:fixed;left:0;right:0;bottom:0;z-index:70;
+    padding:5px 6px calc(5px + env(safe-area-inset-bottom));
+    background:rgba(255,255,255,.92);
+    -webkit-backdrop-filter:saturate(180%) blur(16px);
+    backdrop-filter:saturate(180%) blur(16px);
+    border-top:1px solid var(--line);
+    box-shadow:0 -1px 14px rgba(10,50,46,.07);
+    -webkit-user-select:none;user-select:none;
+  }
+  .mbar-i{
+    flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:2px;padding:6px 2px 5px;border-radius:12px;position:relative;
+    color:var(--text-3);font-size:10px;font-weight:650;letter-spacing:.2px;
+    transition:color .16s,background .16s;touch-action:manipulation;
+  }
+  .mbar-i svg{width:22px;height:22px;stroke-width:1.85;transition:transform .18s}
+  .mbar-i span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .mbar-i.on{color:var(--accent-deep);background:var(--accent-soft2)}
+  .mbar-i.on svg{color:var(--accent);transform:translateY(-1px)}
+  .mbar-i:active{background:var(--bg-2);transform:scale(.97)}
+  .mbar-dot{position:absolute;top:4px;left:50%;margin-left:5px;width:7px;height:7px;border-radius:50%;background:var(--danger);box-shadow:0 0 0 2px #fff}
+
+  /* ---------- 内容区 ---------- */
+  .main{
+    padding:calc(var(--mh) + env(safe-area-inset-top) + 12px) 14px calc(74px + env(safe-area-inset-bottom));
+    max-width:100%;
+  }
+  .tabs{
+    position:sticky;top:calc(var(--mh) + env(safe-area-inset-top));
+    z-index:50;margin:0 0 14px;
+    background:rgba(238,244,244,.92);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  }
+  .tab{min-height:38px}
+  .topbar{margin-bottom:14px}
+  .topbar h1{font-size:21px;letter-spacing:-.4px}
+
+  /* 触感反馈 */
+  .btn:active{transform:scale(.975)}
+  .tab:active,.mbar-i:active,.exp-opt:active,.nav-item:active{background:var(--bg-2)}
+
+  /* ---------- 弹窗 → 底部抽屉 ---------- */
+  .mask{align-items:flex-end;padding:0}
+  .modal{
+    width:100%;max-width:none;
+    max-height:88vh;max-height:90dvh;
+    border-radius:20px 20px 0 0;
+    padding:8px 16px calc(18px + env(safe-area-inset-bottom));
+    animation:sheetUp .26s cubic-bezier(.32,.72,0,1);
+  }
+  .modal::before{
+    content:"";display:block;width:36px;height:4px;border-radius:4px;
+    background:#dde8e7;margin:2px auto 14px;
+  }
+  .modal h3{font-size:17px}
+  @keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+
+  /* ---------- Toast 抬到底栏之上 ---------- */
+  .toasts{left:12px;right:12px;align-items:stretch;bottom:calc(68px + env(safe-area-inset-bottom))}
+  .toast{max-width:100%;border-radius:13px}
+
+  /* ---------- 更适合拇指 ---------- */
+  .item{padding:13px 0}
+  .it-title{font-size:14.6px}
+  .ico-btn{width:40px;height:40px}
+  .ico-btn svg{width:17px;height:17px}
+  .chk{width:25px;height:25px;flex:0 0 25px}
+  .chk svg{width:15px;height:15px}
+  .card{margin-bottom:14px;border-radius:15px}
+  .stat{padding:14px 15px}
+  .empty{padding:28px 16px}
+}
+
+/* ================= PWA 安装提示 ================= */
+.pwa-tip{
+  position:fixed;right:12px;left:12px;bottom:20px;z-index:95;
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:14px;
+  background:rgba(255,255,255,.97);
+  border:1px solid var(--line);
+  box-shadow:0 12px 34px rgba(8,42,39,.18);
+  animation:tin .26s;
+}
+.pwa-tip .pt-i{
+  width:34px;height:34px;flex:0 0 34px;border-radius:10px;
+  background:linear-gradient(145deg,#12a89a,var(--accent-dark));
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(13,148,136,.28);
+}
+.pwa-tip .pt-i svg{width:17px;height:17px}
+.pwa-tip .pt-t{flex:1;min-width:0;line-height:1.4}
+.pwa-tip .pt-t b{display:block;font-size:13px;font-weight:680;letter-spacing:-.1px}
+.pwa-tip .pt-t span{display:block;font-size:11.5px;color:var(--text-3);margin-top:2px;word-break:break-word}
+@media (max-width:860px){
+  .pwa-tip{bottom:calc(70px + env(safe-area-inset-bottom));padding:9px 10px;gap:9px}
+  .pwa-tip .btn-sm{min-height:36px;padding:7px 13px}
+}
+@media (min-width:861px){
+  .pwa-tip{left:auto;right:20px;bottom:20px;max-width:380px}
+}
+
+/* ================= 项目线路 ================= */
+.tks{display:flex;flex-direction:column;gap:7px}
+.tk{display:flex;align-items:stretch;border:1px solid var(--line-soft);border-radius:10px;background:#fbfdfd;overflow:hidden}
+.tk-main{flex:1;min-width:0;text-align:left;padding:8px 10px;display:block;color:inherit}
+.tk-top{display:flex;align-items:baseline;gap:8px;font-size:12.5px;line-height:1.4}
+.tk-top b{font-weight:660;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:-.1px}
+.tk-n{margin-left:auto;font-size:11px;font-weight:700;color:var(--text-3);flex:0 0 auto}
+.tk-bar{height:4px;border-radius:9px;background:#e4eeec;margin:6px 0 5px;overflow:hidden}
+.tk-bar > i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#5cc9b9,var(--accent));transition:width .3s}
+.tk-cur{font-size:11.5px;color:var(--text-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;gap:4px;line-height:1.4}
+.tk-cur svg{width:12px;height:12px;color:var(--accent);flex:0 0 12px}
+.tk-go{width:44px;flex:0 0 44px;display:flex;align-items:center;justify-content:center;color:var(--accent-deep);background:var(--accent-soft2);border-left:1px solid var(--line-soft);transition:background .15s,transform .1s}
+.tk-go svg{width:16px;height:16px;stroke-width:3.2}
+.tk-go:hover{background:var(--accent-soft)}
+.tk-go:active{background:var(--accent-soft);transform:scale(.95)}
+.tk-done{background:var(--accent-soft2);border-color:#d8ece9}
+.tk-done .tk-bar > i{background:var(--accent)}
+.tk-done .tk-cur{color:var(--accent-deep);font-weight:600}
+.tk-foot{display:flex;align-items:center;gap:8px;margin-top:9px}
+.tk-sum{font-size:11px;color:var(--text-4);font-weight:600}
+.tk-add{margin-left:auto}
+/* 接下来 3 天 */
+.srow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-soft)}
+.srow:last-child{border-bottom:none}
+.srow-t{flex:1;min-width:0;font-size:13.2px;word-break:break-word;color:var(--text-2);line-height:1.5}
+.srow-m{display:flex;gap:6px;align-items:center;flex:0 0 auto}
+.soon-card{background:linear-gradient(180deg,#fcfefe,#fafcfc)}
+@media (max-width:860px){
+  .tk-go{width:52px;flex:0 0 52px}
+  .tk-main{padding:10px 11px}
+  .tk-top{font-size:13px}
+  .tk-cur{font-size:12px}
+  .srow{padding:11px 0}
+  .srow-t{font-size:13.8px}
+}
+
+/* 线路备注 / 待办 / 进退 */
+.tk-note{display:flex;align-items:flex-start;gap:4px;font-size:11.5px;color:var(--warn);margin-top:4px;line-height:1.45;min-width:0}
+.tk-note span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.tk-note svg{width:11px;height:11px;flex:0 0 11px;margin-top:2px}
+.tk-task{display:flex;align-items:center;gap:4px;font-size:11.5px;color:var(--accent-deep);margin-top:3px;min-width:0}
+.tk-task span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.tk-task svg{width:11px;height:11px;flex:0 0 11px}
+.tk-acts{display:flex;gap:8px;margin:12px 0 2px}
+.tk-acts .btn{flex:1}
+.btn[disabled]{opacity:.45;pointer-events:none;box-shadow:none}
+.tk-tasks{border:1px solid var(--line);border-radius:10px;padding:2px 10px;background:#fbfdfd}
+.tk-taskrow{display:flex;align-items:center;gap:7px;padding:7px 0;border-bottom:1px solid var(--line-soft);font-size:12.5px;line-height:1.45}
+.tk-taskrow:last-child{border-bottom:none}
+.tk-taskrow svg{width:13px;height:13px;color:var(--accent);flex:0 0 13px}
+.tk-taskrow span{flex:1;min-width:0;word-break:break-word}
+.tk-taskrow em{font-style:normal;font-size:11px;color:var(--text-4);flex:0 0 auto}
+
+/* ================= AI 入口 ================= */
+.fab{
+  position:fixed;right:18px;bottom:24px;z-index:80;
+  width:54px;height:54px;border-radius:50%;
+  background:linear-gradient(145deg,#12a89a 0%,var(--accent) 45%,#0b7fa0 100%);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 22px rgba(11,127,116,.36),inset 0 1px 0 rgba(255,255,255,.25);
+  transition:transform .12s,box-shadow .2s;
+}
+.fab svg{width:24px;height:24px}
+.fab:active{transform:scale(.94);box-shadow:0 4px 12px rgba(11,127,116,.34)}
+.fab:hover{box-shadow:0 10px 26px rgba(11,127,116,.42),inset 0 1px 0 rgba(255,255,255,.25)}
+@media (max-width:860px){
+  .fab{right:14px;bottom:calc(72px + env(safe-area-inset-bottom));width:52px;height:52px}
+}
+.ai-bar{display:flex;gap:8px;margin-top:10px}
+.ai-bar .btn{flex:1}
+.ai-mic{background:var(--bg-2);border-color:var(--line);touch-action:none;-webkit-user-select:none;user-select:none}
+.ai-mic.listening{background:var(--danger-soft);border-color:var(--danger-line);color:var(--danger);animation:pulse 1.2s infinite}
+.ai-tip{font-size:11.5px;color:var(--text-4);margin-top:8px;line-height:1.6}
+.ai-out{margin-top:12px}
+.ai-card{border:1px solid var(--line);border-radius:12px;padding:9px 12px;background:#fbfdfd}
+.ai-row{display:flex;gap:10px;padding:4px 0;font-size:12.8px;align-items:baseline;line-height:1.5}
+.ai-row span{flex:0 0 44px;color:var(--text-4);font-size:11px;font-weight:700;letter-spacing:.2px}
+.ai-row b{flex:1;min-width:0;font-weight:600;word-break:break-word}
+.ai-acts{display:flex;gap:8px;margin-top:10px}
+.ai-acts .btn{flex:1}
+.ai-msg{font-size:12.8px;color:var(--text-2);line-height:1.7;background:var(--bg-2);border-radius:10px;padding:10px 12px}
 </style>
 </head>
 <body data-page-node-id="2D19eIbdoavaFT7hSj1rIg" data-sp-bindable="database" data-sp-database-id="jRlBHQiMEEw05EclZRecLs">
+<header class="mtop" id="mTop">
+  <div class="mtop-mark">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"><path d="M3 17l5-5 4 4 8-8"/><path d="M16 8h4v4"/></svg>
+  </div>
+  <div class="mtop-t">
+    <div class="mtop-name">XCX工作台</div>
+    <div class="mtop-date" id="mDate">—</div>
+  </div>
+  <button class="sync-line" data-act="syncNow" type="button" aria-label="云同步">
+    <span class="sync-dot"></span><span class="sync-text">连接中…</span>
+  </button>
+</header>
 <div data-page-node-id="tuJrcaeFJrbld8N0T0yu1w" class="app">
   <aside data-page-node-id="GsFN4jVxnhcRpOtmznA0b4" class="nav">
     <div data-page-node-id="2wGjEgADCTXONTfOacZgFW" class="brand">
@@ -510,13 +754,13 @@ select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns=
         <svg data-page-node-id="tgu9CWz6StYpMxdpDonypH" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewBox="0 0 24 24"><path data-page-node-id="j0Xh5keqcPd6t9tV0bQiD9" d="M3 17l5-5 4 4 8-8"/><path data-page-node-id="cjyg1i1W5CgWBBwrdqhIoa" d="M16 8h4v4"/></svg>
       </div>
       <div data-page-node-id="oJvjvkjNgsNISWE3yHbB01">
-        <div data-page-node-id="KT9Jn3g6LxXwEzfI6niGjJ" class="brand-t" id="brandName"><!--pnid:IrbbVvleQyFyGWO3m1N36b-->个人成长工作台</div>
+        <div data-page-node-id="KT9Jn3g6LxXwEzfI6niGjJ" class="brand-t" id="brandName"><!--pnid:IrbbVvleQyFyGWO3m1N36b-->XCX工作台</div>
         <div data-page-node-id="GHisWzbOEBA02JPdFCK3By" class="brand-s" id="navDate"><!--pnid:qo860QWzMGh8od68rNkBJH-->—</div>
       </div>
     </div>
     <div data-page-node-id="Ivdu1D0vlwZyAEegVMqRrd" class="nav-scroll" id="navScroll"></div>
     <div data-page-node-id="Z2w1spbSI5xPHqgOXZMVIm" class="nav-foot">
-      <div data-page-node-id="hjoQ6iddRJkkKcJrwVJM1S" class="sync-line" id="syncLine"><span data-page-node-id="KVIAVb12d01gJ2EzNoohNY" class="sync-dot"></span><span data-page-node-id="vsQwJlEqGGYJuVRlpKlgcW" id="syncText"><!--pnid:1fwigNrdvYNK6eYSt3Agxk-->连接中…</span></div>
+      <div data-page-node-id="hjoQ6iddRJkkKcJrwVJM1S" class="sync-line" id="syncLine"><span data-page-node-id="KVIAVb12d01gJ2EzNoohNY" class="sync-dot"></span><span data-page-node-id="vsQwJlEqGGYJuVRlpKlgcW" id="syncText" class="sync-text"><!--pnid:1fwigNrdvYNK6eYSt3Agxk-->连接中…</span></div>
       <div data-page-node-id="cbepHOKLJW0Hw0BoxSQR3J" id="navFoot" style="margin-top:5px"><!--pnid:AOZTbZmY6k7NPmFRd8QxgR-->共 0 条记录</div>
     </div>
   </aside>
@@ -525,12 +769,14 @@ select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns=
     <div data-page-node-id="Mf2RESA3WgB3wtjeC9ORMG" id="view"></div>
   </main>
 </div>
+<nav class="mbar" id="mBar"></nav>
+<button class="fab" data-act="openAi" type="button" aria-label="AI 记录"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.1"><path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg></button>
 <div data-page-node-id="3i7Mhw6pYbKgmSScrJwqDV" class="toasts" id="toasts"></div>
 <div data-page-node-id="ViVq1NDRcy66VhsuLUhtVd" id="modalRoot"></div>
 <script data-page-node-id="05YJ7pRJ8GRWULo9exD7rz" data-pnid-children="DcuqGy8PLoveIWA949JVT5">
 "use strict";
 /* =========================================================
-   个人成长工作台 · 工作板块
+   XCX工作台 · 工作板块
    结构：工作 / 学习 / 存钱 / 总结
    分层：数据层(store) → 计算层(compute) → 渲染层(render)
         渲染函数之间不互相调用，统一由 renderAll() 调度
@@ -693,6 +939,134 @@ function flowOf(cat){ ensureFlows(); for(var i=0;i<S.flows.length;i++){ if(S.flo
 function stepsOfProj(p){ var f=flowOf(p.cat); return (f&&f.steps)||[]; }
 function stepDone(p){ var n=stepsOfProj(p).length, v=Number(p.step); if(!isFinite(v)||v<0) v=0; return Math.min(v,n); }
 
+/* ---------- 项目线路（多线并行推进） ---------- */
+var TRACK_PRESETS = [
+  { key:'supply', name:'生产供货', steps:[
+    '构件清单与排产确认 | 按楼栋 / 楼层确定供货批次与交期',
+    '模具准备与拼装 | 模具清理、脱模剂、尺寸复核',
+    '钢筋加工与绑扎 | 含套筒、预埋件定位',
+    '预埋件与线盒安装 | 吊点、套筒、线管预埋',
+    '混凝土浇筑与振捣 | 坍落度控制、振捣密实',
+    '养护 | 蒸汽 / 自然养护，强度达标',
+    '脱模起吊与修整 | 缺陷修补、编号标识',
+    '成品检验 | 尺寸偏差、外观、强度报告',
+    '堆场存放与运输 | 运输方案、垫木、防倾覆',
+    '到场交付与吊装配合 | 卸车验收、安装指导'
+  ] },
+  { key:'tech', name:'技术资料', steps:[
+    '图纸接收与确认 | 建筑图、结构图、拆分图',
+    '构件深化拆分 | 拆分方案、节点大样',
+    '结构复核与节点确认 | 连接节点、吊点计算',
+    '材料报审 | 钢筋、水泥、骨料、外加剂、预埋件',
+    '配合比设计与报审 | 强度等级、耐久性要求',
+    '首件验收 | 首件尺寸、外观、资料齐全',
+    '出厂合格证与检验报告 | 试块、钢筋、预埋件检测',
+    '竣工资料整理 | 全套资料归档移交'
+  ] },
+  { key:'misc', name:'零星问题处理', steps:[
+    '问题登记 | 构件缺陷、尺寸偏差、到场破损',
+    '责任判定 | 生产 / 运输 / 吊装 / 设计',
+    '处理方案确认 | 修补、返厂、补发或让步接收',
+    '修补与整改执行 | 方案审批、影像留证',
+    '复核与验收 | 甲方 / 监理确认',
+    '关闭归档 | 记录原因与预防措施'
+  ] }
+];
+
+/* 上一版（门窗口径）的模板，用于把没动过的线路平滑升级成 PC 口径 */
+var LEGACY_PRESET_NAMES = {
+  '生产供货': ['排产确认','下料与加工','组装与表面处理','出厂检验','包装发运','到场交接与补货','安装配合','验收结算'],
+  '技术资料': ['图纸确认','深化设计','材料报审','检测报告','合格证与质保资料','竣工资料归档'],
+  '零星问题处理': ['问题登记','责任判定','处理方案确认','整改执行','复核关闭']
+};
+function upgradePresetTracks(p){
+  var changed=false;
+  tracksOf(p).forEach(function(t){
+    var old=LEGACY_PRESET_NAMES[t.name];
+    if(!old) return;
+    if((Number(t.step)||0)>0) return;                 /* 已经推进过的不动 */
+    var now=trackSteps(t).map(function(s){ return s.n; }).join('\n');
+    if(now!==old.join('\n')) return;                   /* 自己改过的不动 */
+    var pre=null;
+    TRACK_PRESETS.forEach(function(x){ if(x.name===t.name) pre=x; });
+    if(!pre) return;
+    t.steps=pre.steps.map(stLine);
+    changed=true;
+  });
+  return changed;
+}
+function trackPreset(key){
+  for(var i=0;i<TRACK_PRESETS.length;i++){ if(TRACK_PRESETS[i].key===key) return TRACK_PRESETS[i]; }
+  return null;
+}
+function newTrackFrom(preset){
+  return { id:uid(), name:preset.name, steps:preset.steps.map(stLine), step:0 };
+}
+function tracksOf(p){
+  if(!Array.isArray(p.tracks)) p.tracks=[];
+  return p.tracks;
+}
+function findTrack(p, tid){
+  if(!p || !Array.isArray(p.tracks)) return null;
+  for(var i=0;i<p.tracks.length;i++){ if(p.tracks[i].id===tid) return p.tracks[i]; }
+  return null;
+}
+function trackSteps(t){ return (t && Array.isArray(t.steps)) ? t.steps : []; }
+function trackDone(t){
+  var n=trackSteps(t).length, v=Number(t && t.step);
+  if(!isFinite(v) || v<0) v=0;
+  return Math.min(v, n);
+}
+function trackPct(t){
+  var n=trackSteps(t).length;
+  return n ? Math.round(trackDone(t)/n*100) : 0;
+}
+function trackSummary(p){
+  var ts=tracksOf(p);
+  if(!ts.length) return null;
+  var sum=0, fin=0;
+  ts.forEach(function(t){
+    var n=trackSteps(t).length;
+    sum += trackPct(t);
+    if(n && trackDone(t)>=n) fin++;
+  });
+  return { n:ts.length, fin:fin, pct:Math.round(sum/ts.length) };
+}
+function trackOpenTasks(p, t){
+  if(!p || !t) return [];
+  return S.tasks.filter(function(x){ return !x.done && x.pid===p.id && x.tid===t.id; });
+}
+function trackOptions(pid, sel){
+  var p=pid?findProj(pid):null, ts=p?tracksOf(p):[];
+  var o='<option value="">不指定线路</option>';
+  ts.forEach(function(t){ o+='<option value="'+t.id+'"'+(sel===t.id?' selected':'')+'>'+esc(t.name)+'</option>'; });
+  return o;
+}
+function fillTrackOptions(pid, sel){
+  var box=$('taskTrack'); if(!box) return;
+  box.innerHTML=trackOptions(pid, sel);
+  box.disabled = !(pid && findProj(pid) && tracksOf(findProj(pid)).length);
+}
+function migrateTracks(p){
+  if(Array.isArray(p.tracks) && p.tracks.length){
+    p.tracks.forEach(function(t){
+      if(!t.id) t.id=uid();
+      if(!Array.isArray(t.steps)) t.steps=parseSteps(t.stepsText||'');
+    });
+    upgradePresetTracks(p);
+    return;
+  }
+  var arr=[];
+  var f=flowOf(p.cat), oldStep=Number(p.step)||0;
+  if(f && f.steps && f.steps.length && oldStep>0){
+    arr.push({ id:uid(), name:f.name+'（原流程）',
+      steps:f.steps.map(function(s){ return { n:s.n, d:s.d||'' }; }),
+      step:Math.min(oldStep, f.steps.length) });
+  }
+  TRACK_PRESETS.forEach(function(pre){ arr.push(newTrackFrom(pre)); });
+  p.tracks=arr;
+}
+
 /* ---------- 示例数据 ---------- */
 function sampleData(){
   var t=todayStr();
@@ -705,9 +1079,9 @@ function sampleData(){
       { id:uid(), title:'和设计对齐改版视觉稿', prio:'P1', due:addDays(t,-1), done:true, pid:'', createdAt:addDays(t,-3), doneAt:addDays(t,-1), sample:true }
     ],
     projects:[
-      { id:uid(), name:'滨江苑二期 · 门窗供货', cat:'jsfj', phase:'supply', step:4, stage:'', next:'催第 3 批到场计划', blocker:'', status:'active', goalDate:addDays(t,20), createdAt:addDays(t,-10), sample:true },
-      { id:uid(), name:'南通市民中心 · 幕墙标段', cat:'jsgj', phase:'plan', step:2, stage:'', next:'等代理机构发答疑澄清', blocker:'招标文件答疑还没回复', status:'blocked', goalDate:addDays(t,35), createdAt:addDays(t,-6), sample:true },
-      { id:uid(), name:'临港科创园 · 精装配套', cat:'shfj', phase:'pre', step:0, stage:'', next:'拿到甲方确认版图纸', blocker:'', status:'active', goalDate:addDays(t,50), createdAt:addDays(t,-2), sample:true }
+      { id:uid(), name:'滨江苑二期 · PC 构件供货', cat:'jsfj', phase:'supply', step:4, stage:'', next:'催第 3 批到场计划', blocker:'', status:'active', goalDate:addDays(t,20), createdAt:addDays(t,-10), sample:true },
+      { id:uid(), name:'南通市民中心 · 预制楼梯与叠合板', cat:'jsgj', phase:'plan', step:2, stage:'', next:'等代理机构发答疑澄清', blocker:'招标文件答疑还没回复', status:'blocked', goalDate:addDays(t,35), createdAt:addDays(t,-6), sample:true },
+      { id:uid(), name:'临港科创园 · 预制外墙板', cat:'shfj', phase:'pre', step:0, stage:'', next:'拿到甲方确认版图纸', blocker:'', status:'active', goalDate:addDays(t,50), createdAt:addDays(t,-2), sample:true }
     ],
     meetings:[
       { id:uid(), title:'周例会 · 交付进度对齐', date:addDays(t,-1), attendees:'陈、李、王', duration:45, notes:'逐个过项目进度，重点讨论滨江苑的排期压缩方案。', conclusion:'排期整体后移 2 天，优先保证首批到场时间。', todos:'补全滨江苑的验收标准文档\n确认本周发布计划的时间节点', pid:'', createdAt:addDays(t,-1), sample:true }
@@ -725,6 +1099,7 @@ function migrate(){
     if(!p.cat) p.cat='jsfj';
     if(!p.phase) p.phase = p.status==='done' ? 'close' : 'pre';
     if(p.step===undefined || p.step===null || isNaN(Number(p.step))) p.step = 0;
+    migrateTracks(p);
   });
   S.ui=Object.assign(defUI(), S.ui||{});
 }
@@ -814,6 +1189,14 @@ function renderNav(){
   var el=$('navScroll'); if(el) el.innerHTML=html;
   if($('navDate')) $('navDate').textContent=cnDate(todayStr());
   if($('navFoot')) $('navFoot').textContent='待办 '+openTasks().length+' · 项目 '+S.projects.length+' · 会议 '+S.meetings.length;
+  /* 移动端 App 壳：底部 Tab + 顶栏日期 */
+  var mb='';
+  NAV.forEach(function(gr){
+    var on=g.key===gr.key, hot=(gr.key==='work' && overdue().length>0);
+    mb+='<button class="mbar-i'+(on?' on':'')+'" data-grp="'+gr.key+'" type="button">'+ic(gr.icon)+'<span>'+esc(gr.name)+'</span>'+(hot?'<i class="mbar-dot"></i>':'')+'</button>';
+  });
+  var mel=$('mBar'); if(mel) mel.innerHTML=mb;
+  if($('mDate')) $('mDate').textContent=cnDate(todayStr());
 }
 
 /* 顶部子板块（当前大板块下的页面） */
@@ -838,7 +1221,7 @@ function goGroup(grKey){
   for(var i=0;i<NAV.length;i++){
     if(NAV[i].key!==grKey) continue;
     var cur=groupOfView(S.ui.view);
-    if(cur.key===grKey) return;         /* 已在该板块，保持当前子页 */
+    if(cur.key===grKey){ if(window.scrollY>80) window.scrollTo({top:0,behavior:'smooth'}); return; }
     go(NAV[i].items[0].k);
     return;
   }
@@ -880,8 +1263,13 @@ function taskRow(t, ctx){
   }else{
     meta+='<span class="pill gray">'+ic('calendar')+' '+(parseD(t.due).getMonth()+1)+'/'+parseD(t.due).getDate()+'</span>';
   }
+  if(t.time && !t.done) meta+='<span class="pill gray">'+ic('clock')+' '+esc(t.time)+'</span>';
   var pn=projNameOf(t.pid);
   if(pn) meta+='<span class="pill teal">'+ic('folder')+' '+esc(pn)+'</span>';
+  if(t.tid && t.pid){
+    var trk=findTrack(projById(t.pid), t.tid);
+    if(trk) meta+='<span class="pill cyan">'+ic('flow')+' '+esc(trk.name)+'</span>';
+  }
 
   var act='';
   if(!t.done && od) act+='<button class="btn btn-sm" data-act="postpone" data-id="'+t.id+'" type="button">顺延</button>';
@@ -904,28 +1292,47 @@ function taskGroup(label, sub, arr, ctx){
 
 function vToday(){
   var t0=todayStr();
-  var od=overdue(), td=dueToday(), sn=dueSoon(3);
-  var focusList = od.slice().sort(function(a,b){ return a.due<b.due?-1:1; }).concat(td).concat(sn.slice().sort(function(a,b){ return a.due<b.due?-1:1; }));
+  function byDue(a,b){ return (a.due||'')<(b.due||'')?-1:1; }
+  var od=overdue().slice().sort(byDue);
+  var td=dueToday().slice().sort(byDue);
+  var sn=dueSoon(3).slice().sort(byDue);
+  var focus=od.concat(td);          /* 只把逾期和今天到期算「今天要处理」 */
 
   /* —— 今天要处理 —— */
   var fh='';
-  if(focusList.length){
-    var shown=focusList.slice(0,6);
-    fh+='<div class="focus"><div class="focus-h">'+ic('alert')+'<h2>今天要处理</h2>'+
-        '<span class="pill red">'+od.length+' 逾期</span><span class="pill warn">'+td.length+' 今天到期</span>'+
-        '<div class="sp">'+
-        (od.length?'<button class="btn btn-sm" data-act="postponeAll" type="button">'+ic('refresh')+'逾期全部顺延</button>':'')+'</div></div><div class="focus-b">';
+  if(focus.length){
+    var shown=focus.slice(0,6);
+    var pills='';
+    if(od.length) pills+='<span class="pill red">'+od.length+' 条逾期</span>';
+    if(td.length) pills+='<span class="pill warn">'+td.length+' 条今天到期</span>';
+    fh+='<div class="focus"><div class="focus-h">'+ic('alert')+'<h2>今天要处理</h2>'+pills+
+        '<div class="sp">'+(od.length?'<button class="btn btn-sm" data-act="postponeAll" type="button">'+ic('refresh')+'逾期全部顺延</button>':'')+'</div></div><div class="focus-b">';
     shown.forEach(function(t){
       var dd=dayDiff(t.due,t0);
-      var tail = dd<0 ? '已逾期 <b>'+Math.abs(dd)+'</b> 天' : dd===0 ? '<b>今天</b>到期' : '<b>'+dd+'</b> 天后到期';
+      var tail = dd<0 ? '已逾期 <b>'+Math.abs(dd)+'</b> 天' : '<b>今天</b>到期';
       fh+='<div class="frow"><span class="dot"></span><div class="ft"><b>'+esc(t.title)+'</b><span>'+prioOf(t.prio).label+' · '+tail+(projNameOf(t.pid)?' · 项目：'+esc(projNameOf(t.pid)):'')+'</span></div>'+
           '<div class="fa"><button class="btn btn-sm btn-primary" data-act="toggleTask" data-id="'+t.id+'" type="button">'+ic('check')+'完成</button></div></div>';
     });
-    if(focusList.length>6) fh+='<div class="allclear" style="padding:10px 0 4px;font-size:12.5px;color:var(--text-3)">还有 '+(focusList.length-6)+' 条，见下方列表</div>';
+    if(focus.length>6) fh+='<div class="allclear" style="padding:10px 0 4px;font-size:12.5px;color:var(--text-3)">还有 '+(focus.length-6)+' 条，见下方列表</div>';
     fh+='</div></div>';
   }else{
     fh+='<div class="focus clear"><div class="focus-h">'+ic('sparkle')+'<h2>今天没有卡点</h2><div class="sp"><span class="hint">保持节奏就好</span></div></div>'+
-        '<div class="focus-b"><div class="allclear">'+ic('check')+'所有到期任务都已完成，可以从下方添加新的安排</div></div></div>';
+        '<div class="focus-b"><div class="allclear">'+ic('check')+'今天没有逾期或到期的任务'+(sn.length?'，接下来 3 天有 '+sn.length+' 条安排':'')+'</div></div></div>';
+  }
+
+  /* —— 接下来 3 天：只预告，不催办 —— */
+  var soonHtml='';
+  if(sn.length){
+    soonHtml='<div class="card soon-card"><div class="card-h">'+ic('calendar')+'<h2>接下来 3 天</h2><span class="hint">提前知道就好，今天不用做</span></div><div class="card-b tight" style="padding-top:6px">';
+    sn.forEach(function(t){
+      var dd=dayDiff(t.due,t0);
+      var md=(parseD(t.due).getMonth()+1)+'/'+parseD(t.due).getDate();
+      soonHtml+='<div class="srow">'+
+        '<div class="srow-t">'+esc(t.title)+'</div>'+
+        '<div class="srow-m"><span class="pill gray">'+md+'</span><span class="pill amber">'+dd+' 天后</span></div>'+
+      '</div>';
+    });
+    soonHtml+='</div></div>';
   }
 
   /* —— 筛选 —— */
@@ -938,12 +1345,13 @@ function vToday(){
   /* —— 列表分组 —— */
   var listHtml='';
   if(f==='today'){
-    listHtml+=taskGroup('逾期未完成','需要尽快处理', od.slice().sort(function(a,b){return a.due<b.due?-1:1;}));
-    listHtml+=taskGroup('今天','今天到期', td);
+    if(od.length) listHtml+=taskGroup('逾期未完成','需要尽快处理', od);
+    if(td.length) listHtml+=taskGroup('今天','今天到期', td);
     var g={};
     sn.forEach(function(t){ if(!g[t.due]) g[t.due]=[]; g[t.due].push(t); });
     Object.keys(g).sort().forEach(function(d){
-      listHtml+=taskGroup((parseD(d).getMonth()+1)+'月'+parseD(d).getDate()+'日', cnDate(d).split(' · ')[0]===''?'':(dayDiff(d,t0)+' 天后'), g[d]);
+      var st=dayDiff(d,t0);
+      listHtml+=taskGroup((parseD(d).getMonth()+1)+'月'+parseD(d).getDate()+'日', st+' 天后', g[d]);
     });
   }else if(f==='done'){
     var done=S.tasks.filter(function(t){ return t.done; }).sort(function(a,b){ return (b.doneAt||'')<(a.doneAt||'')?-1:1; });
@@ -970,11 +1378,13 @@ function vToday(){
   var rate= total? Math.round(doneN/total*100):0;
 
   return '<div class="topbar"><div><h1>今日待办</h1>'+
-      '<div class="sub">'+cnDate(t0)+' · 共 '+total+' 条，完成 '+doneN+' 条（'+rate+'%）</div></div>'+
+      '<div class="sub">'+cnDate(t0)+' · 共 '+total+' 条，完成 '+doneN+' 条（'+rate+'%）'+
+        (od.length?' · <b style="color:var(--danger)">'+od.length+' 条逾期</b>':'')+
+        (td.length?' · <b style="color:var(--warn)">'+td.length+' 条今天到期</b>':'')+'</div></div>'+
       '<div class="topbar-act">'+
         '<button class="btn" data-act="syncNow" type="button">'+ic('refresh')+'立即同步</button>'+
         '<button class="btn btn-primary" data-act="addTask" type="button">'+ic('plus')+'新建待办</button></div></div>'+
-    fh+
+    fh+ soonHtml +
     '<div class="card"><div class="card-h">'+ic('checksq')+'<h2>待办清单</h2><span class="hint">按截止日期分组，逾期自动置顶</span><div class="sp">'+segHtml+'</div></div>'+
       '<div class="card-b tight" style="padding-top:12px">'+listHtml+'</div></div>';
 }
@@ -1009,10 +1419,28 @@ function flowBlock(p){
     '<div class="fl-bar"><i style="width:'+pct+'%"></i></div></div>';
 }
 
+function trackRow(p, t){
+  var steps=trackSteps(t), n=steps.length, d=trackDone(t), pct=trackPct(t);
+  var done = n>0 && d>=n;
+  var cur = d<n ? steps[d] : null;
+  var note = String(t.note||'').trim();
+  var ots = trackOpenTasks(p, t);
+  var noteHtml = note ? '<div class="tk-note">'+ic('alert')+'<span>'+esc(note)+'</span></div>' : '';
+  var taskHtml = ots.length ? '<div class="tk-task">'+ic('checksq')+'<span>'+ots.length+' 条待办'+(ots.length?' · '+esc(ots[0].title):'')+'</span></div>' : '';
+  return '<div class="tk'+(done?' tk-done':'')+'">'+
+    '<button class="tk-main" data-act="openTrack" data-id="'+p.id+'" data-tid="'+t.id+'" type="button">'+
+      '<div class="tk-top"><b>'+esc(t.name||'未命名线路')+'</b><span class="tk-n">'+d+'/'+n+'</span></div>'+
+      '<div class="tk-bar"><i style="width:'+pct+'%"></i></div>'+
+      '<div class="tk-cur">'+(done ? (ic('check')+' 全部完成') : (cur ? '当前：'+esc(cur.n) : '还没有步骤'))+'</div>'+
+      noteHtml + taskHtml +
+    '</button>'+
+    (cur ? '<button class="tk-go" data-act="trackNext" data-id="'+p.id+'" data-tid="'+t.id+'" type="button" aria-label="完成本步" title="完成本步">'+ic('check')+'</button>' : '')+
+  '</div>';
+}
 function projCard(p){
   var st=statOf(p.status), c=catOf(p.cat), ph=phaseOf(p.phase);
   var pg=projProgress(p.id);
-  var steps=stepsOfProj(p), n=steps.length, d=stepDone(p);
+  var ts=tracksOf(p), sum=trackSummary(p);
   var goal='';
   if(p.goalDate){
     var dd=dayDiff(p.goalDate, todayStr());
@@ -1027,16 +1455,18 @@ function projCard(p){
     bar='<div class="proj-bar"><div class="pb-t"><span>关联任务 '+pg.done+'/'+pg.total+'</span><span>'+pg.pct+'%</span></div><div class="pb"><i style="width:'+pg.pct+'%"></i></div></div>';
   }
   var nextLine = p.next ? '<div class="proj-row"><span class="k">备注</span><span>'+nl2br(p.next)+'</span></div>' : '';
-  var adv = (n && d<n) ? '<button class="btn btn-sm btn-primary" data-act="stepNext" data-id="'+p.id+'" type="button" title="推进到下一步">'+ic('arrow')+'完成本步</button>' : '';
-  var back = (n && d>0) ? '<button class="ico-btn" data-act="stepPrev" data-id="'+p.id+'" type="button" title="回到上一步">'+ic('undo')+'</button>' : '';
+  var trackHtml = '<div class="tks">'+ts.map(function(t){ return trackRow(p,t); }).join('')+'</div>';
+  var trackFoot = '<div class="tk-foot"><span class="tk-sum">'+
+      (sum ? (sum.n+' 条线路 · 完成 '+sum.fin+' 条 · 平均 '+sum.pct+'%') : '还没有线路')+
+    '</span><button class="btn btn-sm tk-add" data-act="addTrack" data-id="'+p.id+'" type="button">'+ic('plus')+'添加线路</button></div>';
   return '<div class="proj">'+
     '<div class="proj-top"><div class="proj-name">'+esc(p.name)+'</div><span class="pill '+ph.cls+'">'+ph.label+'</span></div>'+
     '<div class="proj-tags"><span class="cat-tag '+c.key+'">'+c.label+'</span><span class="pill '+st.cls+'">'+st.label+'</span></div>'+
-    flowBlock(p)+
+    trackHtml + trackFoot +
     nextLine+
     (p.blocker?'<div class="proj-row blocker"><span class="k">卡点</span><span>'+nl2br(p.blocker)+'</span></div>':'')+
     bar+
-    '<div class="proj-foot">'+goal+'<span style="margin-left:auto"></span>'+adv+back+
+    '<div class="proj-foot">'+goal+'<span style="margin-left:auto"></span>'+
       '<button class="ico-btn" data-act="addTaskToProj" data-id="'+p.id+'" type="button" title="加任务到本项目">'+ic('plus')+'</button>'+
       '<button class="ico-btn" data-act="editProj" data-id="'+p.id+'" type="button" title="编辑">'+ic('pen')+'</button>'+
       '<button class="ico-btn red" data-act="delProj" data-id="'+p.id+'" type="button" title="删除">'+ic('trash')+'</button>'+
@@ -1081,9 +1511,9 @@ function vProjects(){
   return '<div class="topbar"><div><h1>项目总览</h1>'+
       '<div class="sub">共 '+S.projects.length+' 个项目 · 前期 '+cnt.pre+' · 排产 '+cnt.plan+' · 在供 '+cnt.supply+' · 收尾 '+cnt.close+'</div></div>'+
       '<div class="topbar-act">'+
-      '<button class="btn" data-act="openFlows" type="button">'+ic('flow')+'标准流程</button>'+
+      
       '<button class="btn btn-primary" data-act="addProj" type="button">'+ic('plus')+'新建项目</button></div></div>'+
-    '<div class="card"><div class="card-h">'+ic('folder')+'<h2>项目列表</h2><span class="hint">流程进度按「完成本步」推进</span><div class="sp" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">'+catSel+segHtml+'</div></div>'+
+    '<div class="card"><div class="card-h">'+ic('folder')+'<h2>项目列表</h2><span class="hint">多条线路并行推进，点右侧 √ 完成本步</span><div class="sp" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">'+catSel+segHtml+'</div></div>'+
     '<div class="card-b">'+grid+'</div></div>'+
     (blockedProj().length?'<div class="card"><div class="card-h">'+ic('alert')+'<h2>需要推动的卡点</h2><span class="hint">这些项目正卡着</span></div><div class="card-b">'+
       blockedProj().map(function(p){ return '<div class="proj-row blocker" style="display:block;margin-bottom:8px"><b style="display:block;font-size:11.5px;color:#9a4a10;margin-bottom:2px">'+esc(p.name)+'</b>'+nl2br(p.blocker||'未填写卡点')+'</div>'; }).join('')+
@@ -1304,18 +1734,20 @@ function exportData(scope){
   }
   if(scope==='projects'||scope==='all'){
     rows.push(['项目总览']);
-    rows.push(['项目名称','类型','阶段','健康状态','流程进度','备注','卡点','目标日期','关联任务完成率']);
+    rows.push(['项目名称','类型','阶段','健康状态','线路进度','备注','卡点','目标日期','关联任务完成率']);
     S.projects.forEach(function(p){
-      var pg=projProgress(p.id), ss=stepsOfProj(p), dn=stepDone(p);
-      var prog = ss.length ? (dn+'/'+ss.length+' · '+(dn<ss.length?ss[dn].n:'流程已走完')) : '未套用流程';
+      var pg=projProgress(p.id), tks=tracksOf(p);
+      var prog = tks.length ? tks.map(function(t){ var n=trackSteps(t).length, d=trackDone(t); return t.name+' '+d+'/'+n+((n&&d>=n)?' ✓':''); }).join(' ｜ ') : '还没有线路';
       rows.push([p.name, catOf(p.cat).label, phaseOf(p.phase).label, statOf(p.status).label, prog, p.next||'', p.blocker||'', p.goalDate||'', pg?(pg.pct+'%'):'无关联任务']);
     });
     rows.push([]);
-    rows.push(['标准项目流程']);
-    rows.push(['类型','流程名称','步骤数','步骤']);
-    CATS.forEach(function(c){
-      var f=flowOf(c.key), ss=(f&&f.steps)||[];
-      rows.push([c.label, f?f.name:'', ss.length, ss.map(function(s,i){ return (i+1)+'.'+s.n; }).join(' → ')]);
+    rows.push(['线路明细']);
+    rows.push(['项目','线路','进度','当前步骤','备注']);
+    S.projects.forEach(function(p){
+      tracksOf(p).forEach(function(t){
+        var n=trackSteps(t).length, d=trackDone(t);
+        rows.push([p.name, t.name, d+'/'+n, (n&&d<n)?trackSteps(t)[d].n:'已完成', t.note||'']);
+      });
     });
     rows.push([]);
   }
@@ -1432,19 +1864,18 @@ function openTaskModal(id, prePid){
         '</select></div>'+
         '<div class="f"><label>截止日期</label><input type="date" name="due" value="'+esc(v.due||'')+'"></div>'+
       '</div>'+
-      '<div class="f"><label>所属项目</label><select name="pid">'+projOptions(v.pid)+'</select></div>'+
+      '<div class="f"><label>时间（可选）</label><input type="time" name="time" value="'+esc(v.time||'')+'"></div>'+
+      '<div class="row2">'+
+        '<div class="f"><label>所属项目</label><select name="pid" id="taskProj">'+projOptions(v.pid)+'</select></div>'+
+        '<div class="f"><label>所属线路</label><select name="tid" id="taskTrack">'+trackOptions(v.pid, v.tid)+'</select></div>'+
+      '</div>'+
     '</div><div class="ma"><button class="btn" type="button" data-act="closeModal">取消</button>'+
     '<button class="btn btn-primary" type="submit">'+ic('check')+'保存</button></div></form>', false);
 }
 function openProjModal(id){
   var p=id?findProj(id):null;
-  var v=p||{ name:'', cat:(S.ui.projCat&&S.ui.projCat!=='all'?S.ui.projCat:'jsfj'), phase:'pre', status:'active', goalDate:'', next:'', blocker:'', step:0 };
-  var f=flowOf(v.cat), steps=(f&&f.steps)||[], d=stepDone(v);
-  var flowInfo='<div class="flow-tip">这类项目的标准流程是 <b>'+esc(f?f.name:'未设置')+'</b>，共 '+steps.length+' 步：'+
-    (steps.length?esc(steps.map(function(s){ return s.n; }).join(' → ')):'还没有步骤，点右上角「标准流程」去加')+'</div>';
-  var applyChk = p ? '<label class="chk-wrap" style="display:flex;gap:8px;align-items:center;font-size:12.8px;color:var(--text-2);padding:2px 0">'+
-      '<input type="checkbox" name="applyFlow" value="1" style="width:15px;height:15px;accent-color:var(--accent)"> 重新套用流程（进度归零，已到第 '+(d>=steps.length?steps.length:d+ (steps.length?1:0))+' 步）</label>' : '';
-  openModal('<h3>'+(p?'编辑项目':'新建项目')+'</h3><p>选好类型和阶段，标准流程会自动套上来，之后点「完成本步」往下推。</p>'+
+  var v=p||{ name:'', cat:(S.ui.projCat&&S.ui.projCat!=='all'?S.ui.projCat:'jsfj'), phase:'pre', status:'active', goalDate:'', next:'', blocker:'' };
+  openModal('<h3>'+(p?'编辑项目':'新建项目')+'</h3><p>建好后可以在卡片上添加多条并行线路（生产供货、技术资料、零星问题），各自的进度分开推进。</p>'+
     '<form id="projForm" data-id="'+(p?p.id:'')+'"><div class="form">'+
       '<div class="f"><label>项目名称</label><input type="text" name="name" value="'+esc(v.name)+'" placeholder="例如：滨江苑二期 · 门窗供货" required maxlength="100"></div>'+
       '<div class="row2">'+
@@ -1461,11 +1892,51 @@ function openProjModal(id){
         '</select></div>'+
         '<div class="f"><label>目标日期</label><input type="date" name="goalDate" value="'+esc(v.goalDate||'')+'"></div>'+
       '</div>'+
-      '<div class="f"><label>标准流程</label>'+flowInfo+applyChk+'</div>'+
-      '<div class="f"><label>备注（可选）</label><input type="text" name="next" value="'+esc(v.next)+'" placeholder="补充说明，不填就用流程当前步骤" maxlength="200"></div>'+
+      '<div class="f"><label>备注（可选）</label><input type="text" name="next" value="'+esc(v.next)+'" placeholder="补充说明" maxlength="200"></div>'+
       '<div class="f"><label>卡点（有就填）</label><textarea name="blocker" placeholder="卡在哪里了？写下来才不会忘记" maxlength="500">'+esc(v.blocker)+'</textarea></div>'+
     '</div><div class="ma"><button class="btn" type="button" data-act="closeModal">取消</button>'+
     '<button class="btn btn-primary" type="submit">'+ic('check')+'保存</button></div></form>', false);
+}
+
+/* ---------- 线路编辑 ---------- */
+function openTrackModal(pid, tid){
+  var p=findProj(pid); if(!p) return;
+  var t=tid?findTrack(p,tid):null;
+  var isNew=!t;
+  var steps=t?trackSteps(t):[];
+  var d=t?trackDone(t):0, n=steps.length;
+  var presetRow = isNew ? '<div class="f"><label>快速套用</label><div class="seg wrap">'+
+      TRACK_PRESETS.map(function(pre){ return '<button class="btn btn-sm" data-act="trackPreset" data-v="'+pre.key+'" type="button">'+esc(pre.name)+'</button>'; }).join('')+
+    '</div></div>' : '';
+  var progInfo = (!isNew && n)
+    ? '<div class="flow-tip">已推进 <b>'+d+'</b> / '+n+' 步'+(d<n?'，当前在「'+esc(steps[d].n)+'」':'，已全部完成')+'</div>'
+    : '';
+  var ots = t ? trackOpenTasks(p, t) : [];
+  var taskBox = ots.length
+    ? '<div class="f"><label>这条线路上的待办（'+ots.length+'）</label><div class="tk-tasks">'+
+        ots.map(function(x){ return '<div class="tk-taskrow">'+ic('checksq')+'<span>'+esc(x.title)+'</span><em>'+(x.due||'')+'</em></div>'; }).join('')+
+      '</div></div>'
+    : '';
+  var acts = isNew ? '' :
+    '<div class="tk-acts">'+
+      '<button class="btn btn-sm" data-act="trackPrev" data-id="'+p.id+'" data-tid="'+t.id+'" type="button"'+(d<=0?' disabled':'')+'>'+ic('undo')+'退回上一步</button>'+
+      '<button class="btn btn-sm btn-primary" data-act="trackNext" data-id="'+p.id+'" data-tid="'+t.id+'" type="button"'+(n&&d>=n?' disabled':'')+'>'+ic('check')+'完成本步</button>'+
+    '</div>';
+  openModal('<h3>'+(isNew?'添加线路':'编辑线路')+'</h3><p>一个项目可以同时跑多条线路，每条线路各走各的步骤，也可以单独写备注。</p>'+
+    '<form id="trackForm" data-pid="'+p.id+'" data-tid="'+(t?t.id:'')+'"><div class="form">'+
+      presetRow +
+      '<div class="f"><label>线路名称</label><input type="text" name="tname" id="tkName" value="'+esc(t?t.name:'')+'" placeholder="例如：生产供货" maxlength="30" required></div>'+
+      '<div class="f"><label>步骤（每行一步，可用 | 加说明）</label>'+
+        '<textarea name="tsteps" id="tkSteps" class="steps-editor" placeholder="排产确认 | 与生产锁定交期&#10;下料与加工&#10;出厂检验" maxlength="3000">'+esc(t?stepsToText(steps):'')+'</textarea></div>'+
+      '<div class="f"><label>当前问题备注（会显示在线路卡片上）</label>'+
+        '<textarea name="tnote" id="tkNote" placeholder="例如：2 号模位尺寸偏差，等修模；钢筋到货延迟 2 天" maxlength="300">'+esc(t?t.note||'':'')+'</textarea></div>'+
+      progInfo + taskBox +
+    '</div>'+
+    acts+
+    '<div class="ma">'+
+      (isNew?'':'<button class="btn btn-danger" type="button" data-act="delTrack" data-id="'+p.id+'" data-tid="'+t.id+'">删除线路</button>')+
+      '<button class="btn" type="button" data-act="closeModal">取消</button>'+
+      '<button class="btn btn-primary" type="submit">'+ic('check')+'保存</button></div></form>', false);
 }
 
 /* ---------- 标准流程管理 ---------- */
@@ -1539,6 +2010,9 @@ function findMeet(id){ for(var i=0;i<S.meetings.length;i++){ if(S.meetings[i].id
 function handleAct(act, el){
   var id=el.getAttribute('data-id');
   switch(act){
+    case 'openAi': openAiSheet(); break;
+    case 'aiApply': aiApply(); break;
+    case 'aiCancel': _aiPending=null; var oo=$('aiOut'); if(oo) oo.innerHTML=''; break;
     case 'addTask': openTaskModal(null, null); break;
     case 'editTask': openTaskModal(id, null); break;
     case 'delTask': {
@@ -1572,6 +2046,49 @@ function handleAct(act, el){
     }
     case 'taskFilter': S.ui.taskFilter=el.getAttribute('data-v'); saveNow(); renderAll(); break;
     case 'projFilter': S.ui.projFilter=el.getAttribute('data-v'); saveNow(); renderAll(); break;
+    case 'addTrack': openTrackModal(id, null); break;
+    case 'openTrack': openTrackModal(id, el.getAttribute('data-tid')); break;
+    case 'trackPreset': {
+      var pre=trackPreset(el.getAttribute('data-v'));
+      if(!pre) break;
+      var ne=$('tkName'), se=$('tkSteps');
+      if(ne) ne.value=pre.name;
+      if(se) se.value=pre.steps.join('\n');
+      break;
+    }
+    case 'trackNext': {
+      var tnp=findProj(id); if(!tnp) break;
+      var tnk=findTrack(tnp, el.getAttribute('data-tid')); if(!tnk) break;
+      var tss=trackSteps(tnk), tcur=trackDone(tnk);
+      if(!tss.length || tcur>=tss.length) break;
+      tnk.step=tcur+1;
+      var tInModal = !!(el.closest && el.closest('#trackForm'));
+      save(true); renderAll();
+      if(tInModal) openTrackModal(id, el.getAttribute('data-tid'));
+      toast(tnk.step<tss.length ? ('「'+tss[tcur].n+'」完成 · 下一步：'+tss[tnk.step].n) : ('「'+tss[tcur].n+'」完成 · 这条线路走完了'));
+      break;
+    }
+    case 'trackPrev': {
+      var tvp=findProj(id); if(!tvp) break;
+      var tvk=findTrack(tvp, el.getAttribute('data-tid')); if(!tvk) break;
+      var tvc=trackDone(tvk); if(tvc<=0) break;
+      tvk.step=tvc-1;
+      var pInModal = !!(el.closest && el.closest('#trackForm'));
+      save(true); renderAll();
+      if(pInModal) openTrackModal(id, el.getAttribute('data-tid'));
+      toast('已退回「'+trackSteps(tvk)[tvk.step].n+'」');
+      break;
+    }
+    case 'delTrack': {
+      var tdp=findProj(id); if(!tdp) break;
+      var tdt=findTrack(tdp, el.getAttribute('data-tid')); if(!tdt) break;
+      confirmBox('删除这条线路？','「'+esc(tdt.name)+'」的步骤和进度都会被移除，其他线路不受影响。','删除', function(){
+        tdp.tracks=(tdp.tracks||[]).filter(function(x){ return x.id!==tdt.id; });
+        S.tasks.forEach(function(x){ if(x.tid===tdt.id){ x.tid=''; } });
+        closeModal(); save(); renderAll(); toast('线路已删除');
+      });
+      break;
+    }
     case 'addProj': openProjModal(null); break;
     case 'openFlows': openFlowModal(); break;
     case 'flowTab': S.ui.flowTab=el.getAttribute('data-v'); saveNow(); openFlowModal(); break;
@@ -1597,7 +2114,7 @@ function handleAct(act, el){
       var n=tasksOfProj(id).length;
       confirmBox('删除这个项目？','「'+esc(p.name)+'」将被移除'+(n?'，其中 '+n+' 条关联待办会保留但失去项目归属':'')+'。','删除', function(){
         S.projects=S.projects.filter(function(x){ return x.id!==id; });
-        S.tasks.forEach(function(t){ if(t.pid===id) t.pid=''; });
+        S.tasks.forEach(function(t){ if(t.pid===id){ t.pid=''; t.tid=''; } });
         save(); renderAll(); toast('项目已删除');
       });
       break;
@@ -1642,7 +2159,7 @@ function handleAct(act, el){
     case 'expJson': {
       var blob=new Blob([JSON.stringify({ v:1, exportedAt:new Date().toISOString(), tasks:S.tasks, projects:S.projects, meetings:S.meetings },null,2)],{type:'application/json'});
       var a=document.createElement('a');
-      a.href=URL.createObjectURL(blob); a.download='成长工作台备份_'+todayStr()+'.json';
+      a.href=URL.createObjectURL(blob); a.download='XCX工作台备份_'+todayStr()+'.json';
       document.body.appendChild(a); a.click();
       setTimeout(function(){ URL.revokeObjectURL(a.href); if(a.parentNode) a.parentNode.removeChild(a); },400);
       closeModal(); toast('备份已下载');
@@ -1732,13 +2249,15 @@ function bindEvents(){
       t.title=String(fd.get('title')||'').trim();
       t.prio=fd.get('prio')||'P2';
       t.due=fd.get('due')||'';
+      t.time=fd.get('time')||'';
       t.pid=fd.get('pid')||'';
+      t.tid=t.pid?(fd.get('tid')||''):'';
       save(); closeModal(); renderAll(); toast(id?'已保存':'待办已添加');
     }else if(f.id==='projForm'){
       var pid=f.getAttribute('data-id');
       var p=pid?findProj(pid):null;
       var isNew=!p;
-      if(!p){ p={ id:uid(), createdAt:todayStr(), step:0 }; S.projects.push(p); }
+      if(!p){ p={ id:uid(), createdAt:todayStr() }; S.projects.push(p); }
       p.name=String(fd.get('name')||'').trim();
       if(!p.name){ toast('项目名称不能为空'); return; }
       p.cat=fd.get('cat')||'jsfj';
@@ -1748,10 +2267,26 @@ function bindEvents(){
       p.next=String(fd.get('next')||'').trim();
       p.blocker=String(fd.get('blocker')||'').trim();
       p.stage='';
-      if(isNew) p.step=0;
-      else if(fd.get('applyFlow')) p.step=0;
-      if(p.step===undefined||p.step===null||isNaN(Number(p.step))) p.step=0;
-      save(); closeModal(); renderAll(); toast(isNew?'项目已创建':'已保存');
+      if(isNew){ p.tracks=TRACK_PRESETS.map(function(pre){ return newTrackFrom(pre); }); }
+      p.tracks=tracksOf(p);
+      save(); closeModal(); renderAll(); toast(isNew?'项目已创建 · 已带上 3 条线路':'已保存');
+    }else if(f.id==='trackForm'){
+      var tpid=f.getAttribute('data-pid');
+      var ttid=f.getAttribute('data-tid');
+      var tp=findProj(tpid); if(!tp){ toast('项目不存在'); return; }
+      var tname=String(fd.get('tname')||'').trim();
+      var tsteps=parseSteps(fd.get('tsteps'));
+      var tnote=String(fd.get('tnote')||'').trim();
+      if(!tname){ toast('线路名称不能为空'); return; }
+      if(!tsteps.length){ toast('至少写一个步骤'); return; }
+      if(ttid){
+        var tt=findTrack(tp, ttid); if(!tt){ toast('线路不存在'); return; }
+        tt.name=tname; tt.steps=tsteps; tt.note=tnote;
+        tt.step=Math.min(Number(tt.step)||0, tsteps.length);
+      }else{
+        tracksOf(tp).push({ id:uid(), name:tname, steps:tsteps, note:tnote, step:0 });
+      }
+      save(); closeModal(); renderAll(); toast(ttid?'线路已更新':'线路已添加');
     }else if(f.id==='flowForm'){
       var fcat=f.getAttribute('data-cat');
       var fl=flowOf(fcat);
@@ -1760,6 +2295,11 @@ function bindEvents(){
       if(!fsteps.length){ toast('至少写一个步骤'); return; }
       if(fl){ fl.name=fname||fl.name; fl.steps=fsteps; }
       save(true); closeModal(); renderAll(); toast('流程已保存 · 共 '+fsteps.length+' 步');
+    }else if(f.id==='aiForm'){
+      var cmd=String(fd.get('cmd')||'').trim();
+      if(!cmd){ toast('先说一句'); return; }
+      aiPreview(cmd);
+      return;
     }else if(f.id==='meetForm'){
       var mid=f.getAttribute('data-id');
       var m=mid?findMeet(mid):null;
@@ -1778,6 +2318,7 @@ function bindEvents(){
 
   document.addEventListener('change', function(e){
     var el=e.target; if(!el || !el.getAttribute) return;
+    if(el.id==='taskProj'){ fillTrackOptions(el.value, ''); return; }
     var act=el.getAttribute('data-act'); if(!act) return;
     if(act==='projCat'){ S.ui.projCat=el.value||'all'; saveNow(); renderAll(); }
   }, false);
@@ -1796,9 +2337,10 @@ var LID='本地ID';
 var _syncState={ online:false, pending:0 };
 
 function setSyncState(cls, text){
-  var el=$('syncLine'), tx=$('syncText');
-  if(el) el.className='sync-line '+cls;
-  if(tx) tx.textContent=text;
+  var i, lines=document.querySelectorAll('.sync-line');
+  for(i=0;i<lines.length;i++) lines[i].className='sync-line '+cls;
+  var texts=document.querySelectorAll('.sync-text');
+  for(i=0;i<texts.length;i++) texts[i].textContent=text;
 }
 function noop(){}
 function compact(o){
@@ -2028,7 +2570,7 @@ async function cloudWrite(text){
     var res = await fetch('https://api.github.com/gists', {
       method: 'POST',
       headers: cloudHeaders(true),
-      body: JSON.stringify({ description: '成长工作台 · 云同步数据', public: false, files: files })
+      body: JSON.stringify({ description: 'XCX工作台 · 云同步数据', public: false, files: files })
     });
     if(!res.ok) throw cloudHttpError(res.status);
     var g = await res.json();
@@ -2201,6 +2743,390 @@ function initSync(){
 /* =========================================================
    启动
    ========================================================= */
+
+/* =========================================================
+   PWA：安装到桌面 / 离线缓存
+   ========================================================= */
+var _pwaPrompt = null;
+
+function pwaStandalone(){
+  try{
+    if(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return true;
+    if(window.navigator.standalone === true) return true;
+    if(window.matchMedia && window.matchMedia('(display-mode: fullscreen)').matches) return true;
+  }catch(e){}
+  return false;
+}
+function pwaIsIOS(){
+  var ua = navigator.userAgent || '';
+  if(/iPad|iPhone|iPod/.test(ua)) return true;
+  return navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+}
+function pwaTipClose(){
+  var el = $('pwaTip');
+  if(el && el.parentNode) el.parentNode.removeChild(el);
+}
+function pwaTip(htmlIn){
+  if($('pwaTip') || pwaStandalone()) return;
+  var el = document.createElement('div');
+  el.id = 'pwaTip';
+  el.className = 'pwa-tip';
+  el.innerHTML = htmlIn;
+  document.body.appendChild(el);
+}
+function pwaTipDismiss(){
+  try{ localStorage.setItem('pwa_ios_tip', '1'); }catch(e){}
+  pwaTipClose();
+}
+function pwaInstall(){
+  if(!_pwaPrompt){ toast('请用浏览器菜单里的「添加到主屏幕」'); return; }
+  _pwaPrompt.prompt();
+  _pwaPrompt.userChoice.then(function(r){
+    if(r && r.outcome === 'accepted'){ pwaTipClose(); toast('已添加到桌面'); }
+    _pwaPrompt = null;
+  });
+}
+
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault();
+  _pwaPrompt = e;
+  if(pwaStandalone()) return;
+  setTimeout(function(){
+    pwaTip(
+      '<div class="pt-i">' + ic('download') + '</div>' +
+      '<div class="pt-t"><b>装到桌面，用起来像 App</b><span>全屏打开，断网也能看</span></div>' +
+      '<button class="btn btn-primary btn-sm" type="button" onclick="pwaInstall()">安装</button>' +
+      '<button class="ico-btn" type="button" aria-label="关闭" onclick="pwaTipClose()">' + ic('x') + '</button>'
+    );
+  }, 1200);
+});
+window.addEventListener('appinstalled', function(){ _pwaPrompt = null; pwaTipClose(); toast('已添加到桌面'); });
+
+/* iOS Safari 没有安装事件，给一次引导 */
+function pwaIosHint(){
+  if(!pwaIsIOS() || pwaStandalone()) return;
+  try{ if(localStorage.getItem('pwa_ios_tip') === '1') return; }catch(e){}
+  pwaTip(
+    '<div class="pt-i">' + ic('download') + '</div>' +
+    '<div class="pt-t"><b>添加到主屏幕</b><span>点底部「分享」→「添加到主屏幕」，以后像 App 一样打开</span></div>' +
+    '<button class="ico-btn" type="button" aria-label="关闭" onclick="pwaTipDismiss()">' + ic('x') + '</button>'
+  );
+}
+/* 鸿蒙（华为浏览器 / ArkWeb）没有 beforeinstallprompt，给一次菜单引导 */
+function pwaIsHarmony(){
+  var ua = navigator.userAgent || '';
+  return /HarmonyOS|OpenHarmony|ArkWeb|HuaweiBrowser/i.test(ua);
+}
+function pwaHarmonyDismiss(){
+  try{ localStorage.setItem('pwa_hm_tip', '1'); }catch(e){}
+  pwaTipClose();
+}
+function pwaHarmonyHint(){
+  if(!pwaIsHarmony() || pwaStandalone()) return;
+  try{ if(localStorage.getItem('pwa_hm_tip') === '1') return; }catch(e){}
+  pwaTip(
+    '<div class="pt-i">' + ic('download') + '</div>' +
+    '<div class="pt-t"><b>添加到桌面</b><span>点浏览器右下角「∷」或右上角「⋯」→ 添加至 → 桌面</span></div>' +
+    '<button class="ico-btn" type="button" aria-label="关闭" onclick="pwaHarmonyDismiss()">' + ic('x') + '</button>'
+  );
+}
+
+setTimeout(pwaIosHint, 2600);
+setTimeout(pwaHarmonyHint, 3200);
+
+/* 离线缓存：页面走网络优先（保证拿到新版），静态资源走缓存优先 */
+if('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('./sw.js').then(function(reg){
+      reg.addEventListener('updatefound', function(){
+        var nw = reg.installing;
+        if(!nw) return;
+        nw.addEventListener('statechange', function(){
+          if(nw.state === 'installed' && navigator.serviceWorker.controller) toast('有新版本，下次打开自动生效');
+        });
+      });
+      reg.update && reg.update();
+    }).catch(function(){});
+  });
+}
+
+
+/* =========================================================
+   AI 记录：一句话建待办 / 改期 / 标完成
+   本地语义解析，不联网、不花钱、断网也能用
+   ========================================================= */
+var _aiPending = null;
+
+function aiPad(n){ return (n<10?'0':'')+n; }
+function aiWeekdayMap(ch){ return { '一':1,'二':2,'三':3,'四':4,'五':5,'六':6,'日':0,'天':0 }[ch]; }
+
+function aiParseDate(text){
+  var t0=todayStr(), m;
+  if(/大后天/.test(text)) return { date:addDays(t0,3), hit:'大后天' };
+  if(/后天/.test(text)) return { date:addDays(t0,2), hit:'后天' };
+  if(/明天|明日|明儿/.test(text)) return { date:addDays(t0,1), hit:'明天' };
+  if(/今天|今日/.test(text)) return { date:t0, hit:'今天' };
+  if((m=text.match(/(\d{1,2})\s*天后/))) return { date:addDays(t0,Number(m[1])), hit:m[0] };
+  if((m=text.match(/(\d{1,2})\s*月\s*(\d{1,2})\s*[日号]/))){
+    var y=new Date(t0+'T00:00:00').getFullYear();
+    var ds=y+'-'+aiPad(Number(m[1]))+'-'+aiPad(Number(m[2]));
+    if(ds<t0) ds=(y+1)+'-'+aiPad(Number(m[1]))+'-'+aiPad(Number(m[2]));
+    return { date:ds, hit:m[0] };
+  }
+  if((m=text.match(/(下下|下|这|本)?\s*周([一二三四五六日天])/))){
+    var target=aiWeekdayMap(m[2]);
+    if(target===undefined) return null;
+    var wd=new Date(t0+'T00:00:00').getDay();
+    var diff=(target-wd+7)%7;
+    var pre=m[1]||'';
+    if(pre==='下') diff+=7;
+    else if(pre==='下下') diff+=14;
+    return { date:addDays(t0,diff), hit:m[0] };
+  }
+  return null;
+}
+function aiCnNum(s){
+  var map={ '零':0,'〇':0,'一':1,'二':2,'两':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9 };
+  if(/^\d+$/.test(s)) return Number(s);
+  var m=s.match(/^([一二两三四五六七八九])?十([一二三四五六七八九])?$/);
+  if(m){ var a=m[1]?map[m[1]]:1, b=m[2]?map[m[2]]:0; return a*10+b; }
+  if(s.length===1 && map[s]!==undefined) return map[s];
+  return null;
+}
+function aiParseTime(text){
+  var m=text.match(/(上午|早上|中午|下午|傍晚|晚上|夜里)?\s*(\d{1,2}|[一二两三四五六七八九十]{1,3})\s*[点時时:：]\s*(\d{1,2}|[一二两三四五六七八九十]{1,3})?\s*(半)?\s*分?/);
+  if(!m) return null;
+  var ap=m[1]||'';
+  var h=aiCnNum(m[2]);
+  if(h===null) return null;
+  var mm = (m[4]==='半') ? 30 : (m[3] ? aiCnNum(m[3]) : 0);
+  if(mm===null) mm=0;
+  if((ap==='下午'||ap==='傍晚'||ap==='晚上'||ap==='夜里') && h<12) h+=12;
+  if(ap==='中午' && h<12) h+=12;
+  if(h>23) h=23;
+  return { time:aiPad(h)+':'+aiPad(mm), hit:m[0] };
+}
+function aiParsePrio(text){
+  if(/P0|紧急|加急|急件|马上|立刻|赶紧|很急|特别急/i.test(text)) return { prio:'P0', hit:'紧急' };
+  if(/P1|重要|优先/i.test(text)) return { prio:'P1', hit:'重要' };
+  if(/P2|一般|不急|有空/.test(text)) return { prio:'P2', hit:'一般' };
+  return null;
+}
+function aiMatchProj(text){
+  var best=null, len=0;
+  S.projects.forEach(function(p){
+    var n=String(p.name||'');
+    if(!n) return;
+    var keys=[n, n.split(/[·\-—\s（(]+/)[0]];
+    keys.forEach(function(k){
+      if(k && k.length>=2 && text.indexOf(k)>=0 && k.length>len){ best=p; len=k.length; }
+    });
+  });
+  return best;
+}
+function aiMatchTrack(p, text){
+  if(!p) return null;
+  var best=null, len=0;
+  tracksOf(p).forEach(function(t){
+    var n=String(t.name||'');
+    if(n && n.length>=2 && text.indexOf(n)>=0 && n.length>len){ best=t; len=n.length; }
+  });
+  return best;
+}
+function aiLCS(a,b){
+  a=String(a); b=String(b);
+  if(!a||!b) return 0;
+  var best=0, prev=new Array(b.length+1);
+  for(var k=0;k<=b.length;k++) prev[k]=0;
+  for(var i=1;i<=a.length;i++){
+    var cur=new Array(b.length+1); cur[0]=0;
+    for(var j=1;j<=b.length;j++){
+      cur[j]=(a[i-1]===b[j-1]) ? (prev[j-1]||0)+1 : 0;
+      if(cur[j]>best) best=cur[j];
+    }
+    prev=cur;
+  }
+  return best;
+}
+function aiFindTask(text, pool){
+  var best=null, sc=0;
+  pool.forEach(function(t){
+    var v=aiLCS(text, String(t.title||''));
+    if(v>sc){ sc=v; best=t; }
+  });
+  return sc>=2 ? best : null;
+}
+function aiCleanTitle(text, junk){
+  var s=' '+text+' ';
+  junk.forEach(function(w){ if(w) s=s.split(w).join(' '); });
+  s=s.replace(/[，,。.！!？?、；;：:]/g,' ');
+  s=s.replace(/\s+/g,' ').trim();
+  s=s.replace(/^(帮我|请|麻烦|给我)\s*/,'');
+  s=s.replace(/^(提醒我|提醒一下|提醒|记得|别忘了我?)\s*/,'');
+  s=s.replace(/^(添加|新建|加一个|加个|增加|记一下|记录一下|创建|安排)\s*/,'');
+  s=s.replace(/^(前|之前|以前)\s*/,'');
+  s=s.replace(/^把\s*/,'');
+  s=s.replace(/\s*(待办|任务|事项)\s*$/,'');
+  return s.replace(/\s+/g,' ').trim();
+}
+function aiParse(src){
+  var text=String(src||'').trim();
+  if(!text) return { kind:'none', msg:'先说一句话' };
+
+  /* 查询 */
+  if(/有什么|有哪些|查一下|看看|多少条|还有什么|进度如何/.test(text) && !/完成|改到|推迟|加|建/.test(text)){
+    var od=overdue(), td=dueToday();
+    var msg='逾期 <b>'+od.length+'</b> 条，今天到期 <b>'+td.length+'</b> 条';
+    if(od.length) msg+='<br>'+od.slice(0,5).map(function(t){ return '· '+esc(t.title); }).join('<br>');
+    return { kind:'query', msg:msg };
+  }
+
+  var isDone=/(完成|做完|搞完|搞定|办完|干完|标记完成)/.test(text);
+  var isMove=/(改到|改成|推迟到|推迟|延后|延期|顺延|挪到|调到|改期)/.test(text);
+  var isDel=/(删除|删掉|去掉|移除)/.test(text);
+
+  var d=aiParseDate(text), tm=aiParseTime(text), pr=aiParsePrio(text);
+  var proj=aiMatchProj(text), track=aiMatchTrack(proj, text);
+
+  if(isDone||isMove||isDel){
+    var pool=S.tasks.filter(function(t){ return isDone ? !t.done : true; });
+    var hit=aiFindTask(text, pool);
+    if(hit){
+      if(isDone) return { kind:'done', taskId:hit.id, title:hit.title, label:'标记完成' };
+      if(isDel)  return { kind:'del',  taskId:hit.id, title:hit.title, label:'删除待办' };
+      return { kind:'move', taskId:hit.id, title:hit.title, label:'修改日期',
+               due:d?d.date:'', time:tm?tm.time:'' };
+    }
+    if(!isDone) return { kind:'none', msg:'没找到匹配的待办，换个关键词试试' };
+    /* 说了「完成…」但库里没有对应的，按新建待办处理 */
+  }
+
+  var junk=[d&&d.hit, tm&&tm.hit, pr&&pr.hit, proj&&proj.name, track&&track.name, proj&&proj.name.split(/[·\-—\s（(]+/)[0]];
+  var title=aiCleanTitle(text, junk);
+  if(!title) return { kind:'none', msg:'没识别出具体要做的事，换个说法试试' };
+  return { kind:'add', label:'新建待办', title:title, due:(d? d.date : todayStr()),
+           time:tm?tm.time:'', prio:(pr?pr.prio:'P1'),
+           pid:proj?proj.id:'', tid:track?track.id:'', pname:proj?proj.name:'', tname:track?track.name:'' };
+}
+
+/* ---------- 面板 ---------- */
+function openAiSheet(){
+  openModal(
+    '<h3>AI 记录</h3>'+
+    '<p>说一句话就行：建待办、改日期、标完成。识别在本地完成，不联网。</p>'+
+    '<form id="aiForm"><div class="form">'+
+      '<div class="f"><textarea name="cmd" id="aiInput" rows="3" placeholder="例如：&#10;明天下午三点提醒我交资料&#10;把复检模具改到后天&#10;完成催钢筋到场"></textarea></div>'+
+    '</div></form>'+
+    '<div class="ai-bar">'+
+      '<button class="btn ai-mic" id="aiMic" type="button">'+ic('mic')+'<span>按住说话</span></button>'+
+      '<button class="btn btn-primary" id="aiGo" type="button">'+ic('sparkle')+'执行</button>'+
+    '</div>'+
+    '<div class="ai-tip">也可以直接说：今天有什么 · 紧急提醒我打回款电话</div>'+
+    '<div id="aiOut" class="ai-out"></div>', false);
+
+  var inp=$('aiInput');
+  var go=$('aiGo');
+  if(go) go.addEventListener('click', function(){
+    var v=inp?inp.value:'';
+    if(!v.trim()){ toast('先说一句'); return; }
+    aiPreview(v);
+  });
+  if(inp && !('ontouchstart' in window)){ try{ inp.focus(); }catch(e){} }
+  aiBindMic();
+}
+var _aiRec=null;
+function aiBindMic(){
+  var mic=$('aiMic'); if(!mic) return;
+  mic.addEventListener('pointerdown', function(e){
+    e.preventDefault();
+    var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SR){
+      toast('这个浏览器不支持语音，用输入法的麦克风键');
+      var i=$('aiInput'); if(i) i.focus();
+      return;
+    }
+    try{
+      _aiRec=new SR();
+      _aiRec.lang='zh-CN';
+      _aiRec.interimResults=true;
+      _aiRec.continuous=false;
+      var inp=$('aiInput'), base=inp?inp.value:'';
+      _aiRec.onresult=function(ev){
+        var txt='';
+        for(var i=ev.resultIndex;i<ev.results.length;i++) txt+=ev.results[i][0].transcript;
+        if(inp) inp.value=(base?base+' ':'')+txt;
+      };
+      _aiRec.onerror=function(){ aiMicState(false); };
+      _aiRec.onend=function(){ aiMicState(false); };
+      _aiRec.start();
+      aiMicState(true);
+    }catch(err){ toast('语音启动失败'); }
+  });
+  ['pointerup','pointercancel','pointerleave'].forEach(function(ev){
+    mic.addEventListener(ev, function(){ aiMicState(false); });
+  });
+  mic.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+}
+function aiMicState(on){
+  var mic=$('aiMic');
+  if(on){
+    if(mic) mic.classList.add('listening');
+    var sp=mic&&mic.querySelector('span'); if(sp) sp.textContent='松开结束';
+  }else{
+    if(mic) mic.classList.remove('listening');
+    var sp2=mic&&mic.querySelector('span'); if(sp2) sp2.textContent='按住说话';
+    try{ if(_aiRec){ _aiRec.stop(); } }catch(e){}
+    _aiRec=null;
+  }
+}
+function aiPreview(text){
+  var r=aiParse(text);
+  var out=$('aiOut'); if(!out) return;
+  _aiPending=null;
+  if(r.kind==='none'){ out.innerHTML='<div class="ai-msg">'+esc(r.msg||'没听懂')+'</div>'; return; }
+  if(r.kind==='query'){ out.innerHTML='<div class="ai-msg">'+r.msg+'</div>'; return; }
+  _aiPending=r;
+  var rows=[];
+  rows.push(['动作', r.label]);
+  if(r.title) rows.push(['内容', r.title]);
+  if(r.kind==='add'){
+    rows.push(['日期', r.due+(r.time?' '+r.time:'')]);
+    rows.push(['优先级', r.prio]);
+    if(r.pname) rows.push(['项目', r.pname+(r.tname?' / '+r.tname:'')]);
+  }
+  if(r.kind==='move') rows.push(['新日期', r.due+(r.time?' '+r.time:'')]);
+  var body='<div class="ai-card">'+rows.map(function(x){
+    return '<div class="ai-row"><span>'+x[0]+'</span><b>'+esc(x[1])+'</b></div>';
+  }).join('')+'</div>';
+  body+='<div class="ai-acts"><button class="btn" data-act="aiCancel" type="button">取消</button>'+
+        '<button class="btn btn-primary" data-act="aiApply" type="button">'+ic('check')+'确定</button></div>';
+  out.innerHTML=body;
+}
+function aiApply(){
+  var r=_aiPending; if(!r) return;
+  if(r.kind==='add'){
+    S.tasks.push({ id:uid(), title:r.title, prio:r.prio||'P1', due:r.due||todayStr(),
+      time:r.time||'', pid:r.pid||'', tid:r.tid||'', done:false, createdAt:todayStr(), doneAt:null });
+    toast('已添加：'+r.title);
+  }else if(r.kind==='done'){
+    var t=findTask(r.taskId); if(!t){ _aiPending=null; return; }
+    t.done=true; t.doneAt=todayStr(); toast('已完成：'+t.title);
+  }else if(r.kind==='move'){
+    var t2=findTask(r.taskId); if(!t2){ _aiPending=null; return; }
+    if(r.due) t2.due=r.due;
+    if(r.time) t2.time=r.time;
+    toast('已改到 '+(r.due||t2.due));
+  }else if(r.kind==='del'){
+    var t3=findTask(r.taskId); if(!t3){ _aiPending=null; return; }
+    S.tasks=S.tasks.filter(function(x){ return x.id!==r.taskId; });
+    toast('已删除');
+  }
+  _aiPending=null;
+  closeModal();
+  save();
+  renderAll();
+}
+
 function boot(){
   load();
   bindEvents();
