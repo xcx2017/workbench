@@ -206,8 +206,9 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .frow{display:flex;align-items:flex-start;gap:11px;padding:10px 0;border-bottom:1px solid var(--line-soft)}
 .frow:last-child{border-bottom:none}
 .frow .ft{flex:1;min-width:0}
-.frow .ft b{font-weight:600;display:block;word-break:break-word;font-size:13.8px;letter-spacing:-.05px}
+.frow .ft > b{font-weight:600;display:block;word-break:break-word;font-size:13.8px;letter-spacing:-.05px}
 .frow .ft span{font-size:12px;color:var(--text-2);display:block;margin-top:3px;word-break:break-word;line-height:1.6}
+.frow .ft span b{display:inline;font-weight:750;font-size:inherit;letter-spacing:0}
 .frow .fa{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;align-items:center}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--danger);margin-top:8px;flex:0 0 6px;box-shadow:0 0 0 3px rgba(209,59,56,.13)}
 .allclear{display:flex;align-items:center;gap:9px;padding:12px 0;color:var(--text-2);font-size:13px}
@@ -777,6 +778,41 @@ select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns=
 .tk-acts .btn{flex:1}
 .btn[disabled]{opacity:.45;pointer-events:none;box-shadow:none}
 .tk-tasks{border:1px solid var(--line);border-radius:10px;padding:2px 10px;background:#fbfdfd}
+/* 挂在线路上的待办（项目总览直接可勾） */
+.tk-tlist{border-top:1px solid var(--line-soft);background:#fff;padding:6px 9px 7px}
+.tk-th{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;color:var(--text-4);letter-spacing:.2px;margin-bottom:2px}
+.tk-th > svg{width:11px;height:11px;flex:0 0 11px;color:var(--accent)}
+.tk-tn{background:var(--accent-soft);color:var(--accent-deep);border-radius:20px;padding:0 6px;font-size:10px;line-height:15px;font-weight:750}
+.tk-tadd{margin-left:auto;display:inline-flex;align-items:center;gap:3px;font-size:10.5px;font-weight:700;color:var(--accent-deep);
+  padding:2px 7px;border-radius:6px;background:var(--accent-soft2);transition:background .15s}
+.tk-tadd svg{width:11px;height:11px}
+.tk-tadd:hover{background:var(--accent-soft)}
+.tk-tr{display:flex;align-items:flex-start;gap:6px;padding:3px 0;min-width:0}
+.tk-ck{flex:0 0 14px;width:14px;height:14px;margin-top:2.5px;border-radius:50%;border:1.6px solid #cfdedd;background:#fff;
+  display:flex;align-items:center;justify-content:center;color:transparent;transition:border-color .15s,background .15s}
+.tk-ck svg{width:8px;height:8px;stroke-width:3.8}
+.tk-ck:hover{border-color:var(--accent);color:var(--accent)}
+.tk-tt{flex:1;min-width:0;text-align:left;font-size:12px;color:var(--text-2);line-height:1.45;word-break:break-word;letter-spacing:-.1px}
+.tk-tt:hover{color:var(--accent-deep);text-decoration:underline;text-underline-offset:2px}
+.tk-td{flex:0 0 auto;font-size:10.5px;color:var(--text-4);font-weight:650;padding-top:2.5px;white-space:nowrap}
+.tk-tr.is-od .tk-td{color:var(--danger);font-weight:750}
+.tk-tr.is-today .tk-td{color:var(--warn);font-weight:750}
+.tk-tmore{display:block;width:100%;text-align:left;font-size:11px;font-weight:650;color:var(--accent-deep);padding:2px 0 1px 20px}
+.tk-tmore:hover{text-decoration:underline;text-underline-offset:2px}
+.tk-tempty{font-size:11px;color:var(--text-4);padding:1px 0 2px 20px;line-height:1.5}
+.tk-tlist.is-empty{padding:3px 8px 4px}
+.tk-tadd-wide{margin-left:0;width:100%;justify-content:flex-start;gap:4px;background:transparent;color:var(--text-4);
+  padding:3px 4px;font-weight:650;border-radius:6px}
+.tk-tadd-wide:hover{background:var(--accent-soft2);color:var(--accent-deep)}
+/* 胶囊可点：跳到项目 / 线路 */
+.pill-link{font-family:inherit;border:0;cursor:pointer;transition:filter .15s}
+.pill-link:hover{filter:brightness(.965)}
+.pi-note{font-size:11px;color:var(--text-4);line-height:1.5;padding:0 9px 6px}
+@media (max-width:860px){
+  .tk-tt{font-size:12.5px}
+  .tk-tr{padding:5px 0}
+  .tk-td{font-size:11px}
+}
 /* ================= 标准流程设计 ================= */
 .std-list{display:flex;flex-direction:column;gap:10px}
 .std-trk{border:1px solid var(--line);border-radius:12px;background:#fbfdfd;padding:10px 11px 11px}
@@ -1141,6 +1177,133 @@ select.ai-in{-webkit-appearance:none;appearance:none;padding-right:6px}
 .ps-note div{min-width:0}
 .ps-note div>b{display:block;color:var(--text);font-size:12.5px;font-weight:650;margin-bottom:1px}
 @media (max-width:560px){ .ps-grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
+
+/* ================= 错题：批量导入 / 举一反一 / 练习卷 ================= */
+.wq-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+.wq-toolbar .btn{flex:0 0 auto}
+@media (max-width:560px){
+  .wq-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .wq-toolbar .btn{width:100%;justify-content:center;font-size:12.5px}
+  .wq-toolbar .btn.wide{grid-column:1 / -1}
+}
+/* 体系二级筛选（数学：课内 / 学而思） */
+.track-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:-3px 0 13px}
+.track-row .lb{font-size:11px;font-weight:700;color:var(--text-3);letter-spacing:.4px;flex:0 0 auto}
+.track-fix{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:-5px 0 13px;padding:7px 10px;border-radius:9px;
+  background:#fdf6e7;border:1px solid #f0dcb4;font-size:12px;color:#8a6415;line-height:1.4}
+.track-fix b{font-weight:750}
+.track-fix .btn{flex:0 0 auto}
+.seg.sm{padding:2.5px;background:#edf3f3}
+.seg.sm button{padding:4px 10px;font-size:11.5px}
+.wq-card.picked{border-color:var(--accent);box-shadow:0 0 0 2px rgba(13,148,136,.14)}
+.wq-t{font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:20px;background:#f0f5f5;color:var(--text-3);white-space:nowrap}
+.wq-t.auto{background:var(--violet-soft);color:var(--violet)}
+.wq-t.batch{background:var(--cyan-soft);color:#0a6f8c}
+.wq-t.ocr{background:var(--amber-soft);color:var(--amber)}
+.wq-x{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px;padding-top:9px;border-top:1px dashed var(--line-soft)}
+.wq-x .btn{font-size:11.5px;padding:5px 9px}
+.wq-x .btn.on{background:var(--accent-soft);border-color:#bfe3dd;color:var(--accent-deep)}
+
+/* 导入弹窗 */
+.imp-tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(84px,1fr));gap:7px;margin:2px 0 14px}
+.imp-tab{border:1px solid var(--line);border-radius:10px;padding:9px 6px;background:#fbfdfd;text-align:center;
+  font-size:12px;font-weight:650;color:var(--text-2);line-height:1.35;transition:.15s}
+.imp-tab svg{display:block;margin:0 auto 4px;width:16px;height:16px;color:var(--text-3)}
+.imp-tab:hover{border-color:#c6ddd9}
+.imp-tab.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-deep)}
+.imp-tab.on svg{color:var(--accent)}
+.imp-pane{display:none}
+.imp-pane.on{display:block}
+.imp-drop{display:flex;flex-direction:column;align-items:center;gap:6px;border:1px dashed #c6ddd9;border-radius:12px;
+  padding:20px 14px;text-align:center;background:var(--accent-soft2);color:var(--text-3);font-size:12px;line-height:1.65}
+.imp-drop svg{width:24px;height:24px;color:var(--accent);opacity:.8}
+.imp-drop b{color:var(--text-2);font-size:13px}
+.imp-area{width:100%;min-height:150px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;
+  font-size:12.8px;line-height:1.75;font-family:inherit;color:var(--text);background:#fbfdfd;resize:vertical;outline:none}
+.imp-area:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(13,148,136,.09)}
+.imp-hint{font-size:11px;color:var(--text-4);line-height:1.7;margin:8px 0 0}
+.imp-hint b{color:var(--text-2)}
+.imp-batch{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;border-radius:10px;background:var(--bg-2);margin:10px 0 0}
+.imp-batch .full{grid-column:1 / -1}
+.imp-batch label{display:block;font-size:10.5px;font-weight:700;color:var(--text-3);margin-bottom:3px}
+.imp-batch select,.imp-batch input{width:100%;padding:6px 8px;border:1px solid var(--line);border-radius:7px;
+  background:#fff;font-size:12.5px;font-family:inherit;outline:none}
+.draft-list{display:flex;flex-direction:column;gap:8px;max-height:44vh;overflow:auto;margin:12px 0 0;padding-right:2px}
+.draft-i{border:1px solid var(--line);border-radius:10px;padding:9px 10px;background:#fbfdfd}
+.draft-i.del{opacity:.42;background:var(--danger-soft);border-color:var(--danger-line)}
+.draft-h{display:flex;align-items:center;gap:6px;margin-bottom:7px;font-size:10.5px;color:var(--text-3);font-weight:600}
+.draft-h .sp{flex:1}
+.draft-h .pill-sel select{max-width:84px}
+.draft-thumb{width:44px;height:44px;border-radius:7px;object-fit:cover;border:1px solid var(--line);background:var(--bg-2);flex:0 0 44px}
+.draft-in,.draft-sel{width:100%;border:1px solid var(--line);border-radius:7px;padding:5px 7px;font-size:12.3px;
+  font-family:inherit;background:#fff;color:var(--text);outline:none;line-height:1.5}
+.draft-in:focus,.draft-sel:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(13,148,136,.1)}
+.draft-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
+.draft-grid .full{grid-column:1 / -1}
+.draft-x{width:24px;height:24px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--text-4);
+  display:flex;align-items:center;justify-content:center;flex:0 0 24px}
+.draft-x:hover{color:var(--danger);border-color:var(--danger-line);background:var(--danger-soft)}
+.draft-x svg{width:12px;height:12px}
+
+/* 举一反一 */
+.var-head{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 12px;border-radius:10px;
+  background:var(--accent-soft2);border:1px solid #dcefe9;font-size:12.3px;color:var(--text-2);line-height:1.6;margin-bottom:12px}
+.var-head b{color:var(--text)}
+.vq-list{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.vq-i{border:1px solid var(--line);border-radius:10px;padding:10px 11px;background:#fff}
+.vq-i.done{opacity:.6;background:var(--bg-2)}
+.vq-h{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.vq-h .sp{flex:1}
+.vq-n{font-size:10.5px;font-weight:700;color:var(--text-4);flex:0 0 auto}
+.vq-q{font-size:12.8px;color:var(--text);line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.vq-a{font-size:11.8px;color:var(--text-2);line-height:1.6;margin-top:5px;white-space:pre-wrap;word-break:break-word}
+.vq-a span{font-size:10.5px;font-weight:700;color:var(--text-3);margin-right:5px}
+.vq-f{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.vq-f .btn{font-size:11px;padding:4px 8px}
+.var-add{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line-soft)}
+.var-add .full{grid-column:1 / -1}
+.var-add textarea,.var-add input{border:1px solid var(--line);border-radius:7px;padding:6px 8px;font-size:12.3px;
+  font-family:inherit;background:#fff;color:var(--text);outline:none;resize:vertical;width:100%}
+.var-add textarea:focus,.var-add input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(13,148,136,.1)}
+
+/* 练习卷 */
+.drill-filter{display:flex;flex-direction:column;gap:9px;margin-bottom:12px}
+.drill-filter .seg{align-self:flex-start;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.drill-filter .seg::-webkit-scrollbar{display:none}
+.drill-set{display:grid;grid-template-columns:1fr auto auto;gap:9px;align-items:end}
+@media (max-width:680px){ .drill-set{grid-template-columns:1fr 1fr} .drill-set .full{grid-column:1 / -1} }
+.drill-set label{display:block;font-size:10.5px;font-weight:700;color:var(--text-3);margin-bottom:3px}
+.drill-set input{width:100%;border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:12.8px;
+  font-family:inherit;background:#fff;outline:none}
+.drill-set input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(13,148,136,.09)}
+.dk{display:flex;gap:9px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:10px;
+  background:#fff;margin-bottom:8px;cursor:pointer;transition:.14s}
+.dk:hover{border-color:#c6ddd9}
+.dk.on{border-color:var(--accent);background:var(--accent-soft2);box-shadow:0 0 0 2px rgba(13,148,136,.1)}
+.dk-box{width:19px;height:19px;border-radius:6px;border:1.6px solid #cbdedb;background:#fff;color:transparent;
+  display:flex;align-items:center;justify-content:center;flex:0 0 19px;margin-top:1px}
+.dk-box svg{width:12px;height:12px}
+.dk.on .dk-box{background:var(--accent);border-color:var(--accent);color:#fff}
+.dk-b{flex:1;min-width:0}
+.dk-q{font-size:12.8px;color:var(--text);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+.dk-m{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-top:5px;font-size:10.5px;color:var(--text-4)}
+.dk-a{font-size:11px;color:var(--text-3);margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.drill-bar{position:sticky;bottom:14px;margin:14px auto 0;display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  background:var(--text);color:#fff;border-radius:100px;padding:8px 10px 8px 18px;box-shadow:0 10px 28px rgba(10,50,46,.3);
+  z-index:40;width:fit-content;max-width:100%}
+.drill-bar span{font-size:12.5px;white-space:nowrap}
+.drill-bar b{font-size:14px}
+.drill-bar .btn{border-radius:100px;background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.22);color:#fff;box-shadow:none}
+.drill-bar .btn-primary{background:#fff;color:var(--accent-deep);border-color:#fff}
+@media (max-width:860px){ .drill-bar{bottom:84px;border-radius:18px;padding:10px;width:100%;justify-content:center} }
+.drill-hist{display:flex;flex-direction:column;gap:8px}
+.dh{display:flex;align-items:center;gap:9px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:#fbfdfd}
+.dh b{font-size:12.5px;font-weight:650;color:var(--text);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dh span{font-size:10.5px;color:var(--text-4)}
+.dh .sp{flex:1;min-width:0}
+.ocr-flag{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;color:var(--amber);background:var(--amber-soft);
+  border-radius:20px;padding:1px 7px;font-weight:650}
+.ocr-flag svg{width:11px;height:11px}
 </style>
 </head>
 <body data-page-node-id="2D19eIbdoavaFT7hSj1rIg" data-sp-bindable="database" data-sp-database-id="jRlBHQiMEEw05EclZRecLs">
@@ -1504,13 +1667,14 @@ function trackPct(t){
 function trackSummary(p){
   var ts=tracksOf(p);
   if(!ts.length) return null;
-  var sum=0, fin=0;
+  var sum=0, fin=0, open=0;
   ts.forEach(function(t){
     var n=trackSteps(t).length;
     sum += trackPct(t);
     if(n && trackDone(t)>=n) fin++;
+    open += trackOpenTasks(p,t).length;
   });
-  return { n:ts.length, fin:fin, pct:Math.round(sum/ts.length) };
+  return { n:ts.length, fin:fin, pct:Math.round(sum/ts.length), open:open };
 }
 function trackOpenTasks(p, t){
   if(!p || !t) return [];
@@ -1609,6 +1773,8 @@ function migrate(){
   ensureFlows();
   ensureStd();
   ensureStudy();
+  /* 按题号重新归类过就落一次盘，免得每次打开都要再算一遍 */
+  if(_studyReclass>0){ _studyReclass=0; try{ saveNow(); }catch(e){} }
   if(!Array.isArray(S.reviews)) S.reviews=[];
   _thumbTried={};                 /* 云同步/导入可能换掉 papers，缩略图重算一遍 */
   if(S.ui && S.ui.view==='save') S.ui.view='review';
@@ -1618,6 +1784,12 @@ function migrate(){
     if(!p.phase) p.phase = p.status==='done' ? 'close' : 'pre';
     if(p.step===undefined || p.step===null || isNaN(Number(p.step))) p.step = 0;
     migrateTracks(p);
+  });
+  /* 待办挂的线路必须真实存在，否则这条待办在项目总览里会“消失” */
+  S.tasks.forEach(function(x){
+    if(!x.tid) return;
+    var px=projById(x.pid);
+    if(!px || !findTrack(px, x.tid)) x.tid='';
   });
   S.ui=Object.assign(defUI(), S.ui||{});
 }
@@ -1686,7 +1858,8 @@ var NAV=[
       { k:'study',  n:'学习概览', i:'book' },
       { k:'papers', n:'试卷库',   i:'folder' },
       { k:'scores', n:'成绩趋势', i:'chart' },
-      { k:'wrongs', n:'错题本',   i:'alert' }
+      { k:'wrongs', n:'错题本',   i:'alert' },
+      { k:'drill',  n:'练习卷',   i:'target' }
     ] },
   { key:'review', name:'总结', icon:'pen',    items:[
       { k:'review',  n:'周期总结', i:'pen' },
@@ -1700,6 +1873,7 @@ function itemCount(k){
   if(k==='papers') return (S.study.papers||[]).length;
   if(k==='scores') return (S.study.scores||[]).length;
   if(k==='wrongs') return (S.study.wrongs||[]).filter(function(w){ return !w.mastered; }).length;
+  if(k==='drill') return drillPickCount();
   if(k==='study') return 0;
   if(k==='archive') return (S.reviews||[]).length;
   if(k==='review') return 0;
@@ -1776,6 +1950,7 @@ function renderView(){
   else if(v==='papers') el.innerHTML=vPapers();
   else if(v==='scores') el.innerHTML=vScores();
   else if(v==='wrongs') el.innerHTML=vWrongs();
+  else if(v==='drill') el.innerHTML=vDrill();
   else if(v==='review') el.innerHTML=vReview();
   else if(v==='archive') el.innerHTML=vArchive();
   else el.innerHTML=vToday();
@@ -1806,10 +1981,10 @@ function taskRow(t, ctx){
   }
   if(t.time && !t.done) meta+='<span class="pill gray">'+ic('clock')+' '+esc(t.time)+'</span>';
   var pn=projNameOf(t.pid);
-  if(pn) meta+='<span class="pill teal">'+ic('folder')+' '+esc(pn)+'</span>';
+  if(pn) meta+='<button class="pill teal pill-link" data-act="gotoProj" data-id="'+t.pid+'" type="button" title="在项目总览查看这个项目">'+ic('folder')+' '+esc(pn)+'</button>';
   if(t.tid && t.pid){
     var trk=findTrack(projById(t.pid), t.tid);
-    if(trk) meta+='<span class="pill cyan">'+ic('flow')+' '+esc(trk.name)+'</span>';
+    if(trk) meta+='<button class="pill cyan pill-link" data-act="gotoTrack" data-id="'+t.pid+'" data-tid="'+t.tid+'" type="button" title="在项目总览查看这条线路">'+ic('flow')+' '+esc(trk.name)+'</button>';
   }
 
   var act='';
@@ -1851,7 +2026,8 @@ function vToday(){
     shown.forEach(function(t){
       var dd=dayDiff(t.due,t0);
       var tail = dd<0 ? '已逾期 <b>'+Math.abs(dd)+'</b> 天' : '<b>今天</b>到期';
-      fh+='<div class="frow"><span class="dot"></span><div class="ft"><b>'+esc(t.title)+'</b><span>'+prioOf(t.prio).label+' · '+tail+(projNameOf(t.pid)?' · 项目：'+esc(projNameOf(t.pid)):'')+'</span></div>'+
+      var trkF = (t.tid && t.pid) ? findTrack(projById(t.pid), t.tid) : null;
+      fh+='<div class="frow"><span class="dot"></span><div class="ft"><b>'+esc(t.title)+'</b><span>'+prioOf(t.prio).label+' · '+tail+(projNameOf(t.pid)?' · 项目：'+esc(projNameOf(t.pid)):'')+(trkF?' · 线路：'+esc(trkF.name):'')+'</span></div>'+
           '<div class="fa"><button class="btn btn-sm" data-act="postpone" data-id="'+t.id+'" type="button">顺延</button>'+'<button class="btn btn-sm btn-primary" data-act="toggleTask" data-id="'+t.id+'" type="button">'+ic('check')+'完成</button></div></div>';
     });
     if(focus.length>6) fh+='<div class="allclear" style="padding:10px 0 4px;font-size:12.5px;color:var(--text-3)">还有 '+(focus.length-6)+' 条，见下方列表</div>';
@@ -1946,6 +2122,41 @@ function flowBlock(p){
     '<div class="fl-bar"><i style="width:'+pct+'%"></i></div></div>';
 }
 
+/* 挂在这条线路上的待办：展开状态（局部，不落盘） */
+var _tkTaskMore={};
+function tkTaskList(p, t){
+  var all=S.tasks.filter(function(x){ return x.pid===p.id && x.tid===t.id; });
+  var open=all.filter(function(x){ return !x.done; });
+  var doneN=all.length-open.length;
+  /* 没有未完成：只留一行「加待办」，不占版面 */
+  if(!open.length){
+    return '<div class="tk-tlist is-empty">'+
+      '<button class="tk-tadd tk-tadd-wide" data-act="addTaskToTrack" data-id="'+p.id+'" data-tid="'+t.id+'" type="button" title="加一条待办并绑定到这条线路">'+
+        ic('plus')+'加待办到这条线路'+(doneN?' · 已完成 '+doneN+' 条':'')+'</button></div>';
+  }
+  var more=!!_tkTaskMore[t.id];
+  var show= more ? open : open.slice(0,3);
+  var h='<div class="tk-tlist">'+
+    '<div class="tk-th">'+ic('checksq')+'<b>线路待办</b><span class="tk-tn">'+open.length+'</span>'+
+      '<button class="tk-tadd" data-act="addTaskToTrack" data-id="'+p.id+'" data-tid="'+t.id+'" type="button" title="加一条待办并绑定到这条线路">'+ic('plus')+'加待办</button>'+
+    '</div>';
+  var t0=todayStr();
+  show.forEach(function(x){
+    var dd=x.due ? dayDiff(x.due,t0) : null;
+    var cls = dd===null ? '' : (dd<0 ? ' is-od' : (dd===0 ? ' is-today' : ''));
+    var dueTxt = dd===null ? '未排期'
+      : dd<0 ? ('逾期 '+Math.abs(dd)+' 天')
+      : dd===0 ? '今天'
+      : ((parseD(x.due).getMonth()+1)+'/'+parseD(x.due).getDate());
+    h+='<div class="tk-tr'+cls+'">'+
+      '<button class="tk-ck" data-act="toggleTask" data-id="'+x.id+'" type="button" aria-label="完成">'+ic('check')+'</button>'+
+      '<button class="tk-tt" data-act="editTask" data-id="'+x.id+'" type="button" title="点击编辑这条待办">'+esc(x.title)+'</button>'+
+      '<span class="tk-td">'+esc(dueTxt)+'</span></div>';
+  });
+  if(open.length>3) h+='<button class="tk-tmore" data-act="tkTaskMore" data-id="'+p.id+'" data-tid="'+t.id+'" type="button">'+(more?'收起':('还有 '+(open.length-3)+' 条'))+'</button>';
+  if(doneN) h+='<div class="tk-tempty">另有已完成 '+doneN+' 条</div>';
+  return h+'</div>';
+}
 function trackRow(p, t){
   var steps=trackSteps(t), n=steps.length, d=trackDone(t), pct=trackPct(t);
   var done = n>0 && d>=n;
@@ -1977,6 +2188,7 @@ function trackRow(p, t){
       '</button>'+
       (cur ? '<button class="tk-go" data-act="trackNext" data-id="'+p.id+'" data-tid="'+t.id+'" type="button" aria-label="完成本步" title="完成本步">'+ic('check')+'</button>' : '')+
     '</div>'+
+    tkTaskList(p,t) +
     exp + chips +
   '</div>';
 }
@@ -2008,13 +2220,19 @@ function issueRow(p, t){
 }
 function projIssues(p){
   var all=projIssuesOf(p);
-  var und=all.filter(function(t){ return !t.done; });
-  var don=all.filter(function(t){ return t.done; });
+  /* 已挂线路的待办在上面对应线路里显示，这里只列没挂线路的，避免重复 */
+  var free=[], onTrackN=0;
+  all.forEach(function(t){
+    if(t.tid && findTrack(p,t.tid)){ if(!t.done) onTrackN++; }
+    else free.push(t);
+  });
+  var und=free.filter(function(t){ return !t.done; });
+  var don=free.filter(function(t){ return t.done; });
   var more=!!_pi.more[p.id], showDone=!!_pi.done[p.id];
   var show = more ? und : und.slice(0,3);
   var listHtml = show.map(function(t){ return issueRow(p,t); }).join('');
   if(!listHtml && !don.length){
-    listHtml='<div class="pi-empty">还没有记录 · 发现一个问题就记一条，卡在哪、谁来跟都写清楚</div>';
+    listHtml='<div class="pi-empty">没有未挂线路的待办 · 发现一个问题就记一条，卡在哪、谁来跟都写清楚</div>';
   }
   var moreHtml = und.length>3
     ? '<button class="pi-more" data-act="piMore" data-id="'+p.id+'" type="button">'+(more?'收起未完成':'还有 '+(und.length-3)+' 条未完成')+'</button>'
@@ -2023,12 +2241,16 @@ function projIssues(p){
     ? '<button class="pi-more" data-act="piDone" data-id="'+p.id+'" type="button">'+(showDone?'收起已完成':'已完成 '+don.length+' 条')+'</button>'+
       (showDone ? don.map(function(t){ return issueRow(p,t); }).join('') : '')
     : '';
+  var noteHtml = onTrackN
+    ? '<div class="pi-note">另有 '+onTrackN+' 条待办已绑定线路，显示在上面对应的线路上</div>'
+    : '';
+  var totalOpen=und.length+onTrackN;
   return '<div class="pi">'+
     '<div class="pi-h">'+'<span class="pi-ic">'+ic('alert')+'</span><b>期间问题处理</b>'+
-      '<span class="pi-n'+(und.length?' hot':'')+'">'+(und.length?und.length+' 条待办':'无待办')+'</span>'+
+      '<span class="pi-n'+(totalOpen?' hot':'')+'">'+(totalOpen?totalOpen+' 条待办':'无待办')+'</span>'+
       '<button class="pi-add" data-act="addTaskToProj" data-id="'+p.id+'" type="button">+ 记一条</button>'+
     '</div>'+
-    listHtml + moreHtml + doneHtml +
+    noteHtml + listHtml + moreHtml + doneHtml +
   '</div>';
 }
 function projCard(p){
@@ -2051,7 +2273,7 @@ function projCard(p){
   var nextLine = p.next ? '<div class="proj-row"><span class="k">备注</span><span>'+nl2br(p.next)+'</span></div>' : '';
   var trackHtml = '<div class="tks">'+ts.map(function(t){ return trackRow(p,t); }).join('')+'</div>';
   var trackFoot = '<div class="tk-foot"><span class="tk-sum">'+
-      (sum ? (sum.n+' 条线路 · 完成 '+sum.fin+' 条 · 平均 '+sum.pct+'%') : '还没有线路')+
+      (sum ? (sum.n+' 条线路 · 完成 '+sum.fin+' 条 · 平均 '+sum.pct+'%'+(sum.open?' · 线上待办 '+sum.open+' 条':'')) : '还没有线路，添加后就能把待办挂到线上')+
     '</span><button class="btn btn-sm tk-add" data-act="addTrack" data-id="'+p.id+'" type="button">'+ic('plus')+'添加线路</button></div>';
   return '<div class="proj">'+
     '<div class="proj-top"><div class="proj-name">'+esc(p.name)+'</div>'+
@@ -2338,12 +2560,280 @@ var SUBJ_TOPICS={
   en:['单词拼写','句型','语法','听力','阅读理解','情景对话','字母大小写','语音']
 };
 
+/* ---------- 体系：数学分「课内」和「学而思」两条线 ----------
+   只影响归类与筛选，不改题目本身。以后语文/英语也要分，
+   在这个对象里加一行就行（页面会自动出现二级筛选）。 */
+var WQ_TRACKS={
+  ma:[ { k:'school', n:'课内',   c:'#1f6fb2', soft:'#e7eff9' },
+       { k:'xrs',    n:'学而思', c:'#6d55c8', soft:'#efecfb' } ]
+};
+function wqTracks(subj){ return WQ_TRACKS[subj]||[]; }
+function wqHasTracks(subj){ return wqTracks(subj).length>0; }
+function wqTrackOf(subj, k){
+  var arr=wqTracks(subj);
+  for(var i=0;i<arr.length;i++){ if(arr[i].k===k) return arr[i]; }
+  return null;
+}
+function wqTrackName(subj, k){ var t=wqTrackOf(subj,k); return t?t.n:''; }
+function wqTrackOptions(subj, sel){
+  var arr=wqTracks(subj);
+  if(!arr.length) return '';
+  return arr.map(function(t){
+    return '<option value="'+t.k+'"'+((sel||'')===t.k?' selected':'')+'>'+t.n+'</option>';
+  }).join('');
+}
+/* 题号前缀：X 开头 = 学而思，K 开头 = 课内（最可靠的一条线索）
+   认这些写法：X3 / X-3 / X3. / 「1. X3 …」/ 【X3】 / x3
+   不认「x + 3 = 8」这类未知数，因为字母后面必须紧跟数字。 */
+function wqTrackFromCode(text){
+  var s=String(text||'').replace(/^[\s\u3000]+/,'');
+  if(!s) return '';
+  var m=s.match(/^(?:[（(【\[「]?\s*(?:\d{1,3}\s*[.、．)）:：]\s*)?)?([XxKk])\s*[-—－_·:：]?\s*(?:第|\d{1,5}(?![0-9]))/);
+  if(!m) return '';
+  var c=m[1].toUpperCase();
+  if(c==='X') return 'xrs';
+  if(c==='K') return 'school';
+  return '';
+}
+/* 题干没有前缀时，再看看知识点里有没有写 */
+function wqTrackAutoOf(w){
+  if(!w) return '';
+  return wqTrackFromCode(w.q) || wqTrackFromCode(w.topic);
+}
+/* 文字里带「学而思 / 培优」就归课外，带「课本 / 单元测」就归课内 */
+function wqGuessTrack(text, subj){
+  if(!wqHasTracks(subj)) return '';
+  var t=String(text||'');
+  var code=wqTrackFromCode(t);
+  if(code) return code;
+  if(/(学而思|xrs|培优|课外班|辅导班|奥数)/i.test(t)) return 'xrs';
+  if(/(课内|课本|教材|校内|练习册|单元测|期中|期末)/.test(t)) return 'school';
+  return '';
+}
+
+/* ---------- 题型：错题与举一反一都按这个分类 ---------- */
+var WQ_TYPES=[
+  { k:'calc',     n:'计算',     s:'口算 / 竖式 / 脱式' },
+  { k:'apply',    n:'应用题',   s:'解决问题、多步计算' },
+  { k:'fill',     n:'填空',     s:'填数字 / 词语' },
+  { k:'choice',   n:'选择判断', s:'选项、判断对错' },
+  { k:'unit',     n:'单位换算', s:'长度 / 质量 / 时间 / 钱' },
+  { k:'geo',      n:'图形',     s:'周长 / 面积 / 位置' },
+  { k:'fraction', n:'分数',     s:'分数意义与运算' },
+  { k:'word',     n:'字词',     s:'拼音 / 组词 / 成语' },
+  { k:'sentence', n:'句子',     s:'造句 / 改写 / 标点' },
+  { k:'reading',  n:'阅读',     s:'课文理解 / 短文' },
+  { k:'engword',  n:'单词',     s:'拼写 / 词义' },
+  { k:'engsent',  n:'句型语法', s:'句型 / 语法 / 对话' },
+  { k:'other',    n:'其他',     s:'先归到这里，之后可以改' }
+];
+var WQ_SRC={ manual:'手动', photo:'拍照', batch:'批量导入', text:'文本导入', ocr:'识别导入', auto:'自动生成', import:'导入' };
+function wqTypeOf(k){
+  for(var i=0;i<WQ_TYPES.length;i++){ if(WQ_TYPES[i].k===k) return WQ_TYPES[i]; }
+  return WQ_TYPES[WQ_TYPES.length-1];
+}
+function wqTypeOptions(sel){
+  return WQ_TYPES.map(function(t){
+    return '<option value="'+t.k+'"'+(sel && t.k===sel?' selected':'')+'>'+t.n+' · '+t.s+'</option>';
+  }).join('');
+}
+/* 从题目文字猜题型：宁可猜粗一点，用户可随时改 */
+function wqGuessType(text, subj){
+  var t=String(text||'').trim();
+  if(!t) return subj==='ma'?'calc':(subj==='en'?'engword':'other');
+  var cjk=(t.match(/[\u4e00-\u9fa5]/g)||[]).length;
+  var lat=(t.match(/[A-Za-z]/g)||[]).length;
+  if(/(周长|面积|长方形|正方形|三角形|平行四边形|半径|直径|锐角|钝角|直角)/.test(t)) return 'geo';
+  if(/(千米|公里|分米|厘米|毫米|毫米|吨|千克|公斤|克|小时|分钟|毫升|升)/.test(t) && /\d/.test(t) && /(=|等于|换算|合|是几)/.test(t)) return 'unit';
+  if(/(分数|分子|分母|几分之|真分数|假分数)/.test(t)) return 'fraction';
+  if(/\d+(\.\d+)?\s*[+\-×*÷\/]\s*\d/.test(t) || /\d+\s*×\s*\d+/.test(t)) return 'calc';
+  if(/[（(]\s*[A-Da-d]\s*[）)]/.test(t) || /(判断|选择|正确的[一是]|错误的[一是]|打√|打×)/.test(t)) return 'choice';
+  if(/[（(]\s*[）)]/.test(t)) return (subj==='cn')?'word':'fill';
+  if(/(填一填|填空|在.{0,6}里填|括号里)/.test(t)) return 'fill';
+  if(/(多少|一共|还剩|平均|每[天人次个本]|倍|大约|需要|还剩|原来有)/.test(t) && cjk>=4) return 'apply';
+  if(/(阅读|短文|文章|第.{1,3}自然段|课文|画出|概括)/.test(t)) return 'reading';
+  if(/(造句|改写|扩写|缩写|仿写|病句|标点|加标点|连词成句)/.test(t)) return 'sentence';
+  if(/(拼音|声母|韵母|声调|组词|反义词|近义词|成语|生字|多音字)/.test(t)) return 'word';
+  if(subj==='en' || (lat>=8 && lat>cjk)){
+    return (t.split(/\s+/).length>=4 || /[.?!]/.test(t)) ? 'engsent' : 'engword';
+  }
+  if(subj==='ma') return /\d/.test(t)?'calc':'apply';
+  if(subj==='en') return 'engword';
+  return 'other';
+}
+/* 从题目文字猜科目：拉丁字母占主导 → 英语；数字与运算符多 → 数学 */
+function wqGuessSubj(text, hint){
+  if(hint && hint!=='auto') return hint;
+  var t=String(text||'');
+  var cjk=(t.match(/[\u4e00-\u9fa5]/g)||[]).length;
+  var lat=(t.match(/[A-Za-z]/g)||[]).length;
+  var num=(t.match(/\d/g)||[]).length;
+  if(lat>=6 && lat>cjk) return 'en';
+  if(num>=2 && (/[+\-×÷=]/.test(t) || /(计算|周长|面积|多少|一共|平均|千克|千米|分数|倍|还剩|相向|速度|每[天分人小]|求[甲乙]|页|元|厘米|分米|平方)/.test(t))) return 'ma';
+  if(cjk) return 'cn';
+  if(lat) return 'en';
+  return 'cn';
+}
+/* 知识点关键词 → 现有知识点体系，命中最多者胜出 */
+var TOPIC_HINT={
+  '口算':['口算','直接写得数','口算题'], '竖式计算':['竖式','列竖式'], '单位换算':['换算','千米','厘米','毫米','分米','吨','千克','克'],
+  '时分秒':['时','分','秒','经过时间'], '周长':['周长'], '面积':['面积'], '分数':['分数','几分之'],
+  '位置与方向':['方向','东南','西北','东北','西南','位置'], '统计':['统计','条形图','平均数'],
+  '解决问题':['一共','还剩','平均','原来有','需要多少','倍'], '倍的认识':['倍'],
+  '拼音':['拼音','声母','韵母','声调','音节'], '字词':['组词','生字','词语','反义词','近义词','多音字'],
+  '成语':['成语','四字词语'], '古诗':['古诗','诗句','诗人','默写'], '句子':['造句','改写','扩写','缩写','仿写','病句'],
+  '标点':['标点','逗号','句号','问号','感叹号'], '课文理解':['课文','自然段','作者'],
+  '阅读理解':['阅读','短文','文章'], '作文':['作文','写话','习作'],
+  '单词拼写':['单词','拼写','词义'], '句型':['句型','句子','连词成句'], '语法':['语法','时态','单复数','第三人称'],
+  '听力':['听力','听录音'], '情景对话':['对话','情景','交际'], '语音':['音标','发音','语音','字母']
+};
+function wqGuessTopic(text, subj){
+  var t=String(text||'');
+  /* 先认最具体的知识点，避免「厘米」这种通用词把「周长」挤掉 */
+  var first=[['周长','周长'],['面积','面积'],['分数','分数'],['成语','成语'],['古诗','古诗'],
+    ['拼音','拼音'],['标点','标点'],['阅读理解','阅读理解'],['作文','作文'],['单词拼写','单词拼写'],
+    ['句型','句型'],['语法','语法'],['时分秒','时分秒']];
+  for(var i=0;i<first.length;i++){
+    if(t.indexOf(first[i][0])>=0) return first[i][1];
+  }
+  var best='', bestN=0;
+  Object.keys(TOPIC_HINT).forEach(function(k){
+    var n=0;
+    TOPIC_HINT[k].forEach(function(kw){ if(t.indexOf(kw)>=0) n++; });
+    if(n>bestN){ bestN=n; best=k; }
+  });
+  return bestN?best:'';
+}
+/* 举一反一：按题型生成变体题（纯本地规则，不联网） */
+function wqGenVariants(w){
+  var type=w.type||wqGuessType(w.q||'', w.subj);
+  var text=String(w.q||'');
+  var out=[];
+  function num(n){ return String(n); }
+  function rnd(a,b){ return a+Math.floor(Math.random()*(b-a+1)); }
+  /* 1. 计算：解析 a op b，换成同结构的另一组数字 */
+  var m=/(\d+(?:\.\d+)?)\s*([+\-×x*÷\/])\s*(\d+(?:\.\d+)?)/.exec(text);
+  if(type==='calc' && m){
+    var op=m[2]==='x'?'×':(m[2]==='*'?'×':(m[2]==='/'?'÷':m[2]));
+    for(var i=0;i<3;i++){
+      var a=rnd(11,89), b=rnd(2,9), ans=0, q='';
+      if(op==='+'){ a=rnd(23,58); b=rnd(11,99-a); ans=a+b; q=a+' + '+b+' ='; }
+      else if(op==='-'){ a=rnd(45,99); b=rnd(11,a-1); ans=a-b; q=a+' − '+b+' ='; }
+      else if(op==='×'){ ans=a*b; q=a+' × '+b+' ='; }
+      else { b=rnd(2,9); ans=rnd(3,29); a=ans*b; q=a+' ÷ '+b+' ='; }
+      out.push({ q:q, a:'答：'+ans, tip:'同型练习：先看运算顺序'+(op==='×'||op==='÷'?'，再想乘法口诀':(op==='-'?'，注意退位':'，注意进位')), type:type });
+    }
+    return out;
+  }
+  /* 2. 单位换算：抓一组数与单位，生成同一量纲的变式 */
+  var um=/(\d+(?:\.\d+)?)\s*(千米|公里|米|分米|厘米|毫米|吨|千克|公斤|克|小时|分钟|秒)/.exec(text);
+  if(um && (type==='unit'||type==='fill')){
+    var unit=um[2], pairs={
+      '千米':['米',1000],'公里':['米',1000],'米':['厘米',100],'分米':['厘米',10],'厘米':['毫米',10],
+      '毫米':['厘米',0.1],'吨':['千克',1000],'千克':['克',1000],'公斤':['克',1000],'克':['千克',0.001],
+      '小时':['分钟',60],'分钟':['秒',60],'秒':['分钟',1/60]
+    };
+    var pr=pairs[unit]||['米',1];
+    for(var j=0;j<3;j++){
+      var v=rnd(2,9)*(j===0?1:(j===1?10:10));
+      out.push({ q:v+' '+unit+' = （    ）'+pr[0], a:'答：'+(v*pr[1])+' '+pr[0],
+        tip:'换算方向：'+unit+' → '+pr[0]+'，'+(pr[1]>=1?('乘 '+pr[1]):('除以 '+Math.round(1/pr[1]))), type:'unit' });
+    }
+    return out;
+  }
+  /* 3. 周长 / 面积：长方形换数字 */
+  if(type==='geo' && /(长方形|正方形|周长|面积)/.test(text)){
+    for(var k=0;k<3;k++){
+      var L=rnd(4,15), Wd=rnd(2,L-1);
+      if(/面积/.test(text)) out.push({ q:'一个长方形长 '+L+' 厘米，宽 '+Wd+' 厘米，面积是多少平方厘米？', a:'答：'+(L*Wd)+' 平方厘米', tip:'长方形面积 = 长 × 宽', type:'geo' });
+      else out.push({ q:'一个长方形长 '+L+' 厘米，宽 '+Wd+' 厘米，周长是多少厘米？', a:'答：'+(2*(L+Wd))+' 厘米', tip:'长方形周长 =（长 + 宽）× 2', type:'geo' });
+    }
+    return out;
+  }
+  /* 4. 分数：同分母加减 */
+  if(type==='fraction'){
+    for(var f=0;f<3;f++){
+      var den=rnd(5,12), n1=rnd(1,den-2), n2=rnd(1,den-n1-1<1?1:den-n1-1);
+      var ansN=n1+n2;
+      out.push({ q:n1+'/'+den+' + '+n2+'/'+den+' = （    ）', a:'答：'+ansN+'/'+den,
+        tip:'同分母分数相加：分母不变，分子相加，能约分要约分', type:'fraction' });
+    }
+    return out;
+  }
+  /* 5. 字词 / 单词 / 句子：给出可操作的变式方向，答案自己写 */
+  if(type==='word' || (w.subj==='cn' && /成语|字词|拼音|古诗/.test(String(w.topic||'')))){
+    var tpw=String(w.topic||'').trim();
+    if(/成语/.test(tpw)){
+      out.push({ q:'用这道题里的成语造一个句子，句子里要有具体的人或事。', a:'（自己写）', tip:'成语要放进合适语境，别只抄解释', type:'word' });
+      out.push({ q:'写出这个成语的意思，再写一个意思相近的成语。', a:'（自己写）', tip:'近义成语能帮你记住使用场合', type:'word' });
+      out.push({ q:'把这个成语补充完整，再默写一遍。', a:'（自己写）', tip:'容易写错的字单独抄 3 遍', type:'word' });
+    }else if(/古诗/.test(tpw)){
+      out.push({ q:'把这首诗完整默写一遍，写上作者和朝代。', a:'（自己写）', tip:'先背顺，再默写，最后对照课本改错字', type:'word' });
+      out.push({ q:'写出诗句中加点字（易错字）的意思。', a:'（自己写）', tip:'古诗里的字常和现在意思不同', type:'word' });
+      out.push({ q:'这句诗写的是什么画面？用自己的话说一遍。', a:'（自己写）', tip:'能说画面，说明真读懂了', type:'word' });
+    }else{
+      var kw=(tpw && !/^(字词|拼音)$/.test(tpw)) ? tpw : '';
+      out.push({ q:(kw?('用「'+kw+'」组 3 个词语，再选一个造句。'):'把这道题里写错的那个字词抄下来，用它组 3 个词语，再选一个造句。'), a:'（自己写，写完对照课本）', tip:'变式方向：换一个字，用同样的要求再做一遍', type:'word' });
+      out.push({ q:(kw?('写出「'+kw+'」的近义词和反义词各一个。'):'写出那个字词的近义词和反义词各一个。'), a:'（自己写）', tip:'如果写不出，说明词义还没吃透，回课本找原句', type:'word' });
+      out.push({ q:'把错题里的字词抄 2 遍，并注上拼音。', a:'（自己写）', tip:'先抄对，再默写一遍检查', type:'word' });
+    }
+    return out;
+  }
+  if(type==='sentence'){
+    out.push({ q:'照着原题的句式，自己写一句。（换人物、换地点都行）', a:'（自己写）', tip:'先找出原句的主干：谁 + 做什么', type:'sentence' });
+    out.push({ q:'把原句改成「被」字句和「把」字句各一句。', a:'（自己写）', tip:'改完读一遍，语序别颠倒', type:'sentence' });
+    out.push({ q:'给原句补上标点，再读一遍看语气对不对。', a:'（自己写）', tip:'陈述句用句号，疑问用问号，感叹用叹号', type:'sentence' });
+    return out;
+  }
+  if(type==='engword'){
+    var wd2=(String(w.topic||'').trim())||'这个单词';
+    out.push({ q:'用「'+wd2+'」造 3 个句子（各换一个主语）。', a:'（自己写）', tip:'主语换 I / he / they，注意动词形式', type:'engword' });
+    out.push({ q:'写出「'+wd2+'」的复数形式和词性。', a:'（自己写）', tip:'可数名词才有复数，动词要看第三人称单数', type:'engword' });
+    out.push({ q:'默写「'+wd2+'」，再遮住中文说一遍意思。', a:'（自己写）', tip:'拼错的字母单独抄 5 遍', type:'engword' });
+    return out;
+  }
+  if(type==='engsent'){
+    out.push({ q:'把原句改成否定句和一般疑问句各一句。', a:'（自己写）', tip:'看动词：be 动词直接提前，实义动词借 do/does', type:'engsent' });
+    out.push({ q:'把原句的主语换成 he / she，其余不变，重写一遍。', a:'（自己写）', tip:'注意第三人称单数动词加 s', type:'engsent' });
+    out.push({ q:'仿照原句，写一句说自己的情况。', a:'（自己写）', tip:'句型不变，只换内容', type:'engsent' });
+    return out;
+  }
+  /* 6. 通用：三个变式方向，题目自己补 */
+  out.push({ q:'【换数字】把原题里的数量换掉，重新算一遍。', a:'（自己出题自己算）', tip:'换完先估一个大概答案，再精算', type:'other' });
+  out.push({ q:'【逆向问】把问题改成已知答案、求条件。', a:'（自己写）', tip:'能倒着推，说明真懂了', type:'other' });
+  out.push({ q:'【加一问】在原题后面再加一个小问，两步做完。', a:'（自己写）', tip:'多一步就是多一个知识点', type:'other' });
+  return out;
+}
+
+/* 举一反一：从同型变式里挑一道最贴近原题的（题目多反而练不完） */
+function wqGenVariantOne(w){
+  var list=wqGenVariants(w)||[];
+  return list.length?list[0]:null;
+}
+/* 同一道原题只留一道没做过的自动变式：有就换掉，没有就补一道 */
+function wqPutAutoVariant(w, v){
+  if(!Array.isArray(w.vars)) w.vars=[];
+  for(var i=0;i<w.vars.length;i++){
+    var x=w.vars[i];
+    if(x.src==='auto' && !x.done){
+      w.vars[i]={ id:x.id, q:v.q, a:v.a, tip:v.tip, type:v.type, src:'auto', pages:x.pages||[], done:false };
+      return { id:x.id, replaced:true };
+    }
+  }
+  var nv={ id:uid(), q:v.q, a:v.a, tip:v.tip, type:v.type, src:'auto', pages:[], done:false };
+  w.vars.push(nv);
+  return { id:nv.id, replaced:false };
+}
 function subjOf(k){ for(var i=0;i<SUBJ.length;i++){ if(SUBJ[i].k===k) return SUBJ[i]; } return SUBJ[0]; }
+var _studyReclass=0;   /* 这次迁移按题号改了几道题的体系，改过就落盘 */
 function ensureStudy(){
   if(!S.study || typeof S.study!=='object') S.study={ papers:[], scores:[], wrongs:[] };
   if(!Array.isArray(S.study.papers)) S.study.papers=[];
   if(!Array.isArray(S.study.scores)) S.study.scores=[];
   if(!Array.isArray(S.study.wrongs)) S.study.wrongs=[];
+  if(!Array.isArray(S.study.drills)) S.study.drills=[];
+  if(!S.study.draft || typeof S.study.draft!=='object') S.study.draft={ title:'', withAns:false, pick:{} };
+  if(!S.study.draft.pick || typeof S.study.draft.pick!=='object') S.study.draft.pick={};
   S.study.papers.forEach(function(p){
     if(!p.id) p.id=uid();
     if(!p.subj) p.subj='cn';
@@ -2365,6 +2855,30 @@ function ensureStudy(){
     if(w.mastered===undefined) w.mastered=false;
     if(!Array.isArray(w.pages)) w.pages=[];        /* 题目照片（IndexedDB） */
     if(!Array.isArray(w.files)) w.files=[];        /* PDF 等附件：{id,name,size,at} */
+    if(!w.type) w.type=wqGuessType(w.q||'', w.subj);
+    if(!w.src) w.src='manual';
+    /* 体系：题号前缀优先（X→学而思 / K→课内），没前缀才按「课内」兜底。
+       手动改过的题（trackManual=1）不再被自动覆盖，免得来回打架。 */
+    if(!wqHasTracks(w.subj)) w.track='';
+    else{
+      var codeTk=wqTrackAutoOf(w);
+      if(w.trackManual===1){
+        if(!w.track) w.track='school';
+      }else if(codeTk){
+        if(w.track!==codeTk) _studyReclass++;
+        w.track=codeTk;
+      }else if(!w.track){
+        w.track='school';
+      }
+    }
+    if(!Array.isArray(w.vars)) w.vars=[];          /* 举一反一：同题型的变式题 */
+    w.vars.forEach(function(v){
+      if(!v.id) v.id=uid();
+      if(v.done===undefined) v.done=false;
+      if(!Array.isArray(v.pages)) v.pages=[];
+      if(!v.type) v.type=w.type;
+      if(!v.src) v.src='manual';
+    });
   });
 }
 
@@ -2809,6 +3323,8 @@ function vStudy(){
     '<button class="quick" data-act="addPaper" type="button">'+ic('camera')+'<b>拍照录试卷</b><span>拍完自动存，能导出 PDF</span></button>'+
     '<button class="quick" data-act="addScore" type="button">'+ic('chart')+'<b>录一次成绩</b><span>自动算得分率并上图</span></button>'+
     '<button class="quick" data-act="addWrong" type="button">'+ic('alert')+'<b>记一道错题</b><span>按知识点归类</span></button>'+
+    '<button class="quick" data-act="impOpen" data-v="img" type="button">'+ic('inbox')+'<b>批量导入错题</b><span>整份卷子一次入库</span></button>'+
+    '<button class="quick" data-act="goView" data-v="drill" type="button">'+ic('target')+'<b>组卷打印</b><span>挑题导出 PDF</span></button>'+
   '</div>';
 
   return '<div class="topbar"><div><h1>学习概览</h1>'+
@@ -2941,9 +3457,12 @@ function vScores(){
 /* ---------- 错题本 ---------- */
 function vWrongs(){
   var subj=S.ui.wrongSubj||'all', st=S.ui.wrongState||'todo';
+  /* 体系只在分了线的科目上生效，切到语文/英语自动回到「全部」 */
+  var tk=(subj!=='all' && wqHasTracks(subj)) ? (S.ui.wrongTrack||'all') : 'all';
   var all=S.study.wrongs||[];
   var list=all.filter(function(w){
     if(subj!=='all' && w.subj!==subj) return false;
+    if(tk!=='all' && (w.track||'')!==tk) return false;
     if(st==='todo' && w.mastered) return false;
     if(st==='done' && !w.mastered) return false;
     return true;
@@ -2958,10 +3477,35 @@ function vWrongs(){
       return '<button class="'+(st===x[0]?'on':'')+'" data-act="wrongState" data-v="'+x[0]+'" type="button">'+x[1]+'</button>';
     }).join('')+'</div>';
 
+  /* 数学：课内 / 学而思 二级筛选，条数按当前科目算 */
+  var segTrack='';
+  if(subj!=='all' && wqHasTracks(subj)){
+    var pool=all.filter(function(w){ return w.subj===subj; });
+    var trows=[['all','全部',pool.length]].concat(wqTracks(subj).map(function(t){
+      return [t.k, t.n, pool.filter(function(w){ return (w.track||'')===t.k; }).length];
+    }));
+    segTrack='<div class="track-row"><span class="lb">体系</span><div class="seg sm">'+
+      trows.map(function(x){
+        return '<button class="'+(tk===x[0]?'on':'')+'" data-act="wrongTrack" data-v="'+x[0]+'" type="button">'+x[1]+
+          '<span class="seg-n">'+x[2]+'</span></button>';
+      }).join('')+'</div></div>';
+    /* 有题号的题如果归错了，给一条一键校正的提示（X 开头=学而思，K 开头=课内） */
+    var codeN=pool.filter(function(w){
+      var g=wqTrackAutoOf(w);
+      return g && g!==(w.track||'school');
+    }).length;
+    if(codeN){
+      segTrack+='<div class="track-fix">'+ic('alert')+
+        '<span><b>'+codeN+'</b> 道题的题号和归属对不上（X 开头是学而思，K 开头是课内）</span>'+
+        '<button class="btn btn-sm" data-act="wrongTrackAuto" type="button">按题号校正</button></div>';
+    }
+  }
+
   /* 薄弱知识点 TOP */
   var cnt={};
-  all.filter(function(w){ return !w.mastered && (subj==='all'||w.subj===subj); }).forEach(function(w){
-    var k=(w.topic||'未分类');
+  all.filter(function(w){ return !w.mastered && (subj==='all'||w.subj===subj) && (tk==='all'||(w.track||'')===tk); }).forEach(function(w){
+    /* 没填知识点就退到题型名，总比一屏「未分类」有用 */
+    var k=(w.topic||wqTypeOf(w.type||wqGuessType(w.q||'', w.subj)).n);
     cnt[k]=(cnt[k]||0)+1;
   });
   var tops=Object.keys(cnt).map(function(k){ return { k:k, n:cnt[k] }; }).sort(function(a,b){ return b.n-a.n; }).slice(0,6);
@@ -2975,12 +3519,32 @@ function vWrongs(){
 
   var cards='';
   if(!list.length){
-    cards='<div class="empty" style="padding:34px 0">'+ic('alert')+'<span>还没有错题，拍张照片就能记一道</span></div>';
+    var scoped=all.filter(function(w){
+      return (subj==='all'||w.subj===subj) && (tk==='all'||(w.track||'')===tk);
+    });
+    if(scoped.length){
+      /* 有题，只是被状态/体系筛掉了：别让用户以为错题丢了 */
+      cards='<div class="empty" style="padding:30px 0">'+ic('check')+'<b>这个筛选下没有题</b>'+
+        '<span>错题还在，换一下上面的「待巩固 / 已掌握 / 全部」或「体系」就能看到</span>'+
+        '<div class="ph-btns" style="justify-content:center">'+
+          '<button class="btn btn-sm" data-act="wrongState" data-v="all" type="button">看全部状态</button>'+
+          (tk!=='all'?'<button class="btn btn-sm" data-act="wrongTrack" data-v="all" type="button">看全部体系</button>':'')+
+        '</div></div>';
+    }else{
+      cards='<div class="empty" style="padding:34px 0">'+ic('alert')+'<b>还没有错题</b>'+
+        '<span>拍张照片就能记一道；一次选十几张图，用「批量导入」更快</span>'+
+        '<button class="btn btn-primary" data-act="impOpen" data-v="img" type="button">'+ic('inbox')+'批量导入</button></div>';
+    }
   }else{
     cards=list.map(function(w){
       var sb=subjOf(w.subj);
+      var trk=wqTrackOf(w.subj, w.track);
       var wps=wqPagesOf(w), wfs=wqFilesOf(w);
       var qText = w.q || (wps.length ? '（题目见照片）' : (wfs.length ? '（题目见文件）' : '（未填题干）'));
+      var ty=wqTypeOf(w.type||wqGuessType(w.q||'', w.subj));
+      var vars=Array.isArray(w.vars)?w.vars:[];
+      var varOpen=vars.filter(function(v){ return !v.done; }).length;
+      var picked=drillIsPicked('w:'+w.id);
       var media='';
       if(wps.length || wfs.length){
         media='<div class="wq-media">';
@@ -3002,9 +3566,14 @@ function vWrongs(){
         }
         media+='</div>';
       }
-      return '<div class="wq-card'+(w.mastered?' done':'')+'">'+
+      return '<div class="wq-card'+(w.mastered?' done':'')+(picked?' picked':'')+'">'+
         '<div class="wq-h"><span class="pill" style="background:'+sb.soft+';color:'+sb.c+'">'+sb.n+'</span>'+
+          (trk?'<span class="pill pill-sel" style="background:'+trk.soft+';color:'+trk.c+';box-shadow:inset 0 0 0 1px rgba(31,111,178,.13)" title="点一下改体系">'+
+            '<select data-sel="wqTrack" data-id="'+w.id+'" aria-label="所属体系">'+
+              wqTrackOptions(w.subj, w.track)+'</select></span>':'')+
+          '<span class="wq-t">'+ty.n+'</span>'+
           (w.topic?'<span class="pill gray">'+esc(w.topic)+'</span>':'')+
+          (w.src && w.src!=='manual'?'<span class="wq-t '+(w.src==='auto'?'auto':(w.src==='ocr'?'ocr':'batch'))+'">'+esc(WQ_SRC[w.src]||'导入')+'</span>':'')+
           '<span class="wq-d">'+mdShort(w.date)+'</span>'+
           '<span class="sp"></span>'+
           '<button class="ico-btn" data-act="editWrong" data-id="'+w.id+'" type="button" title="编辑">'+ic('pen')+'</button>'+
@@ -3014,19 +3583,973 @@ function vWrongs(){
         media+
         (w.why?'<div class="wq-line"><span>错因</span>'+esc(w.why)+'</div>':'')+
         (w.fix?'<div class="wq-line"><span>正解</span>'+esc(w.fix)+'</div>':'')+
-        '<div class="wq-f"><button class="btn btn-sm" data-act="masterWrong" data-id="'+w.id+'" type="button">'+
-          ic('check')+(w.mastered?'标记为待巩固':'已经掌握')+'</button></div>'+
+        '<div class="wq-x">'+
+          '<button class="btn btn-sm" data-act="masterWrong" data-id="'+w.id+'" type="button">'+
+            ic('check')+(w.mastered?'标记为待巩固':'已经掌握')+'</button>'+
+          '<button class="btn btn-sm" data-act="varOpen" data-id="'+w.id+'" type="button">'+ic('sparkle')+
+            '举一反一'+(vars.length?(' · '+varOpen+'/'+vars.length):'')+'</button>'+
+          '<button class="btn btn-sm'+(picked?' on':'')+'" data-act="drillPick" data-k="w:'+w.id+'" type="button">'+
+            ic(picked?'check':'plus')+(picked?'已加入练习卷':'加入练习卷')+'</button>'+
+        '</div>'+
       '</div>';
     }).join('');
   }
 
+  /* 题型分布：一眼看出哪类题反复错 */
+  var tcnt={};
+  all.filter(function(w){ return !w.mastered && (subj==='all'||w.subj===subj) && (tk==='all'||(w.track||'')===tk); }).forEach(function(w){
+    var k=w.type||wqGuessType(w.q||'', w.subj);
+    tcnt[k]=(tcnt[k]||0)+1;
+  });
+  var tlist=Object.keys(tcnt).map(function(k){ return { k:k, n:tcnt[k] }; }).sort(function(a,b){ return b.n-a.n; }).slice(0,6);
+  var tmax=tlist.length?Math.max(3,tlist[0].n):3;
+  var typeHtml=tlist.length ? tlist.map(function(t){
+    return '<div class="bar-row"><span class="bl" style="flex:0 0 92px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(wqTypeOf(t.k).n)+'</span>'+
+      '<span class="bt"><i style="width:'+Math.max(6,Math.round(t.n/tmax*100))+'%;background:#0e93b5"></i></span>'+
+      '<span class="bn">'+t.n+' 类</span></div>';
+  }).join('') : '<div class="empty" style="padding:14px 0"><span>记几道错题就能看到题型分布</span></div>';
+
   return '<div class="topbar"><div><h1>错题本</h1>'+
-      '<div class="sub">按知识点归类，支持拍照或 PDF 录入，找出反复出错的地方</div></div>'+
-      '<div class="topbar-act"><button class="btn btn-primary" data-act="addWrong" type="button">'+ic('plus')+'记一道错题</button></div></div>'+
-    segSubj+segState+
+      '<div class="sub">按知识点和题型归类；数学再分「课内 / 学而思」，支持批量导入和组卷打印</div></div>'+
+      '<div class="topbar-act"><button class="btn" data-act="goView" data-v="drill" type="button">'+ic('target')+'练习卷</button>'+
+        '<button class="btn" data-act="impOpen" data-v="img" type="button">'+ic('inbox')+'批量导入</button>'+
+        '<button class="btn btn-primary" data-act="addWrong" type="button">'+ic('plus')+'记一道错题</button></div></div>'+
+    segSubj+segTrack+segState+
     '<div class="card"><div class="card-h">'+ic('alert')+'<h2>薄弱知识点</h2><span class="hint">按待巩固错题数排序</span></div>'+
       '<div class="card-b">'+topHtml+'</div></div>'+
+    (tlist.length?'<div class="card"><div class="card-h">'+ic('chart')+'<h2>题型分布</h2><span class="hint">点「举一反一」可以按题型补练</span></div>'+
+      '<div class="card-b">'+typeHtml+'</div></div>':'')+
     '<div class="wq-list">'+cards+'</div>';
+}
+
+/* =========================================================
+   错题增强：批量导入 / 举一反一 / 组卷打印
+   思路：图片和 PDF 都在本机处理，识别只在用户主动点时才联网；
+        举一反一按题型用本地规则出一道同类题，也能粘贴/导入；
+        练习卷从错题和变式题里自由勾选，canvas 排版后导出 PDF。
+   ========================================================= */
+function drillDraft(){
+  if(!S.study.draft || typeof S.study.draft!=='object') S.study.draft={ title:'', withAns:false, pick:{} };
+  if(!S.study.draft.pick || typeof S.study.draft.pick!=='object') S.study.draft.pick={};
+  return S.study.draft;
+}
+function drillIsPicked(k){ var p=drillDraft().pick; return !!p[k]; }
+function drillPickCount(){ var p=drillDraft().pick; return Object.keys(p).filter(function(k){ return p[k]; }).length; }
+function drillToggle(k){
+  var p=drillDraft().pick;
+  if(p[k]) delete p[k]; else p[k]=true;
+}
+/* 所有可选题目：错题原题 + 各自的举一反一题 */
+function drillCandidates(){
+  var out=[];
+  (S.study.wrongs||[]).forEach(function(w){
+    var ty=w.type||wqGuessType(w.q||'', w.subj);
+    var tk=wqHasTracks(w.subj) ? (w.track||'school') : '';
+    out.push({ key:'w:'+w.id, src:'wrong', wid:w.id, subj:w.subj, track:tk, topic:w.topic||'', type:ty,
+      q:w.q||'', a:w.fix||'', tip:w.why||'', pages:wqPagesOf(w), done:!!w.mastered });
+    (w.vars||[]).forEach(function(v){
+      out.push({ key:'v:'+w.id+':'+v.id, src:'var', wid:w.id, vid:v.id, subj:w.subj, track:tk,
+        topic:v.topic||w.topic||'', type:v.type||ty,
+        q:v.q||'', a:v.a||'', tip:v.tip||'', pages:(v.pages||[]), done:!!v.done });
+    });
+  });
+  return out;
+}
+function drillItems(){
+  var p=drillDraft().pick;
+  var arr=drillCandidates().filter(function(x){ return p[x.key]; });
+  var so={cn:0,ma:1,en:2};
+  var to={};
+  WQ_TYPES.forEach(function(t,i){ to[t.k]=i; });
+  arr.sort(function(a,b){
+    var sa=(so[a.subj]||0)-(so[b.subj]||0);
+    if(sa) return sa;
+    return (to[a.type]||99)-(to[b.type]||99);
+  });
+  return arr;
+}
+function drillFiltered(){
+  var subj=S.ui.drillSubj||'all', src=S.ui.drillSrc||'all', ty=S.ui.drillType||'all';
+  /* 体系筛选只对数学有效，选着科目切走了就当作全部 */
+  var tk=S.ui.drillTrack||'all';
+  if(subj!=='ma') tk='all';
+  return drillCandidates().filter(function(x){
+    if(subj!=='all' && x.subj!==subj) return false;
+    if(tk!=='all' && x.track!==tk) return false;
+    if(src!=='all' && x.src!==src) return false;
+    if(ty!=='all' && x.type!==ty) return false;
+    return true;
+  });
+}
+
+/* ---------- 练习卷页面 ---------- */
+function vDrill(){
+  var d=drillDraft();
+  var subj=S.ui.drillSubj||'all', src=S.ui.drillSrc||'all', ty=S.ui.drillType||'all';
+  var tk=(subj==='ma') ? (S.ui.drillTrack||'all') : 'all';
+  var all=drillCandidates();
+  var typesInUse={};
+  all.forEach(function(x){ typesInUse[x.type]=1; });
+  /* 之前选的题型如果已经被删光，自动退回全题型，免得看到空列表 */
+  if(ty!=='all' && !typesInUse[ty]){ ty='all'; S.ui.drillType='all'; }
+  var list=drillFiltered();
+  var picked=drillItems();
+  var typeKeys=WQ_TYPES.map(function(t){ return t.k; }).filter(function(k){ return typesInUse[k]; });
+
+  var segSubj='<div class="seg wrap">'+
+    ['all'].concat(SUBJ.map(function(s){ return s.k; })).map(function(k){
+      return '<button class="'+(subj===k?'on':'')+'" data-act="drillFilter" data-f="subj" data-v="'+k+'" type="button">'+(k==='all'?'三科':subjOf(k).n)+'</button>';
+    }).join('')+'</div>';
+  var segSrc='<div class="seg">'+
+    [['all','全部'],['wrong','错题原题'],['var','举一反一']].map(function(x){
+      return '<button class="'+(src===x[0]?'on':'')+'" data-act="drillFilter" data-f="src" data-v="'+x[0]+'" type="button">'+x[1]+'</button>';
+    }).join('')+'</div>';
+  var segType='<div class="seg wrap">'+
+    ['all'].concat(typeKeys).map(function(k){
+      return '<button class="'+(ty===k?'on':'')+'" data-act="drillFilter" data-f="type" data-v="'+k+'" type="button">'+(k==='all'?'全题型':wqTypeOf(k).n)+'</button>';
+    }).join('')+'</div>';
+  /* 数学才出现的体系筛选：课内 / 学而思 */
+  var segTrack='';
+  if(subj==='ma'){
+    var mathAll=all.filter(function(x){ return x.subj==='ma'; });
+    segTrack='<div class="track-row"><span class="lb">体系</span><div class="seg sm">'+
+      [['all','全部',mathAll.length]].concat(wqTracks('ma').map(function(t){
+        return [t.k, t.n, mathAll.filter(function(x){ return x.track===t.k; }).length];
+      })).map(function(x){
+        return '<button class="'+(tk===x[0]?'on':'')+'" data-act="drillFilter" data-f="track" data-v="'+x[0]+'" type="button">'+x[1]+
+          '<span class="seg-n">'+x[2]+'</span></button>';
+      }).join('')+'</div></div>';
+  }
+
+  /* 以前按「反三」生成的老数据：每题可能攒了 3 道，这里算一下能瘦掉多少 */
+  var extraVars=0;
+  (S.study.wrongs||[]).forEach(function(w){
+    var n=(w.vars||[]).filter(function(v){ return v.src==='auto' && !v.done; }).length;
+    if(n>1) extraVars+=n-1;
+  });
+
+  var rows=list.map(function(x){
+    var on=drillIsPicked(x.key);
+    var sb=subjOf(x.subj);
+    var xtr=x.track?wqTrackOf(x.subj, x.track):null;
+    var title=x.q ? x.q : (x.pages.length? '（题目见照片）':'（未填题干）');
+    return '<div class="dk'+(on?' on':'')+'" data-act="drillPick" data-k="'+esc(x.key)+'" role="button" tabindex="0">'+
+      '<span class="dk-box">'+ic('check')+'</span>'+
+      '<div class="dk-b"><div class="dk-q">'+esc(title)+'</div>'+
+        '<div class="dk-m"><span class="pill" style="background:'+sb.soft+';color:'+sb.c+'">'+sb.n+'</span>'+
+          (xtr?'<span class="wq-t" style="background:'+xtr.soft+';color:'+xtr.c+'">'+xtr.n+'</span>':'')+
+          '<span class="wq-t">'+wqTypeOf(x.type).n+'</span>'+
+          (x.topic?'<span>'+esc(x.topic)+'</span>':'')+
+          '<span class="wq-t '+(x.src==='var'?'auto':'')+'">'+(x.src==='var'?'举一反一':'原题')+'</span>'+
+          (x.done?'<span class="wq-t">已掌握</span>':'')+
+        '</div>'+
+        (x.a?'<div class="dk-a">答案：'+esc(x.a)+'</div>':'')+
+      '</div></div>';
+  }).join('');
+
+  var hist=(S.study.drills||[]).slice().sort(function(a,b){ return (a.createdAt||'')<(b.createdAt||'')?1:-1; }).slice(0,6);  var histHtml=hist.length ? hist.map(function(h){
+    return '<div class="dh"><div class="sp"><b>'+esc(h.title||'练习卷')+'</b>'+
+      '<span>'+esc(h.date||'')+' · '+((h.items||[]).length)+' 题'+(h.withAns?' · 含答案':'')+'</span></div>'+
+      '<button class="btn btn-sm" data-act="drillHistPdf" data-id="'+h.id+'" type="button">'+ic('download')+'PDF</button>'+
+      '<button class="btn btn-sm btn-danger" data-act="drillHistDel" data-id="'+h.id+'" type="button">'+ic('trash')+'</button></div>';
+  }).join('') : '<div class="rv-none">还没有保存过组卷记录，导出一次会自动留一份。</div>';
+
+  return '<div class="topbar"><div><h1>练习卷</h1>'+
+      '<div class="sub">从错题和举一反一里挑题，按题型搭配，导出成能打印的 PDF</div></div>'+
+      '<div class="topbar-act"><button class="btn" data-act="goView" data-v="wrongs" type="button">'+ic('alert')+'回错题本</button></div></div>'+
+    '<div class="card"><div class="card-h">'+ic('target')+'<h2>组卷设置</h2><span class="hint">标题和答案选项会影响导出的卷面</span></div>'+
+      '<div class="card-b"><div class="drill-set">'+
+        '<div class="full"><label>卷子标题</label><input id="drillTitle" type="text" maxlength="30" placeholder="例如：11 月第 2 周 · 计算专项" value="'+esc(d.title||'')+'"></div>'+
+        '<div><label>答案</label><div class="seg">'+
+          '<button class="'+(!d.withAns?'on':'')+'" data-act="drillAns" data-v="0" type="button">只有题目</button>'+
+          '<button class="'+(d.withAns?'on':'')+'" data-act="drillAns" data-v="1" type="button">附答案页</button>'+
+        '</div></div>'+
+        '<div><button class="btn" data-act="drillSave" type="button">'+ic('inbox')+'保存组卷</button></div>'+
+      '</div></div></div>'+
+    '<div class="card"><div class="card-h">'+ic('checksq')+'<h2>挑题</h2><span class="hint">共 '+all.length+' 题可选 · 已选 '+picked.length+' 题</span></div>'+
+      '<div class="card-b">'+
+        '<div class="drill-filter">'+segSubj+segTrack+segSrc+segType+'</div>'+
+        (extraVars?('<div class="track-fix">'+ic('alert')+
+          '<span>现在每题只配一道同类题，多出来的 <b>'+extraVars+'</b> 道自动变式可以清掉（做过的、手动加的不动）</span>'+
+          '<button class="btn btn-sm" data-act="varTrimAll" type="button">变式瘦身</button></div>'):'')+
+        (rows||'<div class="empty" style="padding:26px 0">'+ic('alert')+'<b>这个筛选下没有题目</b><span>换个科目或题型，或者先去错题本记两道</span></div>')+
+      '</div></div>'+
+    '<div class="card"><div class="card-h">'+ic('inbox')+'<h2>组卷记录</h2><span class="hint">最近 6 份</span></div>'+
+      '<div class="card-b"><div class="drill-hist">'+histHtml+'</div></div></div>'+
+    '<div class="drill-bar"><span>已选 <b>'+picked.length+'</b> 题</span>'+
+      '<button class="btn btn-sm" data-act="drillAll" type="button">全选当前</button>'+
+      '<button class="btn btn-sm" data-act="drillClear" type="button">清空</button>'+
+      '<button class="btn btn-sm btn-primary" data-act="drillPdf" type="button">'+ic('download')+'导出 PDF</button></div>';
+}
+
+/* ---------- 中文排版到 canvas → JPEG → PDF ----------
+   纯前端不嵌字体：用系统字体把整页画成 1240×1754 的图，
+   再按现有 buildPdf 塞进 PDF，中文不会乱码，也不用联网。 */
+function wrapCanvasText(g, text, maxW){
+  var out=[], paras=String(text==null?'':text).replace(/\r/g,'').split('\n');
+  paras.forEach(function(p){
+    if(!p){ out.push(''); return; }
+    var tokens=p.match(/[A-Za-z0-9'’\-\.]+|[\s\S]/g)||[];
+    var line='';
+    tokens.forEach(function(tk){
+      if(g.measureText(line+tk).width>maxW && line){
+        out.push(line);
+        line=/^\s+$/.test(tk)?'':tk;
+      }else line+=tk;
+    });
+    if(line) out.push(line);
+  });
+  return out;
+}
+function drillSpaceFor(type){
+  if(type==='calc') return 150;
+  if(type==='apply') return 215;
+  if(type==='geo') return 195;
+  if(type==='fraction') return 150;
+  if(type==='unit') return 115;
+  if(type==='fill') return 110;
+  if(type==='choice') return 95;
+  if(type==='word') return 170;
+  if(type==='sentence') return 190;
+  if(type==='reading') return 240;
+  if(type==='engword') return 150;
+  if(type==='engsent') return 175;
+  return 160;
+}
+async function drillPdfPages(items, opt){
+  opt=opt||{};
+  var W=1240, H=1754, ML=96, MR=96, MT=104, MB=100;
+  var cw=W-ML-MR;
+  var FONT='"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Heiti SC",sans-serif';
+  var pages=[], cv=null, g=null, y=0, pageNo=0;
+  var title=opt.title||('练习卷 · '+todayStr());
+  var meta=[opt.date||todayStr(), (opt.subjName||'综合'), '共 '+items.length+' 题'].join(' · ');
+
+  function newPage(first){
+    cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+    g=cv.getContext('2d');
+    g.fillStyle='#fff'; g.fillRect(0,0,W,H);
+    g.textBaseline='top'; g.textAlign='left';
+    pageNo++;
+    if(first){
+      g.textAlign='center';
+      g.fillStyle='#0e2b29'; g.font='700 44px '+FONT;
+      g.fillText(title, W/2, MT+6);
+      g.fillStyle='#8aa3a1'; g.font='400 21px '+FONT;
+      g.fillText(meta, W/2, MT+74);
+      g.textAlign='left';
+      g.fillStyle='#0e2b29'; g.font='400 23px '+FONT;
+      g.fillText('姓名 ______________', ML, MT+140);
+      g.textAlign='right'; g.fillText('得分 ______', W-MR, MT+140);
+      g.textAlign='left';
+      g.strokeStyle='#e2ebeb'; g.lineWidth=2;
+      g.beginPath(); g.moveTo(ML, MT+190); g.lineTo(W-MR, MT+190); g.stroke();
+      y=MT+224;
+    }else{
+      g.fillStyle='#8aa3a1'; g.font='400 19px '+FONT;
+      g.fillText(title, ML, 42);
+      g.textAlign='right'; g.fillText('第 '+pageNo+' 页', W-MR, 42); g.textAlign='left';
+      g.strokeStyle='#eef4f4'; g.lineWidth=2;
+      g.beginPath(); g.moveTo(ML, 72); g.lineTo(W-MR, 72); g.stroke();
+      y=MT-4;
+    }
+  }
+  async function flush(){
+    if(!cv) return;
+    var b=await new Promise(function(res){ cv.toBlob(function(x){ res(x); }, 'image/jpeg', 0.92); });
+    if(b){ var ab=await b.arrayBuffer(); pages.push({ bytes:new Uint8Array(ab), w:W, h:H }); }
+    cv=null; g=null;
+  }
+  async function drawLines(lines, lh, indent){
+    var f=g.font, c=g.fillStyle;
+    for(var i=0;i<lines.length;i++){
+      if(y+lh>H-MB){ await flush(); newPage(false); g.font=f; g.fillStyle=c; }
+      g.fillText(lines[i], ML+indent, y);
+      y+=lh;
+    }
+  }
+  function drawSpace(h){
+    g.strokeStyle='#e8f0ef'; g.lineWidth=1.4;
+    for(var yy=y+42; yy<y+h-8; yy+=44){
+      g.beginPath(); g.moveTo(ML+34, yy); g.lineTo(W-MR-6, yy); g.stroke();
+    }
+    y+=h;
+  }
+
+  newPage(true);
+  var n=0;
+  var pageUsed=false;
+  for(var i=0;i<items.length;i++){
+    var it=items[i], qt=String(it.q||'').trim();
+    var pgs=it.pages||[];
+    /* 只有照片、没有题干：文字页放一行索引，接着放原图页 */
+    if(!qt && pgs.length){
+      n++;
+      if(pageUsed){ await flush(); newPage(false); }
+      g.fillStyle='#0e2b29'; g.font='600 28px '+FONT;
+      g.fillText('第 '+n+' 题（原题照片见下页）', ML, y);
+      y+=52; pageUsed=true;
+      await flush();
+      for(var j=0;j<pgs.length;j++){
+        var b=null;
+        try{ b=await idbGet(pgs[j]); }catch(e){}
+        if(!b) continue;
+        var bytes=await blobToBytes(b), dim=jpegDim(bytes);
+        if(dim) pages.push({ bytes:bytes, w:dim.w, h:dim.h });
+      }
+      if(i<items.length-1) newPage(false);
+      pageUsed=false;
+      continue;
+    }
+    n++;
+    var ty=it.type||'other';
+    var space=drillSpaceFor(ty);
+    g.font='400 28px '+FONT;
+    var lines=wrapCanvasText(g, qt || '（题干未填）', cw-58);
+    /* 一题至少留住「题号 + 两行题干 + 一小段作答区」，别把题干切在页底 */
+    if(y+76+Math.min(lines.length,2)*46+Math.min(space,120)>H-MB){
+      await flush(); newPage(false);
+    }
+    g.font='700 28px '+FONT; g.fillStyle='#0e2b29';
+    g.fillText(n+'.', ML, y);
+    g.font='400 28px '+FONT;
+    await drawLines(lines, 46, 58);
+    y+=8;
+    pageUsed=true;
+    if(y+space>H-MB-10){
+      await flush(); newPage(false);
+      g.fillStyle='#8aa3a1'; g.font='400 22px '+FONT;
+      g.fillText('（上题续）', ML, y); y+=40;
+    }
+    drawSpace(space);
+    y+=26;
+  }
+  await flush();
+
+  /* 答案页 */
+  if(opt.withAns){
+    newPage(false);
+    g.fillStyle='#0b7f74'; g.font='700 34px '+FONT;
+    g.fillText('参考答案', ML, y);
+    y+=62;
+    var idx=0;
+    for(var k=0;k<items.length;k++){
+      var it2=items[k];
+      if(!String(it2.q||'').trim()) continue;
+      idx++;
+      var ans=String(it2.a||'').trim() || '（未填答案，回原题对照）';
+      g.font='400 25px '+FONT; g.fillStyle='#0e2b29';
+      var headLines=wrapCanvasText(g, ans, cw-56);
+      if(y+80>H-MB){ await flush(); newPage(false); }
+      g.font='700 25px '+FONT;
+      g.fillText(idx+'.', ML, y);
+      g.font='400 25px '+FONT;
+      await drawLines(headLines, 40, 56);
+      if(it2.tip){
+        g.font='400 21px '+FONT; g.fillStyle='#8aa3a1';
+        var tipLines=wrapCanvasText(g, '提示：'+it2.tip, cw-56);
+        await drawLines(tipLines, 34, 56);
+        g.fillStyle='#0e2b29';
+      }
+      y+=14;
+    }
+    await flush();
+  }
+  return pages;
+}
+async function exportDrill(sel, opt){
+  if(!sel || !sel.length){ toast('先勾选题目'); return; }
+  toast('正在排版 '+sel.length+' 题，稍等…');
+  try{
+    var pages=await drillPdfPages(sel, opt);
+    if(!pages.length){ toast('没有可排版的内容'); return; }
+    var blob=buildPdf(pages);
+    var name=String(opt&&opt.title||('练习卷_'+todayStr())).replace(/[\\\/:*?"<>|\r\n]/g,'_').slice(0,50)+'.pdf';
+    dlBlob(blob, name);
+    toast('PDF 已生成 · '+pages.length+' 页 · '+(blob.size/1048576).toFixed(1)+' MB');
+  }catch(e){
+    toast('生成失败：'+(e&&e.message?e.message:'未知错误'));
+  }
+}
+/* 收集卷面选项：标题、答案、日期、科目标签 */
+function drillOpt(){
+  var t=$('drillTitle');
+  var d=drillDraft();
+  if(t){ d.title=String(t.value||'').trim(); }
+  var sel=drillItems();
+  var subs={}, trks={};
+  sel.forEach(function(x){ subs[x.subj]=1; if(x.track) trks[x.track]=1; });
+  var keys=Object.keys(subs), tks=Object.keys(trks);
+  var subjName = keys.length===1 ? subjOf(keys[0]).n : (keys.length>1?'三科':'综合');
+  /* 全是同一个体系时写在卷头，打出来一眼知道是哪条线的题 */
+  if(keys.length===1 && tks.length===1) subjName += ' · '+wqTrackName(keys[0], tks[0]);
+  return { title:d.title||('练习卷 · '+todayStr()), withAns:!!d.withAns,
+           date:todayStr(), subjName:subjName };
+}
+async function drillDoExport(){
+  var sel=drillItems();
+  if(!sel.length){ toast('先勾选题目'); return; }
+  var opt=drillOpt();
+  drillSaveSilent(sel, opt);
+  await exportDrill(sel, opt);
+}
+function drillSaveSilent(sel, opt){
+  var d=drillDraft();
+  var items=sel.map(function(x){
+    return { src:x.src, wid:x.wid, vid:x.vid||'', subj:x.subj, topic:x.topic||'',
+             type:x.type, q:x.q||'', a:x.a||'', tip:x.tip||'', pages:(x.pages||[]).slice() };
+  });
+  var rec={ id:uid(), title:opt.title, date:opt.date, withAns:!!opt.withAns, items:items, createdAt:todayStr() };
+  S.study.drills=(S.study.drills||[]).filter(function(h){
+    return !(h.title===rec.title && h.date===rec.date);
+  });
+  S.study.drills.push(rec);
+  if(S.study.drills.length>20) S.study.drills=S.study.drills.slice(-20);
+  saveNow();
+  return rec;
+}
+
+/* =========================================================
+   批量导入：图片 / PDF（本机）、粘贴文字（分题）、拍照识字（可选联网）
+   ========================================================= */
+var _imp=null;
+function impNewDraft(over){
+  var o=over||{};
+  var q=o.q||'';
+  /* X / K 题号只出现在数学里，看到前缀就不用再猜科目了 */
+  var codeTk=wqTrackFromCode(q);
+  var subj=o.subj||_imp.subj|| (codeTk?'ma':wqGuessSubj(q,'auto'));
+  var topic=(o.topic!=null && o.topic!=='') ? o.topic : (_imp.topic||wqGuessTopic(q,subj));
+  /* 体系优先级：表里给了 > 题号前缀（X/K） > 统一设置 > 课内兜底 */
+  var tk=(o.track!==undefined && o.track!=='') ? o.track : (codeTk || _imp.track || '');
+  return {
+    pages:o.pages||[],
+    q:q, a:o.a||'', why:o.why||'',
+    subj:subj,
+    topic:topic,
+    track:wqHasTracks(subj) ? (tk||'school') : '',
+    type:o.type||wqGuessType(q, subj),
+    src:(_imp.mode==='ocr'?'ocr':(_imp.mode==='text'?'text':'batch')),
+    keep:true
+  };
+}
+function openImport(mode){
+  /* 上一次没提交的草稿图先清掉，避免 IndexedDB 里留垃圾 */
+  if(_imp && _imp.drafts){
+    _imp.drafts.forEach(function(x){ (x.pages||[]).forEach(function(pid){ idbDel(pid); }); });
+  }
+  _imp={ mode:mode||'img', drafts:[], subj:'', topic:'', track:'', busy:false, text:'' };
+  renderImport();
+}
+function impKeepCount(){
+  return _imp? _imp.drafts.filter(function(x){ return x.keep; }).length : 0;
+}
+/* 把弹窗里已经改过的值收回内存，避免切页签时丢失 */
+function impSyncDom(){
+  if(!_imp) return;
+  var t=$('impText'); if(t) _imp.text=t.value;
+  var boxes=document.querySelectorAll('.draft-i');
+  for(var i=0;i<boxes.length;i++){
+    var idx=Number(boxes[i].getAttribute('data-i'));
+    var it=_imp.drafts[idx]; if(!it) continue;
+    var q=boxes[i].querySelector('[data-k="q"]');
+    var a=boxes[i].querySelector('[data-k="a"]');
+    var tp=boxes[i].querySelector('[data-k="topic"]');
+    var sj=boxes[i].querySelector('[data-k="subj"]');
+    var ty=boxes[i].querySelector('[data-k="type"]');
+    var tr=boxes[i].querySelector('[data-k="track"]');
+    if(q) it.q=q.value;
+    if(a) it.a=a.value;
+    if(tp) it.topic=tp.value;
+    if(sj) it.subj=sj.value;
+    if(ty) it.type=ty.value;
+    if(tr) it.track=tr.value;
+  }
+}
+function impDraftHtml(){
+  var d=_imp;
+  if(!d.drafts.length) return '<div class="imp-hint" style="margin-top:12px">还没有待入库的条目。选完图片或解析完文字，这里会出现可以逐条修改的清单。</div>';
+  return '<div class="draft-list">'+d.drafts.map(function(x,i){
+    var subs=SUBJ.map(function(s){ return '<option value="'+s.k+'"'+(x.subj===s.k?' selected':'')+'>'+s.n+'</option>'; }).join('');
+    var dtk=wqTrackOf(x.subj, x.track||'school');
+    var thumb=(x.pages&&x.pages.length)?('<img class="draft-thumb" data-page-img="'+esc(x.pages[0])+'" alt="">'):'';
+    return '<div class="draft-i'+(x.keep?'':' del')+'" data-i="'+i+'">'+
+      '<div class="draft-h">'+thumb+
+        '<span>第 '+(i+1)+' 条'+(x.pages&&x.pages.length?(' · '+x.pages.length+' 张图'):'')+'</span>'+
+        (dtk?'<span class="pill pill-sel" style="background:'+dtk.soft+';color:'+dtk.c+'" title="点一下改课内 / 学而思">'+
+          '<select data-k="track" aria-label="体系">'+wqTrackOptions(x.subj, x.track||'school')+'</select></span>':'')+
+        '<span class="sp"></span>'+
+        '<button class="btn btn-sm" data-act="impToggle" data-i="'+i+'" type="button">'+(x.keep?'不导入':'恢复')+'</button>'+
+      '</div>'+
+      '<div class="draft-grid">'+
+        '<div><select class="draft-sel" data-k="subj">'+subs+'</select></div>'+
+        '<div><select class="draft-sel" data-k="type">'+wqTypeOptions(x.type)+'</select></div>'+
+        '<div class="full"><input class="draft-in" data-k="topic" placeholder="知识点（可留空）" value="'+esc(x.topic||'')+'"></div>'+
+        '<div class="full"><textarea class="draft-in" data-k="q" rows="2" placeholder="题干（拍照导入可以留空）">'+esc(x.q||'')+'</textarea></div>'+
+        '<div class="full"><textarea class="draft-in" data-k="a" rows="1" placeholder="答案 / 正解（可留空）">'+esc(x.a||'')+'</textarea></div>'+
+      '</div>'+
+    '</div>';
+  }).join('')+'</div>';
+}
+function renderImport(){
+  var d=_imp; if(!d) return;
+  var tabs=[['img','图片 / PDF','camera'],['text','粘贴文字','pen'],['ocr','拍照识字','sparkle'],['pack','错题包','inbox']];
+  var tabHtml=tabs.map(function(t){
+    return '<button class="imp-tab'+(d.mode===t[0]?' on':'')+'" data-act="impTab" data-v="'+t[0]+'" type="button">'+ic(t[2])+t[1]+'</button>';
+  }).join('');
+  var paneImg='<div class="imp-pane'+(d.mode==='img'?' on':'')+'">'+
+      '<button class="imp-drop" data-act="impPick" type="button" style="width:100%;font-family:inherit">'+ic('camera')+
+        '<b>选图片或 PDF（可多选）</b><span>一张图 = 一道错题，PDF 自动按页拆开<br>原图存本机，科目/知识点跟着云同步</span></button>'+
+      '<div class="imp-hint">手机上会调起相机 / 相册；电脑上能一次框选十几张，比一道一道拍快得多。</div>'+
+    '</div>';
+  var paneText='<div class="imp-pane'+(d.mode==='text'?' on':'')+'">'+
+      '<textarea class="imp-area" id="impText" placeholder="把错题粘进来，例如：&#10;1. 36 + 47 =&#10;答案：83&#10;2. 一个长方形长 8 厘米，宽 3 厘米，周长是多少？&#10;答案：22 厘米">'+esc(d.text||'')+'</textarea>'+
+      '<div class="imp-hint">认 <b>1. 2. 3.</b> 这样的题号分题，也认「答案：」「解析：」「错因：」；<b>从 Excel 复制的表格</b>（有「题干」列）也能直接识别。</div>'+
+      '<div class="ph-btns" style="margin-top:10px">'+
+        '<button class="btn btn-primary" data-act="impParse" type="button">'+ic('sparkle')+'解析分题</button>'+
+        '<button class="btn" data-act="impClear" type="button">清空</button>'+
+      '</div></div>';
+  var paneOcr='<div class="imp-pane'+(d.mode==='ocr'?' on':'')+'">'+
+      '<button class="imp-drop" data-act="impOcrPick" type="button" style="width:100%;font-family:inherit">'+ic('sparkle')+
+        '<b>拍一张 / 选一张题目照片</b><span>在浏览器里把文字抠出来，再自动分题</span></button>'+
+      '<div class="imp-hint"><b>这一步要联网</b>：首次会下载中文识别模型（十几 MB），之后有缓存。<br>'+
+        '说句实话：印刷清楚的照片还行，<b>手写题和竖式基本认不准</b>。认不准别硬扛——用手机或电脑自带的「提取文字」（微信、QQ 截图、Windows 截图工具）复制，切到「粘贴文字」，一样是三步入库。</div>'+
+      '<div id="ocrStatus" class="imp-hint" style="color:var(--amber);font-weight:650"></div>'+
+    '</div>';
+  var panePack='<div class="imp-pane'+(d.mode==='pack'?' on':'')+'">'+
+      '<button class="imp-drop" data-act="impPackPick" type="button" style="width:100%;font-family:inherit">'+ic('inbox')+
+        '<b>选一个错题包文件（.json）</b><span>错题、错因、正解、举一反一一次读进来<br>同样的题会自动跳过，不会重复入库</span></button>'+
+      '<div class="imp-hint"><b>它和「粘贴文字」的区别</b>：错题包能带上每道题的「举一反一」题目和答案，粘贴文字只能带题干和答案。<br>'+
+        '导入前会自动备份，导错了点下面「撤销」就能还原。</div>'+
+      (window.__wbPackSnap?'<div style="margin-top:8px"><button class="btn btn-sm" data-act="impPackUndo" type="button">'+ic('undo')+'撤销上一次错题包导入</button></div>':'')+
+    '</div>';
+  var batch=d.drafts.length ? ('<div class="imp-batch">'+
+      '<div class="full"><label>统一设置（改完点应用）</label>'+
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">'+
+          '<div><label>科目</label><select id="impBatchSubj" class="draft-sel"><option value="">自动判断</option>'+
+            SUBJ.map(function(s){ return '<option value="'+s.k+'"'+(d.subj===s.k?' selected':'')+'>'+s.n+'</option>'; }).join('')+'</select></div>'+
+          '<div><label>题型</label><select id="impBatchType" class="draft-sel"><option value="">题型不变</option>'+wqTypeOptions('')+'</select></div>'+
+          '<div><label>体系（数学）</label><select id="impBatchTrack" class="draft-sel">'+
+            '<option value=""'+(d.track?'':' selected')+'>按题号自动（X/K）</option>'+
+            '<option value="school"'+(d.track==='school'?' selected':'')+'>全部课内</option>'+
+            '<option value="xrs"'+(d.track==='xrs'?' selected':'')+'>全部学而思</option></select></div>'+
+          '<div><label>知识点</label><input id="impBatchTopic" class="draft-in" placeholder="例如：两位数乘法"></div>'+
+        '</div>'+
+        '<div class="imp-hint" style="margin-top:6px">题号是 <b>X</b> 开头（X017、X-3）自动归学而思，<b>K</b> 开头（K5）归课内——留空就是按题号自动；拍一叠同一条线的作业，也可以直接选「全部学而思」。</div>'+
+      '</div>'+
+      '<div class="full"><button class="btn btn-sm" data-act="impBatch" type="button">'+ic('check')+'应用到全部条目</button></div>'+
+    '</div>') : '';
+  openModal('<h3>批量导入错题</h3><p>四种方式挑一个：错题包最快、能带举一反一；图片和 PDF 全在本机处理；文字粘贴最准；识别只在你想试的时候联网。</p>'+
+    '<div class="imp-tabs">'+tabHtml+'</div>'+
+    paneImg+paneText+paneOcr+panePack+
+    batch+impDraftHtml()+
+    '<input type="file" id="impImg" accept="image/*,application/pdf,.pdf" multiple style="display:none">'+
+    '<input type="file" id="impPack" accept=".json,application/json" style="display:none">'+
+    '<input type="file" id="impOcrFile" accept="image/*" style="display:none">'+
+    '<div class="ma"><button class="btn" data-act="impCancel" type="button">取消</button>'+
+      '<button class="btn btn-primary" data-act="impApply" type="button">'+ic('check')+'确认入库（'+impKeepCount()+' 条）</button></div>', true);
+  hydrateImgs();
+}
+async function impAddFiles(files){
+  var arr=Array.prototype.slice.call(files||[]);
+  if(!arr.length || !_imp) return;
+  if(_imp.busy){ toast('上一批还在处理，稍等'); return; }
+  _imp.busy=true;
+  impSyncDom();
+  toast('正在处理 '+arr.length+' 个文件…');
+  var made=0, bad=0;
+  for(var i=0;i<arr.length;i++){
+    var f=arr[i];
+    var isPdf=/\.pdf$/i.test(f.name||'') || /pdf/i.test(f.type||'');
+    try{
+      if(isPdf){
+        if(f.size>WQ_PDF_MAX){ bad++; continue; }
+        var bytes=null;
+        try{ bytes=await blobToBytes(f); }catch(e){}
+        var pgs=[];
+        if(bytes){
+          var jpgs=pdfScanJpegs(bytes);
+          for(var k=0;k<jpgs.length;k++){
+            try{
+              var jb=new Blob([jpgs[k]], { type:'image/jpeg' });
+              var sb=await shrinkImage(jb, 1800, 0.8);
+              var pid=uid();
+              await idbPut(pid, sb);
+              pgs.push(pid);
+            }catch(e){}
+          }
+        }
+        if(!pgs.length){ bad++; continue; }
+        pgs.forEach(function(pid){ _imp.drafts.push(impNewDraft({ pages:[pid] })); made++; });
+      }else if(/^image\//.test(f.type||'') || /\.(jpe?g|png|webp|heic|heif|bmp)$/i.test(f.name||'')){
+        var b=await shrinkImage(f, 1800, 0.82);
+        var id=uid();
+        await idbPut(id, b);
+        _imp.drafts.push(impNewDraft({ pages:[id] }));
+        made++;
+      }else bad++;
+    }catch(e){ bad++; }
+  }
+  _imp.busy=false;
+  renderImport();
+  toast(made ? ('已加入 '+made+' 条草稿'+(bad?(' · '+bad+' 个没读出来'):'')) : '文件没读出来，换一个试试');
+}
+/* ---------- 文本 → 分题 ---------- */
+function wqParseBlocks(raw){
+  var lines=String(raw||'').replace(/\r\n?/g,'\n').split('\n');
+  var blocks=[], cur=null;
+  function push(){ if(cur){ blocks.push(cur); cur=null; } }
+  for(var i=0;i<lines.length;i++){
+    var t=lines[i].replace(/\s+$/,'').trim();
+    if(!t) continue;
+    /* X017 / K3 这种题号自己就是一道题的开头（没写「1.」也能分题） */
+    if(wqTrackFromCode(t)){
+      push(); cur={ q:t, a:'', why:'', tip:'' }; continue;
+    }
+    var m1=/^(?:第\s*)?(\d{1,3})\s*[.、．)）:：]\s*(.*)$/.exec(t) || /^[（(]\s*(\d{1,3})\s*[）)]\s*(.*)$/.exec(t);
+    if(m1){ push(); cur={ q:m1[2]||'', a:'', why:'', tip:'' }; continue; }
+    var m2=/^[一二三四五六七八九十]{1,3}\s*[、.．]\s*(.*)$/.exec(t);
+    if(m2){ push(); cur={ q:m2[1]||'', a:'', why:'', tip:'' }; continue; }
+    if(!cur) cur={ q:'', a:'', why:'', tip:'' };
+    var mk=/^(?:【|\[)?\s*(答案|答|解析|分析|解答|错因|正解|思路|考点)\s*(?:】|\])?\s*[:：]?\s*(.*)$/.exec(t);
+    if(mk){
+      var key=mk[1], val=mk[2]||'';
+      if(key==='答案'||key==='答') cur.a=(cur.a?cur.a+'\n':'')+val;
+      else if(key==='错因') cur.why=(cur.why?cur.why+'\n':'')+val;
+      else cur.tip=(cur.tip?cur.tip+'\n':'')+val;
+      continue;
+    }
+    cur.q=(cur.q?cur.q+'\n':'')+t;
+  }
+  push();
+  return blocks.filter(function(b){ return String(b.q||'').trim() || String(b.a||'').trim(); });
+}
+/* Excel 复制出来的表格：有表头就按列名认，没表头按「题干,答案」兜底 */
+function wqParseTable(raw){
+  var lines=String(raw||'').replace(/\r/g,'').split('\n').filter(function(l){ return l.trim(); });
+  if(lines.length<2) return null;
+  var sep=(lines[0].split('\t').length>=lines[0].split(',').length)?'\t':',';
+  function cells(l){ return l.split(sep).map(function(s){ return s.trim().replace(/^"|"$/g,''); }); }
+  var head=cells(lines[0]);
+  var idx={ q:-1, a:-1, why:-1, tip:-1, topic:-1, type:-1, subj:-1, track:-1 };
+  head.forEach(function(c,i){
+    if(idx.subj<0 && /^(科目|学科)$/.test(c)) idx.subj=i;
+    else if(idx.track<0 && /^(体系|来源|课程|班型|课程体系)$/.test(c)) idx.track=i;
+    else if(idx.type<0 && /^(题型|类型)$/.test(c)) idx.type=i;
+    else if(idx.topic<0 && /^(知识点|考点)$/.test(c)) idx.topic=i;
+    else if(idx.q<0 && /(题干|题目|错题|原题)/.test(c)) idx.q=i;
+    else if(idx.a<0 && /(答案|正解)/.test(c)) idx.a=i;
+    else if(idx.why<0 && /(错因|原因)/.test(c)) idx.why=i;
+    else if(idx.tip<0 && /(解析|提示|思路)/.test(c)) idx.tip=i;
+  });
+  if(idx.q<0) return null;
+  var rows=[], subjMap={ '语文':'cn','数学':'ma','英语':'en','cn':'cn','ma':'ma','en':'en' };
+  var trackMap={ '课内':'school','学校':'school','校内':'school','课下':'school','学而思':'xrs','培优':'xrs','课外':'xrs','辅导班':'xrs','school':'school','xrs':'xrs' };
+  var typeMap={};
+  WQ_TYPES.forEach(function(t){ typeMap[t.n]=t.k; typeMap[t.k]=t.k; });
+  for(var i=1;i<lines.length;i++){
+    var c=cells(lines[i]);
+    if(!c[idx.q] && (idx.a<0 || !c[idx.a])) continue;
+    rows.push({
+      q:c[idx.q]||'',
+      a:idx.a>=0?(c[idx.a]||''):'',
+      why:idx.why>=0?(c[idx.why]||''):'',
+      tip:idx.tip>=0?(c[idx.tip]||''):'',
+      topic:idx.topic>=0?(c[idx.topic]||''):'',
+      track:idx.track>=0?(trackMap[String(c[idx.track]||'').trim()]||''):'',
+      subj:idx.subj>=0?(subjMap[c[idx.subj]]||''):'',
+      type:idx.type>=0?(typeMap[c[idx.type]]||''):''
+    });
+  }
+  return rows.length?rows:null;
+}
+function impParseText(){
+  impSyncDom();
+  var txt=_imp.text||'';
+  if(!txt.trim()){ toast('先粘一段文字'); return; }
+  var rows=wqParseTable(txt);
+  var made=0;
+  if(rows){
+    rows.forEach(function(r){
+      _imp.drafts.push(impNewDraft({ q:r.q, a:r.a, why:r.why, topic:r.topic, track:r.track, subj:r.subj||_imp.subj, type:r.type||undefined }));
+      made++;
+    });
+  }else{
+    wqParseBlocks(txt).forEach(function(b){
+      _imp.drafts.push(impNewDraft({ q:b.q, a:b.a, why:b.why }));
+      made++;
+    });
+  }
+  if(!made){ toast('没分出题目，检查一下题号或表头'); return; }
+  _imp.text='';
+  renderImport();
+  toast('分出 '+made+' 道题，逐条改完再入库');
+}
+/* ---------- 错题包：整袋错题（含举一反一）一次读入 ---------- */
+function wqImportPackFile(file){
+  if(!file) return;
+  var rd=new FileReader();
+  rd.onload=function(){
+    var pack=null;
+    try{ pack=JSON.parse(String(rd.result||'')); }
+    catch(e){ toast('这个文件不是 JSON，换一个'); return; }
+    var list=Array.isArray(pack)?pack:((pack&&Array.isArray(pack.wrongs))?pack.wrongs:null);
+    if(!list || !list.length){ toast('文件里没找到错题列表'); return; }
+    if(!Array.isArray(S.study.wrongs)) S.study.wrongs=[];
+    var snap=JSON.stringify({ wrongs:S.study.wrongs });
+    window.__wbPackSnap=snap;
+    window.__wbRestoreMistakes=function(){
+      try{
+        var b=JSON.parse(window.__wbPackSnap||'{}');
+        if(Array.isArray(b.wrongs)){ S.study.wrongs=b.wrongs; save(); renderAll(); toast('已还原到导入前'); }
+      }catch(e){}
+    };
+    function kOf(w){ return String(w.q||'').slice(0,40)+'|'+(w.date||''); }
+    var seen={};
+    S.study.wrongs.forEach(function(w){ seen[kOf(w)]=1; });
+    var add=0, skip=0, vn=0;
+    list.forEach(function(it){
+      if(!it || (!it.q && !(Array.isArray(it.pages)&&it.pages.length))){ skip++; return; }
+      var pSubj=it.subj||'ma';
+      var w={
+        id:uid(), subj:pSubj, date:it.date||todayStr(),
+        track:(wqHasTracks(pSubj) ? (it.track || wqTrackFromCode(it.q) || 'school') : ''),
+        type:it.type||wqGuessType(it.q||'', pSubj),
+        topic:it.topic||'', q:it.q||'', why:it.why||'', fix:it.fix||'',
+        mastered:!!it.mastered, pages:[], files:[], src:it.src||'import',
+        createdAt:it.createdAt||Date.now(), vars:[]
+      };
+      if(seen[kOf(w)]){ skip++; return; }
+      seen[kOf(w)]=1;
+      (Array.isArray(it.vars)?it.vars:[]).forEach(function(v){
+        if(!v) return;
+        w.vars.push({ id:uid(), q:v.q||'', a:v.a||'', tip:v.tip||'',
+          type:v.type||w.type, src:v.src||'import', pages:[], done:!!v.done });
+        vn++;
+      });
+      S.study.wrongs.push(w);
+      add++;
+    });
+    if(add){ save(); renderAll(); if(typeof closeModal==='function') closeModal(); }
+    toast(add ? ('导入 '+add+' 道错题、'+vn+' 道举一反一'+(skip?('，跳过 '+skip+' 条重复'):''))
+              : '这批都已经在错题本里了，没有新增');
+  };
+  rd.onerror=function(){ toast('文件读不出来'); };
+  rd.readAsText(file);
+}
+
+/* ---------- 可选的浏览器内识字 ---------- */
+var _ocrJs=null;
+function ocrLoad(){
+  if(window.Tesseract) return Promise.resolve(window.Tesseract);
+  if(_ocrJs) return _ocrJs;
+  _ocrJs=new Promise(function(res,rej){
+    var s=document.createElement('script');
+    s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+    s.async=true;
+    s.onload=function(){ window.Tesseract?res(window.Tesseract):rej(new Error('识别引擎加载失败')); };
+    s.onerror=function(){ rej(new Error('识别引擎下载失败，可能没联网')); };
+    document.head.appendChild(s);
+  }).catch(function(e){ _ocrJs=null; throw e; });
+  return _ocrJs;
+}
+async function ocrRun(file){
+  var st=$('ocrStatus');
+  function say(t){ if(st) st.textContent=t; }
+  say('正在压缩照片…');
+  var blob=await shrinkImage(file, 1600, 0.9);
+  say('正在加载识别引擎（首次较慢，后面会缓存）…');
+  var T=await ocrLoad();
+  say('正在识别文字…');
+  var r=await T.recognize(blob, 'chi_sim', {
+    logger:function(m){
+      if(m && m.status==='recognizing text') say('正在识别文字… '+Math.round((m.progress||0)*100)+'%');
+    }
+  });
+  var txt=(r && r.data && r.data.text) ? String(r.data.text) : '';
+  txt=txt.replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+  if(!txt) throw new Error('没认出文字，换一张清楚点的照片');
+  return txt;
+}
+async function impDoOcr(file){
+  if(!_imp || !file) return;
+  try{
+    var txt=await ocrRun(file);
+    _imp.text=txt;
+    _imp.mode='text';
+    renderImport();
+    var ta=$('impText'); if(ta) ta.value=txt;
+    toast('认出来了，检查一下再点「解析分题」');
+  }catch(e){
+    var st=$('ocrStatus'); if(st) st.textContent='';
+    toast((e&&e.message)||'识别失败');
+    _imp.mode='text';
+    renderImport();
+    toast('已切到「粘贴文字」：用系统 OCR 复制后粘进来更准');
+  }
+}
+function impCancel(){
+  if(_imp && _imp.drafts){
+    _imp.drafts.forEach(function(x){
+      (x.pages||[]).forEach(function(pid){ idbDel(pid); delete _objUrls[pid]; });
+    });
+  }
+  _imp=null;
+  closeModal();
+}
+function impApply(){
+  impSyncDom();
+  var d=_imp; if(!d){ closeModal(); return; }
+  var made=0, i;
+  for(i=0;i<d.drafts.length;i++){
+    var x=d.drafts[i];
+    if(!x.keep) continue;
+    if(!String(x.q||'').trim() && !(x.pages||[]).length){ continue; }
+    S.study.wrongs.push({
+      id:uid(), createdAt:todayStr(), date:todayStr(), mastered:false,
+      subj:x.subj||'cn', topic:String(x.topic||'').trim(),
+      track:wqHasTracks(x.subj||'cn') ? (x.track || wqTrackFromCode(x.q) || 'school') : '',
+      type:x.type||wqGuessType(x.q||'', x.subj||'cn'),
+      q:String(x.q||'').trim(), why:String(x.why||'').trim(), fix:String(x.a||'').trim(),
+      pages:x.pages||[], files:[], vars:[],
+      src:x.src||'batch'
+    });
+    made++;
+  }
+  if(!made){ toast('没有可入库的条目'); return; }
+  _imp=null;
+  save(); closeModal(); renderAll();
+  toast('已导入 '+made+' 道错题');
+}
+
+/* =========================================================
+   举一反一：按题型生成 / 粘贴导入 / 图片导入 / 手动添加
+   ========================================================= */
+var _varPanel=null, _varSaveT=null;
+function openVarPanel(wid){
+  _varPanel={ wid:wid };
+  renderVarPanel();
+}
+function renderVarPanel(){
+  var w=_varPanel?findWrong(_varPanel.wid):null;
+  if(!w){ closeModal(); return; }
+  var sb=subjOf(w.subj);
+  var ty=wqTypeOf(w.type||wqGuessType(w.q||'', w.subj));
+  var vars=Array.isArray(w.vars)?w.vars:[];
+  var openN=vars.filter(function(v){ return !v.done; }).length;
+  var list=vars.map(function(v,i){
+    var vp=(v.pages||[]);
+    var on=drillIsPicked('v:'+w.id+':'+v.id);
+    return '<div class="vq-i'+(v.done?' done':'')+'" data-vid="'+v.id+'">'+
+      '<div class="vq-h"><span class="vq-n">变式 '+(i+1)+'</span>'+
+        '<span class="wq-t">'+wqTypeOf(v.type||ty.k).n+'</span>'+
+        '<span class="wq-t '+(v.src==='auto'?'auto':'')+'">'+esc(WQ_SRC[v.src]||'手动')+'</span>'+
+        '<span class="sp"></span>'+
+        '<button class="btn btn-sm'+(on?' on':'')+'" data-act="varPick" data-id="'+w.id+'" data-vid="'+v.id+'" type="button">'+ic(on?'check':'plus')+(on?'已加入':'加入卷')+'</button>'+
+        '<button class="ico-btn red" data-act="varDel" data-id="'+w.id+'" data-vid="'+v.id+'" type="button" title="删除这道变式">'+ic('trash')+'</button>'+
+      '</div>'+
+      (vp.length?'<div class="wq-thumbs" style="margin-bottom:7px">'+vp.map(function(pid,pi){
+          return '<button class="wq-p" data-act="varViewPage" data-id="'+w.id+'" data-vid="'+v.id+'" data-i="'+pi+'" type="button" aria-label="看第 '+(pi+1)+' 张">'+
+            '<img data-page-img="'+esc(pid)+'" alt=""></button>';
+        }).join('')+'</div>':'')+
+      '<textarea class="draft-in" data-wid="'+w.id+'" data-vid="'+v.id+'" data-vk="q" rows="2" placeholder="题干">'+esc(v.q||'')+'</textarea>'+
+      '<div class="draft-grid">'+
+        '<div class="full"><textarea class="draft-in" data-wid="'+w.id+'" data-vid="'+v.id+'" data-vk="a" rows="1" placeholder="答案">'+esc(v.a||'')+'</textarea></div>'+
+        '<div class="full"><input class="draft-in" data-wid="'+w.id+'" data-vid="'+v.id+'" data-vk="tip" placeholder="提示 / 解析（可留空）" value="'+esc(v.tip||'')+'"></div>'+
+      '</div>'+
+      '<div class="vq-f">'+
+        '<button class="btn'+(v.done?' on':'')+'" data-act="varDone" data-id="'+w.id+'" data-vid="'+v.id+'" type="button">'+ic('check')+(v.done?'已掌握':'标记掌握')+'</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+  /* 之前按「反三」生成过一堆，这里给一键瘦身：每题只留一道没做完的 */
+  var autoOpen=vars.filter(function(v){ return v.src==='auto' && !v.done; }).length;
+  var trimBtn=autoOpen>1 ? ('<button class="btn btn-sm" data-act="varTrim" data-id="'+w.id+'" type="button">'+ic('trash')+'只留 1 道（清掉 '+(autoOpen-1)+' 道）</button>') : '';
+  var head='<div class="var-head"><div><b>原题</b>：'+esc(String(w.q||(wqPagesOf(w).length?'（题目见照片）':'（未填题干）')).slice(0,120))+
+      '<br><span style="color:var(--text-3);font-size:11px">'+sb.n+(wqHasTracks(w.subj)&&w.track?(' · '+wqTrackName(w.subj,w.track)):'')+' · '+ty.n+(w.topic?(' · '+esc(w.topic)):'')+' · 已有 '+openN+' 道待练</span></div></div>';
+  openModal('<h3>举一反一</h3><p>一道错题配一道同类题：换数字、换问法，做对一道就算过。生成多了可以点「只留 1 道」。</p>'+
+    head+
+    '<div class="ph-btns" style="margin-bottom:10px">'+
+      '<button class="btn btn-primary" data-act="varGen" data-id="'+w.id+'" type="button">'+ic('sparkle')+'生成一道同类题</button>'+
+      '<button class="btn" data-act="varImport" data-id="'+w.id+'" data-v="text" type="button">'+ic('pen')+'粘贴导入</button>'+
+      '<button class="btn" data-act="varImport" data-id="'+w.id+'" data-v="img" type="button">'+ic('image')+'图片 / PDF</button>'+
+      trimBtn+
+    '</div>'+
+    (vars.length?('<div class="vq-list">'+list+'</div>'):'<div class="empty" style="padding:22px 0">'+ic('sparkle')+'<b>还没有同类题</b><span>点上面「生成一道同类题」，或把老师给的题粘进来</span></div>')+
+    '<div class="var-add">'+
+      '<textarea id="varQ" class="full" rows="2" placeholder="自己写一道变式题（题干）"></textarea>'+
+      '<input id="varA" placeholder="答案">'+
+      '<input id="varTip" placeholder="提示（可选）">'+
+      '<div class="full"><button class="btn btn-sm" data-act="varAdd" data-id="'+w.id+'" type="button">'+ic('plus')+'加进去</button></div>'+
+    '</div>'+
+    '<div class="ma"><button class="btn" data-act="varClose" type="button">关闭</button>'+
+      '<button class="btn" data-act="goView" data-v="drill" type="button">'+ic('target')+'去组卷</button></div>', true);
+  hydrateImgs();
+}
+async function varImportFiles(w, files){
+  var arr=Array.prototype.slice.call(files||[]);
+  if(!arr.length) return;
+  toast('正在处理文件…');
+  var made=0;
+  for(var i=0;i<arr.length;i++){
+    var f=arr[i];
+    var isPdf=/\.pdf$/i.test(f.name||'')||/pdf/i.test(f.type||'');
+    try{
+      if(isPdf){
+        var bytes=await blobToBytes(f);
+        var jpgs=pdfScanJpegs(bytes);
+        for(var k=0;k<jpgs.length;k++){
+          var jb=new Blob([jpgs[k]], {type:'image/jpeg'});
+          var sb=await shrinkImage(jb,1800,0.8);
+          var pid=uid(); await idbPut(pid,sb);
+          w.vars.push({ id:uid(), q:'', a:'', tip:'', type:w.type, src:'import', pages:[pid], done:false });
+          made++;
+        }
+      }else if(/^image\//.test(f.type||'')){
+        var b=await shrinkImage(f,1800,0.82);
+        var id=uid(); await idbPut(id,b);
+        w.vars.push({ id:uid(), q:'', a:'', tip:'', type:w.type, src:'import', pages:[id], done:false });
+        made++;
+      }
+    }catch(e){}
+  }
+  if(!made){ toast('文件没读出来'); return; }
+  save(); renderVarPanel();
+  toast('已加入 '+made+' 道变式题（题目见图片）');
+}
+function openVarImport(wid, kind){
+  var w=findWrong(wid); if(!w) return;
+  if(kind==='img'){
+    var inp=document.createElement('input');
+    inp.type='file'; inp.accept='image/*,application/pdf,.pdf'; inp.multiple=true;
+    inp.style.display='none';
+    document.body.appendChild(inp);
+    inp.addEventListener('change', function(){
+      var fs=inp.files;
+      if(inp.parentNode) inp.parentNode.removeChild(inp);
+      if(fs && fs.length) varImportFiles(w, fs);
+    });
+    inp.click();
+    return;
+  }
+  openModal('<h3>粘贴举一反一题目</h3><p>一行一题，或用「1. 2. 3.」分开；答案另起一行写「答案：」。加进来后还能逐条改。</p>'+
+    '<textarea class="imp-area" id="varImpText" placeholder="1. 45 + 38 =&#10;答案：83&#10;2. 72 − 26 =&#10;答案：46"></textarea>'+
+    '<div class="ma"><button class="btn" data-act="varPanel" data-id="'+wid+'" type="button">返回</button>'+
+      '<button class="btn btn-primary" data-act="varImpApply" data-id="'+wid+'" type="button">'+ic('check')+'解析并加入</button></div>', true);
+}
+function varImportApply(wid){
+  var w=findWrong(wid); if(!w) return;
+  var ta=$('varImpText');
+  var txt=ta?String(ta.value||''):'';
+  if(!txt.trim()){ toast('先粘几道题'); return; }
+  var blocks=wqParseBlocks(txt);
+  if(!blocks.length){ toast('没分出题目，检查一下题号'); return; }
+  if(!Array.isArray(w.vars)) w.vars=[];
+  blocks.forEach(function(b){
+    w.vars.push({ id:uid(), q:b.q, a:b.a, tip:(b.tip||b.why||''), type:w.type, src:'import', pages:[], done:false });
+  });
+  save(); openVarPanel(wid);
+  toast('已加入 '+blocks.length+' 道变式题');
 }
 
 /* =========================================================
@@ -3577,24 +5100,28 @@ function openWqFile(fid, name){
 
 /* ---------- 录入方式 ---------- */
 function openWrongPick(){
-  openModal('<h3>记一道错题</h3><p>三种录入方式，选一个开始；之后在同一个表单里也能随时补照片。</p>'+
+  openModal('<h3>记一道错题</h3><p>单道用前三种；一次攒了很多张卷子，就用最下面的批量导入。</p>'+
     '<button class="exp-opt" data-act="wqMode" data-v="text" type="button"><div class="ei">'+ic('pen')+'</div>'+
       '<div class="et"><b>文字记录</b><span>手写题干、错因、正确思路，适合竖式计算这类题</span></div></button>'+
     '<button class="exp-opt" data-act="wqMode" data-v="photo" type="button"><div class="ei">'+ic('camera')+'</div>'+
       '<div class="et"><b>拍照录入</b><span>直接开相机拍题目，可连拍多张，只需补科目和知识点</span></div></button>'+
     '<button class="exp-opt" data-act="wqMode" data-v="file" type="button"><div class="ei">'+ic('doc')+'</div>'+
       '<div class="et"><b>PDF / 文件</b><span>选老师发的 PDF 或相册里的图片，扫描版会抽出页面</span></div></button>'+
+    '<button class="exp-opt" data-act="impOpen" data-v="img" type="button"><div class="ei">'+ic('inbox')+'</div>'+
+      '<div class="et"><b>批量导入</b><span>一次选十几张图或整份 PDF，按页分开后统一打标签</span></div></button>'+
     '<div class="ma"><button class="btn" data-act="closeModal" type="button">取消</button></div>');
 }
 function openWrongForm(id, mode){
   var w=id?findWrong(id):null;
-  var sb=w?w.subj:'cn';
+  /* 从「数学 · 学而思」筛选中点进来，科目和体系直接跟着走，少点两下 */
+  var sb=w?w.subj:((S.ui.wrongSubj && S.ui.wrongSubj!=='all')?S.ui.wrongSubj:'cn');
+  var defTk=(w&&w.track)?w.track:((S.ui.wrongTrack && S.ui.wrongTrack!=='all')?S.ui.wrongTrack:'');
   var isNew=!w;
   _wqBuf={ id:id||null, pages:wqPagesOf(w).slice(), files:wqFilesOf(w).map(function(f){ return { id:f.id, name:f.name, size:f.size, at:f.at }; }),
     dropped:[], dropOnClose:isNew };
-  var tip = mode==='photo' ? '相机打开后直接拍题目，可以连拍多张；科目和知识点随手补一下就行。'
+  var tip = mode==='photo' ? '相机打开后直接拍题目，可以连拍多张；科目、体系随手补一下就行。'
     : mode==='file' ? '选老师发的 PDF 或图片文件。扫描版 PDF 会自动把页面抽成照片，方便直接翻。'
-    : '按知识点归类，攒够几条就能看出反复出错的环节；题目复杂就直接拍下来。';
+    : '按知识点归类，攒够几条就能看出反复出错的环节；数学的题再标一下「课内 / 学而思」，以后能分开选题。';
   var h='<h3>'+(w?'编辑错题':'记一道错题')+'</h3><p>'+tip+'</p>'+
     '<form id="wrongForm" data-id="'+(w?w.id:'')+'"><div class="form">'+
       '<div class="row2">'+
@@ -3603,6 +5130,11 @@ function openWrongForm(id, mode){
       '</div>'+
       '<div class="f"><label>知识点</label><input type="text" name="topic" list="wqTopics" maxlength="24" placeholder="例如：两位数乘法" value="'+esc(w?w.topic||'':'')+'">'+
         '<datalist id="wqTopics">'+topicOptions(sb)+'</datalist></div>'+
+      '<div class="row2" id="wqTrackRow" style="grid-template-columns:'+(wqHasTracks(sb)?'1fr 1fr':'1fr')+'">'+
+        '<div class="f" id="wqTrackF" style="'+(wqHasTracks(sb)?'':'display:none')+'"><label>体系</label>'+
+          '<select name="track" data-act="wqTrackPick">'+wqTrackOptions(sb, defTk)+'</select></div>'+
+        '<div class="f"><label>题型</label><select name="type">'+wqTypeOptions(w?w.type:wqGuessType('', sb))+'</select></div>'+
+      '</div>'+
       '<div class="f"><label>题目照片 / PDF（可选）</label>'+
         '<div class="wq-atts"><div class="ph-grid" id="wqGrid"></div><div class="wq-files" id="wqFiles"></div></div>'+
         '<div class="ph-btns">'+
@@ -3615,7 +5147,7 @@ function openWrongForm(id, mode){
         '<input type="file" id="wqFile" accept="image/*,application/pdf,.pdf" multiple style="display:none">'+
         '<div class="wq-note">照片和 PDF 存在这台设备上（不跟着云同步），换手机需要重新导入。</div>'+
       '</div>'+
-      '<div class="f"><label>题目 / 错在哪</label><textarea name="q" rows="2" placeholder="拍了照可以留空，写一句错在哪更好找">'+esc(w?w.q||'':'')+'</textarea></div>'+
+      '<div class="f"><label>题目 / 错在哪</label><textarea name="q" rows="2" data-act="wqQChg" placeholder="拍了照可以留空，写一句错在哪更好找。题号以 X 开头（学而思）或 K 开头（课内）会自动归好">'+esc(w?w.q||'':'')+'</textarea></div>'+
       '<div class="row2">'+
         '<div class="f"><label>错因</label><input type="text" name="why" maxlength="80" placeholder="例如：进位没加" value="'+esc(w?w.why||'':'')+'"></div>'+
         '<div class="f"><label>正确思路</label><input type="text" name="fix" maxlength="120" placeholder="可选" value="'+esc(w?w.fix||'':'')+'"></div>'+
@@ -3636,6 +5168,37 @@ function openWrongForm(id, mode){
 function topicOptions(subj){
   var arr=SUBJ_TOPICS[subj]||[];
   return arr.map(function(t){ return '<option value="'+esc(t)+'"></option>'; }).join('');
+}
+/* 记错题表单里换科目：知识点候选跟着换，数学才露出「体系」 */
+function wqSubjChanged(v){
+  var dl=$('wqTopics');
+  if(dl) dl.innerHTML=topicOptions(v);
+  var tw=$('wqTrackF');
+  if(!tw) return;
+  var tsel=tw.querySelector('select');
+  var row=$('wqTrackRow');
+  if(row) row.style.gridTemplateColumns = wqHasTracks(v) ? '1fr 1fr' : '1fr';
+  if(wqHasTracks(v)){
+    tw.style.display='';
+    if(tsel) tsel.innerHTML=wqTrackOptions(v, '');
+  }else{
+    tw.style.display='none';
+    if(tsel) tsel.innerHTML='<option value=""></option>';
+  }
+  wqQGuessTrack();
+}
+/* 题干里出现 X017 / K3 这类题号，且人还没动过「体系」，就自动跟上 */
+function wqQGuessTrack(silent){
+  var f=document.getElementById('wrongForm'); if(!f) return;
+  var q=f.querySelector('textarea[name="q"]');
+  var sj=f.querySelector('select[name="subj"]');
+  var sel=f.querySelector('select[name="track"]');
+  if(!q||!sel||!sj||!wqHasTracks(sj.value)) return;
+  if(sel.getAttribute('data-touched')==='1') return;
+  var g=wqTrackFromCode(q.value);
+  if(!g || sel.value===g) return;
+  sel.value=g;
+  if(!silent) toast('题号是 '+(g==='xrs'?'X':'K')+' 开头，已归到「'+(g==='xrs'?'学而思':'课内')+'」');
 }
 
 /* ---------- 图片动作 ---------- */
@@ -4008,11 +5571,16 @@ function projOptions(sel){
   S.projects.forEach(function(p){ o+='<option value="'+p.id+'"'+(sel===p.id?' selected':'')+'>'+esc(p.name)+'</option>'; });
   return o;
 }
-function openTaskModal(id, prePid){
+function openTaskModal(id, prePid, preTid){
   var t=null;
   if(id){ for(var i=0;i<S.tasks.length;i++){ if(S.tasks[i].id===id){ t=S.tasks[i]; break; } } }
-  var v=t||{ title:'', prio:'P1', due:todayStr(), pid:prePid||'' };
-  openModal('<h3>'+(t?'编辑待办':'新建待办')+'</h3><p>把要做的事写下来，逾期会被自动置顶提醒。</p>'+
+  var v=t||{ title:'', prio:'P1', due:todayStr(), pid:prePid||'', tid:preTid||'' };
+  var preLine='';
+  if(!t && preTid){
+    var pp=findProj(prePid), pt=pp?findTrack(pp,preTid):null;
+    if(pt) preLine='<div class="flow-tip">'+ic('flow')+' 已预先绑定到「'+esc(pp.name)+' · '+esc(pt.name)+'」，保存后会直接显示在项目总览的这条线路上。</div>';
+  }
+  openModal('<h3>'+(t?'编辑待办':'新建待办')+'</h3><p>把要做的事写下来，逾期会被自动置顶提醒。</p>'+preLine+
     '<form id="taskForm" data-id="'+(t?t.id:'')+'"><div class="form">'+
       '<div class="f"><label>标题</label><input type="text" name="title" value="'+esc(v.title)+'" placeholder="例如：确认本周发布计划" required maxlength="200"></div>'+
       '<div class="row2">'+
@@ -4026,6 +5594,7 @@ function openTaskModal(id, prePid){
         '<div class="f"><label>所属项目</label><select name="pid" id="taskProj">'+projOptions(v.pid)+'</select></div>'+
         '<div class="f"><label>所属线路</label><select name="tid" id="taskTrack">'+trackOptions(v.pid, v.tid)+'</select></div>'+
       '</div>'+
+      '<div class="flow-tip">项目 + 线路都选上，保存后这条待办会出现在项目总览对应线路的「线路待办」里，可直接勾完成。</div>'+
     '</div><div class="ma"><button class="btn" type="button" data-act="closeModal">取消</button>'+
     '<button class="btn btn-primary" type="submit">'+ic('check')+'保存</button></div></form>', false);
 }
@@ -4475,10 +6044,23 @@ function handleAct(act, el){
     case 'scoreSubj': S.ui.scoreSubj=el.getAttribute('data-v'); saveNow(); renderAll(); break;
     case 'scoreRange': S.ui.scoreRange=el.getAttribute('data-v'); saveNow(); renderAll(); break;
     case 'wrongSubj': S.ui.wrongSubj=el.getAttribute('data-v'); saveNow(); renderAll(); break;
+    case 'wrongTrack': S.ui.wrongTrack=el.getAttribute('data-v')||'all'; saveNow(); renderAll(); break;
+    case 'wrongTrackAuto': {
+      var ax=0, ak=0, anone=0;
+      (S.study.wrongs||[]).forEach(function(w){
+        if(!wqHasTracks(w.subj)) return;
+        var g=wqTrackAutoOf(w);
+        if(!g){ anone++; return; }
+        if(g==='xrs') ax++; else ak++;
+        w.track=g; w.trackManual=0;
+      });
+      save(); renderAll();
+      toast('按题号归好：学而思 '+ax+' 道 · 课内 '+ak+' 道'+(anone?('，'+anone+' 道没题号没动'):''));
+      break;
+    }
     case 'wrongState': S.ui.wrongState=el.getAttribute('data-v'); saveNow(); renderAll(); break;
     case 'wqSubjChg': {
-      var dl=$('wqTopics');
-      if(dl) dl.innerHTML=topicOptions(el.value);
+      wqSubjChanged(el.value);
       break;
     }
     case 'addPaper': openPaperForm(null); break;
@@ -4610,6 +6192,220 @@ function handleAct(act, el){
       mw.mastered=!mw.mastered;
       save(); renderAll();
       toast(mw.mastered?'已掌握，继续加油':'已放回待巩固');
+      break;
+    }
+
+    /* ---------- 错题批量导入 ---------- */
+    case 'impOpen': openImport(el.getAttribute('data-v')||'img'); break;
+    case 'impTab': {
+      if(!_imp) break;
+      impSyncDom();
+      _imp.mode=el.getAttribute('data-v')||'img';
+      renderImport();
+      break;
+    }
+    case 'impPick': { var ipk=$('impImg'); if(ipk) ipk.click(); break; }
+    case 'impPackPick': { var ipf=$('impPack'); if(ipf) ipf.click(); break; }
+    case 'impPackUndo': { if(typeof window.__wbRestoreMistakes==='function') window.__wbRestoreMistakes(); break; }
+    case 'impOcrPick': { var iok=$('impOcrFile'); if(iok) iok.click(); break; }
+    case 'impParse': impParseText(); break;
+    case 'impClear': {
+      if(_imp) _imp.text='';
+      var ict=$('impText'); if(ict) ict.value='';
+      break;
+    }
+    case 'impToggle': {
+      if(!_imp) break;
+      impSyncDom();
+      var iix=Number(el.getAttribute('data-i'));
+      if(_imp.drafts[iix]){ _imp.drafts[iix].keep=!_imp.drafts[iix].keep; renderImport(); }
+      break;
+    }
+    case 'impBatch': {
+      if(!_imp) break;
+      impSyncDom();
+      var ibs=$('impBatchSubj'), ibt=$('impBatchType'), ibp=$('impBatchTopic'), ibk=$('impBatchTrack');
+      var isub=ibs?ibs.value:_imp.subj, ity=ibt?ibt.value:'', itp=ibp?String(ibp.value||'').trim():'';
+      var itk=ibk?ibk.value:'';
+      _imp.subj=isub||'';
+      if(itk) _imp.track=itk;
+      var tkX=0, tkK=0;
+      _imp.drafts.forEach(function(x){
+        if(isub) x.subj=isub;
+        if(ity) x.type=ity;
+        if(itp) x.topic=itp;
+        if(itk) x.track=itk;
+        else x.track=wqTrackFromCode(x.q) || x.track || '';
+        if(!wqHasTracks(x.subj)) x.track='';
+        else if(!x.track) x.track='school';
+        if(!x.type) x.type=wqGuessType(x.q||'', x.subj);
+        if(x.track==='xrs') tkX++; else if(x.track==='school') tkK++;
+      });
+      renderImport();
+      var tkTxt = itk ? (' · 体系「'+(itk==='xrs'?'学而思':'课内')+'」')
+        : (' · 按题号：学而思 '+(tkX)+' / 课内 '+tkK);
+      toast('已统一设置 '+_imp.drafts.length+' 条'+tkTxt);
+      break;
+    }
+    case 'impApply': impApply(); break;
+    case 'impCancel': impCancel(); break;
+
+    /* ---------- 举一反一 ---------- */
+    case 'varOpen': openVarPanel(id); break;
+    case 'varPanel': openVarPanel(id); break;
+    case 'varClose': _varPanel=null; closeModal(); renderAll(); break;
+    case 'varGen': {
+      var vgw=findWrong(id); if(!vgw) break;
+      var one=wqGenVariantOne(vgw);
+      if(!one){ toast('这道题暂时给不出同类题，用「粘贴导入」把老师给的题放进来'); break; }
+      var put=wqPutAutoVariant(vgw, one);
+      save(); renderVarPanel();
+      toast(put.replaced ? '已换一道同类题（原来的还没做完，直接替换）' : '已生成 1 道同类题');
+      break;
+    }
+    case 'varTrim': {
+      /* 之前生成了一堆变式，一键只留一道没做完的 */
+      var vtw=findWrong(id); if(!vtw || !Array.isArray(vtw.vars)) break;
+      var keep=null, drop=[];
+      vtw.vars.forEach(function(v){
+        if(v.src==='auto' && !v.done && !keep) keep=v;
+        else if(v.src==='auto' && !v.done) drop.push(v);
+      });
+      if(!drop.length){ toast('已经是每道原题一道变式了'); break; }
+      drop.forEach(function(v){
+        delete drillDraft().pick['v:'+vtw.id+':'+v.id];
+        var pi=vtw.vars.indexOf(v);
+        if(pi>=0) vtw.vars.splice(pi,1);
+      });
+      save(); renderVarPanel();
+      toast('清掉 '+drop.length+' 道多余的自动变式，每题只留一道');
+      break;
+    }
+    case 'varTrimAll': {
+      /* 全库瘦身：每题只留一道没做完的自动变式 */
+      var cut=0;
+      (S.study.wrongs||[]).forEach(function(w){
+        if(!Array.isArray(w.vars)) return;
+        var keepA=null;
+        w.vars.forEach(function(v){ if(v.src==='auto' && !v.done && !keepA) keepA=v; });
+        if(!keepA) return;
+        for(var vi=w.vars.length-1;vi>=0;vi--){
+          var vv=w.vars[vi];
+          if(vv.src==='auto' && !vv.done && vv!==keepA){
+            delete drillDraft().pick['v:'+w.id+':'+vv.id];
+            w.vars.splice(vi,1); cut++;
+          }
+        }
+      });
+      if(!cut){ toast('已经是每题一道同类题了'); break; }
+      save(); renderAll();
+      toast('清掉 '+cut+' 道多余的自动变式，每题只留一道');
+      break;
+    }
+    case 'varAdd': {
+      var vaw=findWrong(id); if(!vaw) break;
+      var vq=$('varQ'), vaa=$('varA'), vtp=$('varTip');
+      var vqt=vq?String(vq.value||'').trim():'';
+      if(!vqt){ toast('先写题干'); break; }
+      if(!Array.isArray(vaw.vars)) vaw.vars=[];
+      vaw.vars.push({ id:uid(), q:vqt, a:vaa?String(vaa.value||'').trim():'', tip:vtp?String(vtp.value||'').trim():'',
+        type:vaw.type, src:'manual', pages:[], done:false });
+      save(); renderVarPanel(); toast('已加入一道变式题');
+      break;
+    }
+    case 'varDel': {
+      var vdw=findWrong(id); if(!vdw) break;
+      var vdid=el.getAttribute('data-vid');
+      vdw.vars=(vdw.vars||[]).filter(function(v){ return v.id!==vdid; });
+      delete drillDraft().pick['v:'+id+':'+vdid];
+      save(); renderVarPanel(); toast('已删除这道变式题');
+      break;
+    }
+    case 'varDone': {
+      var vdn=findWrong(id); if(!vdn) break;
+      var vdnid=el.getAttribute('data-vid');
+      var vd=(vdn.vars||[]).filter(function(v){ return v.id===vdnid; })[0];
+      if(!vd) break;
+      vd.done=!vd.done;
+      save(); renderVarPanel();
+      toast(vd.done?'这道变式已掌握':'放回待练');
+      break;
+    }
+    case 'varPick': {
+      var vpk='v:'+id+':'+el.getAttribute('data-vid');
+      drillToggle(vpk);
+      saveNow(); renderVarPanel();
+      toast(drillIsPicked(vpk)?'已加入练习卷':'已移出练习卷');
+      break;
+    }
+    case 'varViewPage': {
+      var vvw=findWrong(id); if(!vvw) break;
+      var vvid=el.getAttribute('data-vid');
+      var vv=(vvw.vars||[]).filter(function(v){ return v.id===vvid; })[0];
+      if(!vv) break;
+      var vpid=(vv.pages||[])[Number(el.getAttribute('data-i'))];
+      if(vpid) openViewer(vpid, '', '这张图存在原来那台设备上');
+      break;
+    }
+    case 'varImport': openVarImport(id, el.getAttribute('data-v')); break;
+    case 'varImpApply': varImportApply(id); break;
+
+    /* ---------- 练习卷 ---------- */
+    case 'drillFilter': {
+      var df=el.getAttribute('data-f'), dv=el.getAttribute('data-v');
+      if(df==='subj') S.ui.drillSubj=dv;
+      else if(df==='src') S.ui.drillSrc=dv;
+      else if(df==='type') S.ui.drillType=dv;
+      else if(df==='track') S.ui.drillTrack=dv;
+      saveNow(); renderAll();
+      break;
+    }
+    case 'drillPick': {
+      drillToggle(el.getAttribute('data-k'));
+      saveNow(); renderAll();
+      break;
+    }
+    case 'drillAns': {
+      drillDraft().withAns=(el.getAttribute('data-v')==='1');
+      saveNow(); renderAll();
+      break;
+    }
+    case 'drillAll': {
+      var dfa=drillFiltered();
+      if(!dfa.length){ toast('当前筛选下没有题目'); break; }
+      dfa.forEach(function(x){ drillDraft().pick[x.key]=true; });
+      saveNow(); renderAll();
+      toast('已全选 '+dfa.length+' 题');
+      break;
+    }
+    case 'drillClear': {
+      drillDraft().pick={};
+      saveNow(); renderAll();
+      break;
+    }
+    case 'drillPdf': drillDoExport(); break;
+    case 'drillSave': {
+      var dsl=drillItems();
+      if(!dsl.length){ toast('先勾选题目'); break; }
+      drillSaveSilent(dsl, drillOpt());
+      renderAll();
+      toast('已保存这份组卷');
+      break;
+    }
+    case 'drillHistPdf': {
+      var dhr=(S.study.drills||[]).filter(function(x){ return x.id===id; })[0];
+      if(!dhr) break;
+      exportDrill((dhr.items||[]).map(function(x){ return x; }),
+        { title:dhr.title, withAns:!!dhr.withAns, date:dhr.date, subjName:'综合' });
+      break;
+    }
+    case 'drillHistDel': {
+      var dhd=(S.study.drills||[]).filter(function(x){ return x.id===id; })[0];
+      if(!dhd) break;
+      confirmBox('删除这条组卷记录？','「'+esc(dhd.title||'练习卷')+'」的记录会消失，题目本身不受影响。','删除', function(){
+        S.study.drills=(S.study.drills||[]).filter(function(x){ return x.id!==id; });
+        save(); renderAll(); toast('已删除记录');
+      });
       break;
     }
     case 'openAi': openAiSheet(); break;
@@ -4844,6 +6640,39 @@ function handleAct(act, el){
       break;
     }
     case 'addTaskToProj': openTaskModal(null, id); break;
+    case 'addTaskToTrack': openTaskModal(null, id, el.getAttribute('data-tid')); break;
+    case 'tkTaskMore': {
+      var tkMore=el.getAttribute('data-tid');
+      if(_tkTaskMore[tkMore]) delete _tkTaskMore[tkMore]; else _tkTaskMore[tkMore]=1;
+      renderAll();
+      break;
+    }
+    case 'gotoProj':
+    case 'gotoTrack': {
+      var gp=findProj(id); if(!gp) break;
+      var gtid=act==='gotoTrack' ? el.getAttribute('data-tid') : '';
+      var gtk=gtid?findTrack(gp,gtid):null;
+      S.ui.view='projects'; S.ui.projFilter='all'; S.ui.projCat=gp.cat||'all';
+      if(gtk) tkSetOpen(gtk.id, true);
+      saveNow(); renderAll();
+      setTimeout(function(){
+        var box=null;
+        if(gtid){
+          var btn=document.querySelector('[data-act="openTrack"][data-tid="'+gtid+'"]');
+          box=btn && btn.closest ? btn.closest('.tk-wrap') : null;
+        }
+        if(!box){
+          var cards=document.querySelectorAll('.proj');
+          for(var ci=0;ci<cards.length;ci++){
+            var nm=cards[ci].querySelector('.proj-name');
+            if(nm && nm.textContent===gp.name){ box=cards[ci]; break; }
+          }
+        }
+        if(box && box.scrollIntoView) box.scrollIntoView({block:'center',behavior:'smooth'});
+      },60);
+      toast(gtk ? ('已跳到「'+gp.name+' · '+gtk.name+'」') : ('已跳到「'+gp.name+'」'));
+      break;
+    }
     case 'piMore': { var pm=el.getAttribute('data-id'); _pi.more[pm]=!_pi.more[pm]; renderAll(); break; }
     case 'piDone': { var pd=el.getAttribute('data-id'); _pi.done[pd]=!_pi.done[pd]; renderAll(); break; }
     case 'addMeet': openMeetModal(null); break;
@@ -4983,7 +6812,10 @@ function bindEvents(){
       t.time=fd.get('time')||'';
       t.pid=fd.get('pid')||'';
       t.tid=t.pid?(fd.get('tid')||''):'';
-      save(); closeModal(); renderAll(); toast(id?'已保存':'待办已添加');
+      if(t.tid && !findTrack(findProj(t.pid), t.tid)) t.tid='';
+      var svTrk = t.tid ? findTrack(findProj(t.pid), t.tid) : null;
+      save(); closeModal(); renderAll();
+      toast((id?'已保存':'待办已添加') + (svTrk ? ' · 已挂到线路「'+svTrk.name+'」' : ''));
     }else if(f.id==='projForm'){
       var pid=f.getAttribute('data-id');
       var p=pid?findProj(pid):null;
@@ -5103,11 +6935,21 @@ function bindEvents(){
       wq.subj=fd.get('subj')||'cn';
       wq.date=fd.get('date')||todayStr();
       wq.topic=wqTopic;
+      wq.type=fd.get('type')||wqGuessType(wqText, wq.subj);
       wq.q=wqText;
+      /* 体系：题号能判就判；人手动选的和题号不一致时，以人的选择为准并记住 */
+      if(wqHasTracks(wq.subj)){
+        var tkPick=fd.get('track')||'', tkCode=wqTrackFromCode(wqText)||wqTrackFromCode(wqTopic);
+        wq.track=tkPick || tkCode || 'school';
+        if(tkCode && tkPick && tkPick!==tkCode) wq.trackManual=1;
+        else if(!tkPick) wq.trackManual=0;
+      }else{ wq.track=''; wq.trackManual=0; }
       wq.why=String(fd.get('why')||'').trim();
       wq.fix=String(fd.get('fix')||'').trim();
       wq.pages=wqP;
       wq.files=wqF;
+      if(!Array.isArray(wq.vars)) wq.vars=[];
+      if(!wq.src) wq.src='manual';
       /* 编辑时删掉的那几张，保存后才真删 */
       oldP.forEach(function(pid){ if(wqP.indexOf(pid)<0){ idbDel(pid); delete _objUrls[pid]; } });
       oldF.forEach(function(f){
@@ -5122,8 +6964,23 @@ function bindEvents(){
   }, false);
 
   document.addEventListener('input', function(e){
-    var el=e.target; if(!el || el.id!=='rvBody') return;
-    if(_reviewDraft){ _reviewDraft.text=el.value; _reviewDraft.edited=true; }
+    var el=e.target; if(!el || !el.getAttribute) return;
+    if(el.id==='rvBody'){
+      if(_reviewDraft){ _reviewDraft.text=el.value; _reviewDraft.edited=true; }
+      return;
+    }
+    /* 举一反一：题干/答案/提示边改边存 */
+    var vk=el.getAttribute('data-vk');
+    if(!vk) return;
+    var vw=findWrong(el.getAttribute('data-wid'));
+    if(!vw || !Array.isArray(vw.vars)) return;
+    var vid=el.getAttribute('data-vid');
+    var vi=null;
+    for(var i2=0;i2<vw.vars.length;i2++){ if(vw.vars[i2].id===vid){ vi=vw.vars[i2]; break; } }
+    if(!vi) return;
+    vi[vk]=el.value;
+    clearTimeout(_varSaveT);
+    _varSaveT=setTimeout(function(){ save(); }, 800);
   }, false);
 
   document.addEventListener('change', function(e){
@@ -5146,11 +7003,72 @@ function bindEvents(){
       el.value='';
       return;
     }
+    if(el.id==='impImg'){
+      var ifs=el.files;
+      el.value='';
+      if(ifs && ifs.length) impAddFiles(ifs);
+      return;
+    }
+    if(el.id==='impOcrFile'){
+      var of=el.files && el.files[0];
+      el.value='';
+      if(of) impDoOcr(of);
+      return;
+    }
+    if(el.id==='impPack'){
+      var pf=el.files && el.files[0];
+      el.value='';
+      if(pf) wqImportPackFile(pf);
+      return;
+    }
+    if(el.id==='drillTitle'){
+      drillDraft().title=String(el.value||'').trim();
+      saveNow();
+      return;
+    }
     if(el.id==='taskProj'){ fillTrackOptions(el.value, ''); return; }
+    /* 导入清单里改科目：数学才显示体系，所以重画一次 */
+    var dk=el.getAttribute('data-k');
+    if(dk==='subj' && el.closest && el.closest('.draft-i') && _imp){
+      impSyncDom(); renderImport(); return;
+    }
+    /* 清单里点胶囊改体系：记住这是人定的，别被题号再改回去 */
+    if(dk==='track' && el.closest && el.closest('.draft-i') && _imp){
+      var dti=Number(el.closest('.draft-i').getAttribute('data-i'));
+      if(_imp.drafts[dti]){ _imp.drafts[dti].track=el.value||'school'; _imp.drafts[dti].trackManual=1; }
+      return;
+    }
+    /* 清单里改题干：题号变了就顺手把体系跟上，并把胶囊一起更新 */
+    if(dk==='q' && el.closest && el.closest('.draft-i') && _imp){
+      var dqi=Number(el.closest('.draft-i').getAttribute('data-i'));
+      var dq=_imp.drafts[dqi];
+      if(dq && dq.trackManual!==1){
+        var dgk=wqTrackFromCode(el.value);
+        if(dgk && dgk!==dq.track){
+          dq.q=el.value; dq.track=dgk;
+          var dsel=el.closest('.draft-i').querySelector('[data-k="track"]');
+          if(dsel) dsel.value=dgk;
+          toast('题号是 '+(dgk==='xrs'?'X':'K')+' 开头，已归到「'+(dgk==='xrs'?'学而思':'课内')+'」');
+        }else{ dq.q=el.value; }
+      }
+      return;
+    }
     var act=el.getAttribute('data-act') || el.getAttribute('data-sel'); if(!act) return;
-    if(act==='projCat'){ S.ui.projCat=el.value||'all'; saveNow(); renderAll(); }
+    if(act==='wqSubjChg'){ wqSubjChanged(el.value); }
+    else if(act==='wqTrackPick'){ el.setAttribute('data-touched','1'); }
+    else if(act==='wqQChg'){ wqQGuessTrack(); }
+    else if(act==='projCat'){ S.ui.projCat=el.value||'all'; saveNow(); renderAll(); }
     else if(act==='projStatus'){ setProjStatus(el.getAttribute('data-id'), el.value); }
     else if(act==='projPhase'){ setProjPhase(el.getAttribute('data-id'), el.value); }
+    else if(act==='wqTrack'){
+      var trw=findWrong(el.getAttribute('data-id'));
+      if(trw){
+        trw.track=el.value||'school';
+        trw.trackManual=1;   /* 手动定过的，以后不再被题号自动归类覆盖 */
+        save(); renderAll();
+        toast('已归到「'+wqTrackName(trw.subj, trw.track)+'」');
+      }
+    }
   }, false);
 }
 
