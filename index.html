@@ -989,6 +989,9 @@ select.ai-in{-webkit-appearance:none;appearance:none;padding-right:6px}
 .pc-b{padding:9px 11px}
 .pc-t{font-size:12.5px;font-weight:650;color:var(--text);line-height:1.4;min-height:2.8em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .pc-m{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:10.5px;color:var(--text-4);flex-wrap:wrap}
+.pc-cloud{position:absolute;right:7px;top:7px;display:inline-flex;align-items:center;gap:2px;font-style:normal;
+  font-size:9.5px;font-weight:750;color:#fff;background:rgba(13,148,136,.88);padding:2px 6px;border-radius:20px;line-height:1.3}
+.pc-cloud svg{width:9px;height:9px}
 .pc-m .pill{font-size:10px;padding:1px 6px}
 .pc-k{color:var(--text-4)}
 
@@ -1008,6 +1011,10 @@ select.ai-in{-webkit-appearance:none;appearance:none;padding-right:6px}
 .ph-cell.noimg::after{content:'原图不在本机';position:absolute;inset:0;display:flex;align-items:center;
   justify-content:center;font-size:10px;color:var(--text-3);text-align:center;padding:0 6px;line-height:1.4}
 .ph-cell i{position:absolute;left:5px;bottom:4px;font-style:normal;font-size:9.5px;background:rgba(14,43,41,.62);color:#fff;padding:1px 5px;border-radius:20px}
+.ph-cell .ph-mark{position:absolute;right:4px;bottom:4px;z-index:2;display:inline-flex;align-items:center;gap:2px;
+  font-size:9.5px;font-weight:700;color:#fff;background:rgba(14,43,41,.72);border-radius:20px;padding:2px 7px}
+.ph-cell .ph-mark svg{width:9px;height:9px}
+.ph-cell .ph-mark:hover{background:var(--accent)}
 .ph-x{position:absolute;right:4px;top:4px;width:20px;height:20px;border-radius:50%;background:rgba(14,43,41,.58);color:#fff;
   display:flex;align-items:center;justify-content:center;cursor:pointer;border:0;padding:0}
 .ph-x svg{width:12px;height:12px}
@@ -1029,6 +1036,49 @@ select.ai-in{-webkit-appearance:none;appearance:none;padding-right:6px}
 .sc-num small{font-size:10.5px;color:var(--text-4)}
 
 .wq-list{display:flex;flex-direction:column;gap:10px}
+/* 错题本页签 + 试卷记录列表 */
+.wq-tabs{margin:0 0 12px;width:fit-content;max-width:100%}
+.wq-tabs .btn-ico,.wq-tabs svg{width:12px;height:12px}
+.pr-list{display:flex;flex-direction:column}
+.pr-row{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid var(--line-soft)}
+.pr-row:last-child{border-bottom:none}
+.pr-th{flex:0 0 52px;width:52px;height:66px;border-radius:7px;overflow:hidden;border:1px solid var(--line);
+  background:var(--bg-2);padding:0;position:relative;display:block;cursor:zoom-in}
+.pr-th img{width:100%;height:100%;object-fit:cover;display:block}
+.pr-th img.noimg{opacity:.25}
+.pr-th i{position:absolute;left:0;right:0;bottom:0;font-style:normal;font-size:9.5px;text-align:center;
+  color:#fff;background:rgba(0,0,0,.45);line-height:15px}
+.pr-noimg{display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-4)}
+.pr-noimg svg{width:18px;height:18px}
+.pr-m{flex:1;min-width:0}
+.pr-t{display:block;text-align:left;font-size:13.2px;font-weight:640;color:var(--text);letter-spacing:-.1px;
+  line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.pr-t:hover{color:var(--accent-deep);text-decoration:underline;text-underline-offset:2px}
+.pr-x{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px;font-size:10.5px;color:var(--text-4)}
+.pr-k{color:var(--text-3);font-weight:650}
+.pr-d{font-variant-numeric:tabular-nums}
+.pr-sc{color:var(--warn);font-weight:700;font-variant-numeric:tabular-nums}
+.pr-wq{color:var(--violet);font-weight:650;background:var(--violet-soft);padding:0 6px;border-radius:20px;line-height:16px}
+.pr-cloud{display:inline-flex;align-items:center;gap:3px;font-weight:650;padding:0 6px;border-radius:20px;line-height:16px}
+.pr-cloud svg{width:10px;height:10px}
+.pr-cloud.full{background:var(--accent-soft);color:var(--accent-deep)}
+.pr-cloud.part{background:var(--warn-soft);color:var(--warn)}
+.pr-cloud.local,.pr-cloud.none{background:#f0f5f5;color:var(--text-4)}
+.pr-a{display:flex;align-items:center;gap:5px;flex:0 0 auto}
+.pr-a .btn-sm{padding:4px 9px;font-size:11px}
+.pr-cloud-note{display:flex;align-items:flex-start;gap:7px;font-size:11.5px;color:var(--text-3);line-height:1.6;
+  background:var(--accent-soft2);border:1px solid #dceceb;border-radius:10px;padding:8px 11px;margin-bottom:12px}
+.pr-cloud-note svg{width:14px;height:14px;flex:0 0 14px;margin-top:1px;color:var(--accent)}
+.pr-cloud-note b{color:var(--accent-deep)}
+.pr-tip{display:flex;align-items:flex-start;gap:7px;font-size:11.5px;color:var(--text-4);line-height:1.6;margin-top:12px}
+.pr-tip svg{width:14px;height:14px;flex:0 0 14px;margin-top:1px}
+.pr-tip b{color:var(--text-2)}
+@media (max-width:640px){
+  .pr-row{flex-wrap:wrap;align-items:flex-start;gap:9px}
+  .pr-a{width:100%;justify-content:flex-end}
+  .pr-th{flex:0 0 46px;width:46px;height:60px}
+  .pr-t{white-space:normal}
+}
 .wq-card{border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;background:var(--surface)}
 .wq-card.done{opacity:.6;background:var(--bg-2)}
 .wq-h{display:flex;align-items:center;gap:7px;margin-bottom:7px;font-size:11px}
@@ -1768,7 +1818,7 @@ function sampleData(){
 
 /* ---------- 数据层 ---------- */
 function defUI(){ return { view:'today', taskFilter:'today', projFilter:'all', projCat:'all', flowTab:'jsfj', meetFilter:'all',
-  paperSubj:'all', scoreSubj:'all', scoreRange:'all', wrongSubj:'all', wrongState:'todo', reviewRange:'d7', tkOpen:{} }; }
+  paperSubj:'all', scoreSubj:'all', scoreRange:'all', wrongSubj:'all', wrongState:'todo', wqTab:'wrongs', reviewRange:'d7', tkOpen:{} }; }
 function migrate(){
   ensureFlows();
   ensureStd();
@@ -1791,6 +1841,13 @@ function migrate(){
     var px=projById(x.pid);
     if(!px || !findTrack(px, x.tid)) x.tid='';
   });
+  /* 试卷云端副本：清掉空壳，重建页 id 索引 */
+  (S.study.papers||[]).forEach(function(p){
+    if(!Array.isArray(p.cimgs)) return;
+    p.cimgs=p.cimgs.filter(function(x){ return x && x.id && x.data; });
+    if(!p.cimgs.length) delete p.cimgs;
+  });
+  cimgReset();
   S.ui=Object.assign(defUI(), S.ui||{});
 }
 function load(){
@@ -1928,7 +1985,11 @@ function renderTabs(){
 }
 
 /* ---------- 路由 ---------- */
-function go(k){ S.ui.view=k; saveNow(); renderAll(); var m=document.querySelector('.main'); if(m&&window.scrollY>120) window.scrollTo({top:0,behavior:'smooth'}); }
+function go(k){
+  if(k==='wrongs' && S.ui.view!=='wrongs') S.ui.wqTab='wrongs';   /* 从别处进错题本，默认落在「错题」页签 */
+  S.ui.view=k; saveNow(); renderAll();
+  var m=document.querySelector('.main'); if(m&&window.scrollY>120) window.scrollTo({top:0,behavior:'smooth'});
+}
 function goGroup(grKey){
   for(var i=0;i<NAV.length;i++){
     if(NAV[i].key!==grKey) continue;
@@ -2966,7 +3027,11 @@ function imgUrl(id, cb){
   if(!id) return cb('');
   if(_objUrls[id]) return cb(_objUrls[id]);
   idbGet(id).then(function(b){
-    if(!b) return cb('');
+    if(!b){
+      /* 本机没有原图，但有云端整页副本：直接拿来显示，换设备也不至于一片空白 */
+      var cu=cimgIndex()[id];
+      return cb(cu||'');
+    }
     var u=URL.createObjectURL(b);
     _objUrls[id]=u;
     cb(u);
@@ -3058,6 +3123,97 @@ function thumbStat(){
   var n=0, b=0;
   (S.study.papers||[]).forEach(function(p){ if(p.thumb){ n++; b+=p.thumb.length; } });
   return { n:n, kb:Math.round(b/1024) };
+}
+
+/* ---------- 试卷整页云端副本 ----------
+   原图仍留本机；这里存的是压到 CIMG_W 宽的 JPEG 副本，跟着同步快照走，
+   换设备打开能翻整卷、也能直接导 PDF。体积有预算：超了自动把最早的卷子移出云端。 */
+var CIMG_W=1000, CIMG_Q=0.68, CIMG_BUDGET=5*1024*1024, CIMG_MAX_PAPERS=24;
+var _cimgIdx=null;
+function cimgReset(){ _cimgIdx=null; }
+function cimgIndex(){
+  if(_cimgIdx) return _cimgIdx;
+  var m={};
+  (S.study.papers||[]).forEach(function(p){
+    (p.cimgs||[]).forEach(function(x){ if(x && x.id && x.data) m[x.id]=x.data; });
+  });
+  _cimgIdx=m; return m;
+}
+function paperCimgN(p){ return (p && p.cimgs) ? p.cimgs.length : 0; }
+function cimgBytes(){
+  var b=0;
+  (S.study.papers||[]).forEach(function(p){ (p.cimgs||[]).forEach(function(x){ b+=String(x.data||'').length; }); });
+  return b;
+}
+function cimgStat(){
+  var pages=0, b=0, papers=0;
+  (S.study.papers||[]).forEach(function(p){
+    var arr=p.cimgs||[];
+    if(!arr.length) return;
+    papers++; pages+=arr.length;
+    arr.forEach(function(x){ b+=String(x.data||'').length; });
+  });
+  return { papers:papers, pages:pages, kb:Math.round(b/1024), mb:Math.round(b/1048576*10)/10 };
+}
+function paperCloudState(p){
+  var n=paperCimgN(p), total=(p.pages||[]).length;
+  if(!total) return { k:'none', label:'无照片' };
+  if(n>=total) return { k:'full', label:'已上云 '+n+' 页' };
+  if(n) return { k:'part', label:'部分 '+n+'/'+total+' 页' };
+  return { k:'local', label:'仅本机' };
+}
+/* 超预算就摘掉最早的卷子（原图不动） */
+function trimCloudImgs(keepId){
+  var dropped=0, guard=0;
+  while(cimgBytes()>CIMG_BUDGET && guard++<300){
+    var cand=(S.study.papers||[]).filter(function(p){ return p.id!==keepId && (p.cimgs||[]).length; })
+      .sort(function(a,b){ return (a.cimgAt||0)-(b.cimgAt||0); })[0];
+    if(!cand) break;
+    delete cand.cimgs; cand.cloudOff=1; dropped++;
+  }
+  var withImg=(S.study.papers||[]).filter(function(p){ return (p.cimgs||[]).length; })
+    .sort(function(a,b){ return (b.cimgAt||0)-(a.cimgAt||0); });
+  for(var i=CIMG_MAX_PAPERS;i<withImg.length;i++){ delete withImg[i].cimgs; withImg[i].cloudOff=1; dropped++; }
+  cimgReset();
+  return dropped;
+}
+async function uploadPaperCloud(p, silent){
+  if(!p) return false;
+  var pages=(p.pages||[]).slice();
+  if(!pages.length){ if(!silent) toast('这份试卷还没有照片'); return false; }
+  if(!silent) toast('正在压缩 '+pages.length+' 页并上云…');
+  var old=p.cimgs||[], out=[];
+  for(var i=0;i<pages.length;i++){
+    var blob=null;
+    try{ blob=await idbGet(pages[i]); }catch(e){}
+    if(!blob){
+      /* 本机没有原图（比如在另一台设备上），已有的云端副本保留 */
+      var keep=old.filter(function(x){ return x.id===pages[i]; })[0];
+      if(keep) out.push(keep);
+      continue;
+    }
+    try{
+      var sb=await shrinkImage(blob, CIMG_W, CIMG_Q);
+      var du=await blobToDataURL(sb);
+      if(du) out.push({ id:pages[i], data:du });
+    }catch(e){}
+  }
+  if(!out.length){ if(!silent) toast('没有可上云的照片'); return false; }
+  p.cimgs=out; p.cimgAt=Date.now(); delete p.cloudOff;
+  cimgReset();
+  var dropped=trimCloudImgs(p.id);
+  save();
+  if(S.ui.view==='wrongs' || S.ui.view==='papers') renderAll();
+  if(!silent){
+    var st=cimgStat();
+    toast('已上云 '+out.length+' 页 · 云端共 '+st.pages+' 页 / '+st.mb+' MB'+(dropped?(' · 最早的 '+dropped+' 份已移出云端'):''));
+  }
+  return true;
+}
+function clearPaperCloud(p){
+  if(!p) return;
+  delete p.cimgs; p.cloudOff=1;
+  cimgReset(); save(); renderAll();
 }
 
 /* 图片解码（iPhone 的 EXIF 方向由 createImageBitmap 自动校正） */
@@ -3320,7 +3476,7 @@ function vStudy(){
     '</div></div>';
 
   var quick='<div class="quick-grid">'+
-    '<button class="quick" data-act="addPaper" type="button">'+ic('camera')+'<b>拍照录试卷</b><span>拍完自动存，能导出 PDF</span></button>'+
+    '<button class="quick" data-act="addPaper" type="button">'+ic('camera')+'<b>试卷存档</b><span>拍做过的卷子，能导 PDF</span></button>'+
     '<button class="quick" data-act="addScore" type="button">'+ic('chart')+'<b>录一次成绩</b><span>自动算得分率并上图</span></button>'+
     '<button class="quick" data-act="addWrong" type="button">'+ic('alert')+'<b>记一道错题</b><span>按知识点归类</span></button>'+
     '<button class="quick" data-act="impOpen" data-v="img" type="button">'+ic('inbox')+'<b>批量导入错题</b><span>整份卷子一次入库</span></button>'+
@@ -3356,7 +3512,7 @@ function vPapers(){
   }else{
     grid='<div class="paper-grid">'+list.map(function(p){
       var sb=subjOf(p.subj), n=paperPages(p), first=(p.pages||[])[0];
-      var picked=!!_pdfPick[p.id];
+      var picked=!!_pdfPick[p.id], cn=paperCimgN(p);
       return '<div class="paper-card'+(picked?' picked':'')+'">'+
         '<button class="pc-thumb" data-act="openPaper" data-id="'+p.id+'" type="button">'+
           (first
@@ -3365,6 +3521,7 @@ function vPapers(){
                 : '<img data-page-img="'+esc(first)+'" alt="" loading="lazy">')
             : '<span class="pc-noimg">'+ic('image')+'</span>')+
           '<i class="pc-n">'+n+' 页</i>'+
+          (cn?'<i class="pc-cloud" title="整页副本已上云，换设备能翻">'+ic('cloud')+cn+'</i>':'')+
         '</button>'+
         '<button class="pc-chk'+(picked?' on':'')+'" data-act="pickPaper" data-id="'+p.id+'" type="button" aria-label="选择">'+ic('check')+'</button>'+
         '<div class="pc-b">'+
@@ -3382,7 +3539,7 @@ function vPapers(){
     '<button class="btn btn-sm btn-primary" data-act="pdfMake" type="button">'+ic('download')+'生成 PDF</button></div>' : '';
 
   return '<div class="topbar"><div><h1>试卷库</h1>'+
-      '<div class="sub">共 '+all.length+' 份 · '+pages+' 页 · 缩略图随云同步，原图存本机</div></div>'+
+      '<div class="sub">共 '+all.length+' 份 · '+pages+' 页 · 云端副本 '+cimgStat().pages+' 页 · 原图存本机</div></div>'+
       '<div class="topbar-act ps-act">'+
         '<button class="btn" data-act="paperSync" type="button">'+ic('cloud')+'同步</button>'+
         '<button class="btn" data-act="pdfSelAll" type="button">'+ic('checksq')+'全选</button>'+
@@ -3455,7 +3612,18 @@ function vScores(){
 }
 
 /* ---------- 错题本 ---------- */
+/* 错题本页签：错题 / 试卷记录（做过的真实卷子存档，和「练习卷」是两件事） */
+function wqTabsHtml(){
+  var wN=(S.study.wrongs||[]).filter(function(w){ return !w.mastered; }).length;
+  var pN=(S.study.papers||[]).length;
+  var tab=(S.ui.wqTab==='papers')?'papers':'wrongs';
+  return '<div class="seg wq-tabs">'+
+    '<button class="'+(tab==='wrongs'?'on':'')+'" data-act="wqTab" data-v="wrongs" type="button">'+ic('alert')+'错题<span class="seg-n">'+wN+'</span></button>'+
+    '<button class="'+(tab==='papers'?'on':'')+'" data-act="wqTab" data-v="papers" type="button">'+ic('image')+'试卷记录<span class="seg-n">'+pN+'</span></button>'+
+  '</div>';
+}
 function vWrongs(){
+  if(S.ui.wqTab==='papers') return vWqPapers();
   var subj=S.ui.wrongSubj||'all', st=S.ui.wrongState||'todo';
   /* 体系只在分了线的科目上生效，切到语文/英语自动回到「全部」 */
   var tk=(subj!=='all' && wqHasTracks(subj)) ? (S.ui.wrongTrack||'all') : 'all';
@@ -3574,6 +3742,7 @@ function vWrongs(){
           '<span class="wq-t">'+ty.n+'</span>'+
           (w.topic?'<span class="pill gray">'+esc(w.topic)+'</span>':'')+
           (w.src && w.src!=='manual'?'<span class="wq-t '+(w.src==='auto'?'auto':(w.src==='ocr'?'ocr':'batch'))+'">'+esc(WQ_SRC[w.src]||'导入')+'</span>':'')+
+          (w.paperId?'<button class="pill gray pill-link" data-act="openPaper" data-id="'+w.paperId+'" type="button" title="打开原卷：'+esc(paperById(w.paperId)?(paperById(w.paperId).title||'试卷'):'试卷已删除')+'">'+ic('image')+'原卷'+(w.pageIdx!==undefined&&w.pageIdx!==null?(' P'+(Number(w.pageIdx)+1)):'')+'</button>':'')+
           '<span class="wq-d">'+mdShort(w.date)+'</span>'+
           '<span class="sp"></span>'+
           '<button class="ico-btn" data-act="editWrong" data-id="'+w.id+'" type="button" title="编辑">'+ic('pen')+'</button>'+
@@ -3614,12 +3783,98 @@ function vWrongs(){
       '<div class="topbar-act"><button class="btn" data-act="goView" data-v="drill" type="button">'+ic('target')+'练习卷</button>'+
         '<button class="btn" data-act="impOpen" data-v="img" type="button">'+ic('inbox')+'批量导入</button>'+
         '<button class="btn btn-primary" data-act="addWrong" type="button">'+ic('plus')+'记一道错题</button></div></div>'+
+    wqTabsHtml()+
     segSubj+segTrack+segState+
     '<div class="card"><div class="card-h">'+ic('alert')+'<h2>薄弱知识点</h2><span class="hint">按待巩固错题数排序</span></div>'+
       '<div class="card-b">'+topHtml+'</div></div>'+
     (tlist.length?'<div class="card"><div class="card-h">'+ic('chart')+'<h2>题型分布</h2><span class="hint">点「举一反一」可以按题型补练</span></div>'+
       '<div class="card-b">'+typeHtml+'</div></div>':'')+
     '<div class="wq-list">'+cards+'</div>';
+}
+
+/* =========================================================
+   错题本 · 试卷记录：把做过的真实卷子拍照存档
+   —— 和「练习卷」区分：练习卷是用错题组卷生成的，这里只存考过/做过、带批改的卷子
+   ========================================================= */
+function paperScoreText(p){
+  if(!p || p.score===undefined || p.score===null || p.score==='') return '';
+  var f=Number(p.full)||100;
+  return '得分 '+p.score+'/'+f;
+}
+function wrongsOfPaper(pid){
+  if(!pid) return [];
+  return (S.study.wrongs||[]).filter(function(w){ return w.paperId===pid; });
+}
+function vWqPapers(){
+  var subj=S.ui.paperSubj||'all';
+  var all=S.study.papers||[];
+  var list=all.filter(function(p){ return subj==='all'||p.subj===subj; })
+    .sort(function(a,b){ return (a.date||'')<(b.date||'')?1:-1; });
+  var pagesN=all.reduce(function(a,p){ return a+paperPages(p); },0);
+  var cs=cimgStat();
+
+  var seg='<div class="seg wrap" style="margin-bottom:10px">'+
+    ['all'].concat(SUBJ.map(function(s){ return s.k; })).map(function(k){
+      var n=k==='all'?all.length:all.filter(function(p){ return p.subj===k; }).length;
+      return '<button class="'+(subj===k?'on':'')+'" data-act="paperSubj" data-v="'+k+'" type="button">'+(k==='all'?'三科':subjOf(k).n)+'<span class="seg-n">'+n+'</span></button>';
+    }).join('')+'</div>';
+
+  var rows='';
+  if(!list.length){
+    rows='<div class="empty" style="padding:32px 0">'+ic('camera')+'<b>'+(all.length?'这个科目还没有存档':'还没有存档卷子')+'</b>'+
+      '<span>孩子做过的卷子拍下来就能存：期末、单元测、学而思作业都行；带批改痕迹更好，之后标错题直接用这张图</span>'+
+      '<div class="ph-btns" style="justify-content:center">'+
+        '<button class="btn btn-primary" data-act="addPaper" type="button">'+ic('camera')+'拍照存档</button>'+
+        '<button class="btn" data-act="goView" data-v="papers" type="button">'+ic('folder')+'去试卷库管理</button>'+
+      '</div></div>';
+  }else{
+    rows=list.map(function(p){
+      var sb=subjOf(p.subj), n=paperPages(p), first=(p.pages||[])[0];
+      var cst=paperCloudState(p);
+      var sc=paperScoreText(p);
+      var firstPage=(p.pages||[])[0]||'';
+      return '<div class="pr-row">'+
+        '<button class="pr-th" data-act="openPaper" data-id="'+p.id+'" type="button" aria-label="看看这份卷子">'+
+          (first
+            ? (p.thumb ? '<img src="'+esc(p.thumb)+'" alt="" loading="lazy">' : '<img data-page-img="'+esc(first)+'" alt="" loading="lazy">')
+            : '<span class="pr-noimg">'+ic('image')+'</span>')+
+          '<i>'+n+' 页</i></button>'+
+        '<div class="pr-m">'+
+          '<button class="pr-t" data-act="openPaper" data-id="'+p.id+'" type="button">'+esc(p.title||'未命名试卷')+'</button>'+
+          '<div class="pr-x">'+
+            '<span class="pill" style="background:'+sb.soft+';color:'+sb.c+'">'+sb.n+'</span>'+
+            (p.kind?'<span class="pr-k">'+esc(p.kind)+'</span>':'')+
+            '<span class="pr-d">'+mdShort(p.date)+'</span>'+
+            (sc?'<span class="pr-sc">'+esc(sc)+'</span>':'')+
+            (wrongsOfPaper(p.id).length?'<span class="pr-wq">已标 '+wrongsOfPaper(p.id).length+' 道错题</span>':'')+
+            '<span class="pr-cloud '+cst.k+'">'+ic(cst.k==='full'?'cloud':'image')+cst.label+'</span>'+
+          '</div>'+
+        '</div>'+
+        '<div class="pr-a">'+
+          '<button class="btn btn-sm" data-act="paperMarkPick" data-id="'+p.id+'" type="button" title="从这卷里挑一道存进错题本">'+ic('alert')+'标错题</button>'+
+          '<button class="btn btn-sm" data-act="pdfOne" data-id="'+p.id+'" type="button">'+ic('download')+'PDF</button>'+
+          (cst.k==='full'||cst.k==='part'?'':'<button class="ico-btn" data-act="paperCloud" data-id="'+p.id+'" type="button" title="压一份整页副本上云，换设备也能翻">'+ic('cloud')+'</button>')+
+          (cst.k==='part'?'<button class="ico-btn" data-act="paperCloud" data-id="'+p.id+'" type="button" title="补齐还没上云的页">'+ic('refresh')+'</button>':'')+
+        '</div>'+
+      '</div>';
+    }).join('');
+  }
+
+  var cloudLine='<div class="pr-cloud-note">'+ic('cloud')+
+    '<span><b>云端共享</b>：已上云 '+cs.pages+' 页 · '+cs.mb+' MB。换设备打开同一份数据就能翻卷、导 PDF；原图留本机，超 5 MB 自动先把最早的卷子移出云端。</span></div>';
+
+  return '<div class="topbar"><div><h1>错题本</h1>'+
+      '<div class="sub">做过的卷子拍照存档（不是练习卷）· 共 '+all.length+' 份 / '+pagesN+' 页 · 云端 '+cs.pages+' 页</div></div>'+
+      '<div class="topbar-act">'+
+        '<button class="btn" data-act="goView" data-v="drill" type="button">'+ic('target')+'练习卷</button>'+
+        '<button class="btn" data-act="goView" data-v="papers" type="button">'+ic('folder')+'试卷库</button>'+
+        '<button class="btn btn-primary" data-act="addPaper" type="button">'+ic('camera')+'拍照存档</button>'+
+      '</div></div>'+
+    wqTabsHtml()+seg+
+    cloudLine+
+    '<div class="card"><div class="card-h">'+ic('image')+'<h2>试卷记录</h2><span class="hint">做过的卷子 · 点缩略图看整卷，点「标错题」圈一道进错题本</span></div>'+
+      '<div class="card-b tight"><div class="pr-list">'+rows+'</div></div></div>'+
+    '<div class="pr-tip">'+ic('target')+'<span><b>练习卷是另一件事</b>：从错题组卷、打印出来做的卷子在「练习卷」页生成和导出，不占这里的存档位。这边只记真实考过、批改过的卷子，方便回头翻原卷。</span></div>';
 }
 
 /* =========================================================
@@ -4915,15 +5170,23 @@ function openPaperForm(id){
   var p=id?paperById(id):null;
   var isNew=!p;
   _paperBuf={ id:id||null, pages:(p&&p.pages?p.pages.slice():[]), dropOnClose:isNew };
-  var h='<h3>'+(isNew?'拍照录入试卷':'编辑试卷')+'</h3>'+
-    '<p>照片压到 2000px 存在这台设备上，导出 PDF 时按页顺序拼起来。</p>'+
+  var h='<h3>'+(isNew?'拍照存档试卷':'编辑试卷存档')+'</h3>'+
+    '<p>存的是<b>孩子做过、批改过的真实卷子</b>（练习卷在「练习卷」页，不混在一起）。照片压到 2000px 存在这台设备，保存后会自动压一份整页副本上云。</p>'+
     '<form id="paperForm" data-id="'+(p?p.id:'')+'"><div class="form">'+
       '<div class="row2">'+
         '<div class="f"><label>科目</label><select name="subj">'+subjOptions(p?p.subj:'cn')+'</select></div>'+
         '<div class="f"><label>类型</label><select name="kind">'+kindOptions(p?p.kind:'单元测')+'</select></div>'+
       '</div>'+
       '<div class="f"><label>试卷名称</label><input type="text" name="title" maxlength="60" placeholder="例如：第三单元测试" value="'+esc(p?p.title||'':'')+'"></div>'+
-      '<div class="f"><label>日期</label><input type="date" name="date" value="'+esc(p?p.date||todayStr():todayStr())+'"></div>'+
+      '<div class="row2">'+
+        '<div class="f"><label>日期</label><input type="date" name="date" value="'+esc(p?p.date||todayStr():todayStr())+'"></div>'+
+        '<div class="f"><label>得分 / 满分（可选）</label>'+
+          '<div style="display:flex;gap:6px;align-items:center">'+
+            '<input type="number" name="pscore" min="0" step="0.5" placeholder="92" value="'+esc(p&&p.score!==undefined&&p.score!==null?String(p.score):'')+'" style="flex:1;min-width:0">'+
+            '<span style="color:var(--text-4)">/</span>'+
+            '<input type="number" name="pfull" min="1" step="1" placeholder="100" value="'+esc(String(p&&p.full?p.full:100))+'" style="flex:1;min-width:0">'+
+          '</div></div>'+
+      '</div>'+
       '<div class="f"><label>照片</label><div class="ph-grid" id="phGrid"></div>'+
         '<div class="ph-btns">'+
           '<button class="btn btn-sm" data-act="shootPage" type="button">'+ic('camera')+'拍照</button>'+
@@ -5111,22 +5374,46 @@ function openWrongPick(){
       '<div class="et"><b>批量导入</b><span>一次选十几张图或整份 PDF，按页分开后统一打标签</span></div></button>'+
     '<div class="ma"><button class="btn" data-act="closeModal" type="button">取消</button></div>');
 }
-function openWrongForm(id, mode){
+var _wqPaperLink=null;   /* 从试卷记录里标错题时，记住这份卷子和页码 */
+function imgUsedByPaper(pid){
+  if(!pid) return false;
+  return (S.study.papers||[]).some(function(p){ return (p.pages||[]).indexOf(pid)>=0; });
+}
+function paperMarkOne(pid, idx){
+  var p=paperById(pid); if(!p) return;
+  var pages=p.pages||[];
+  if(!pages.length){ toast('这份卷子还没有照片'); return; }
+  idx=Math.max(0, Math.min(Number(idx)||0, pages.length-1));
+  var pageId=pages[idx]||'';
+  _wqPaperLink={ pid:p.id, idx:idx, title:p.title||'试卷', pageId:pageId };
+  closeModal();
+  openWrongForm(null, 'text', { subj:p.subj, date:p.date, pageId:pageId });
+}
+function openWrongForm(id, mode, pre){
   var w=id?findWrong(id):null;
+  var fromPaper=(!w && pre && pre.pageId) ? (_wqPaperLink&&_wqPaperLink.pageId===pre.pageId ? _wqPaperLink : null) : null;
   /* 从「数学 · 学而思」筛选中点进来，科目和体系直接跟着走，少点两下 */
-  var sb=w?w.subj:((S.ui.wrongSubj && S.ui.wrongSubj!=='all')?S.ui.wrongSubj:'cn');
+  var sb=w?w.subj:((pre&&pre.subj)?pre.subj:((S.ui.wrongSubj && S.ui.wrongSubj!=='all')?S.ui.wrongSubj:'cn'));
   var defTk=(w&&w.track)?w.track:((S.ui.wrongTrack && S.ui.wrongTrack!=='all')?S.ui.wrongTrack:'');
   var isNew=!w;
-  _wqBuf={ id:id||null, pages:wqPagesOf(w).slice(), files:wqFilesOf(w).map(function(f){ return { id:f.id, name:f.name, size:f.size, at:f.at }; }),
-    dropped:[], dropOnClose:isNew };
+  _wqBuf={ id:id||null,
+    pages: w?wqPagesOf(w).slice():(fromPaper?[fromPaper.pageId]:[]),
+    files:wqFilesOf(w).map(function(f){ return { id:f.id, name:f.name, size:f.size, at:f.at }; }),
+    dropped:[], dropOnClose: isNew && !fromPaper };
+  if(!fromPaper && !w) _wqPaperLink=null;
   var tip = mode==='photo' ? '相机打开后直接拍题目，可以连拍多张；科目、体系随手补一下就行。'
     : mode==='file' ? '选老师发的 PDF 或图片文件。扫描版 PDF 会自动把页面抽成照片，方便直接翻。'
     : '按知识点归类，攒够几条就能看出反复出错的环节；数学的题再标一下「课内 / 学而思」，以后能分开选题。';
-  var h='<h3>'+(w?'编辑错题':'记一道错题')+'</h3><p>'+tip+'</p>'+
+  var paperTip = fromPaper
+    ? '<div class="wq-note" style="color:var(--accent-deep);background:var(--accent-soft2);border-radius:8px;padding:8px 11px;margin-bottom:10px;line-height:1.55">'+
+      ic('image')+' 来自《'+esc(fromPaper.title)+'》第 '+(fromPaper.idx+1)+' 页：这一页照片会跟着存进错题，卡片上能一键跳回原卷。</div>'
+    : '';
+  var dateVal = w ? (w.date||todayStr()) : ((pre&&pre.date)||todayStr());
+  var h='<h3>'+(w?'编辑错题':'记一道错题')+'</h3><p>'+tip+'</p>'+paperTip+
     '<form id="wrongForm" data-id="'+(w?w.id:'')+'"><div class="form">'+
       '<div class="row2">'+
         '<div class="f"><label>科目</label><select name="subj" id="wqSubj" data-act="wqSubjChg">'+subjOptions(sb)+'</select></div>'+
-        '<div class="f"><label>日期</label><input type="date" name="date" value="'+esc(w?w.date||todayStr():todayStr())+'"></div>'+
+        '<div class="f"><label>日期</label><input type="date" name="date" value="'+esc(dateVal)+'"></div>'+
       '</div>'+
       '<div class="f"><label>知识点</label><input type="text" name="topic" list="wqTopics" maxlength="24" placeholder="例如：两位数乘法" value="'+esc(w?w.topic||'':'')+'">'+
         '<datalist id="wqTopics">'+topicOptions(sb)+'</datalist></div>'+
@@ -5247,15 +5534,24 @@ function openViewer(imgId, fallback, emptyMsg){
 function openPaperDetail(id){
   var p=paperById(id); if(!p) return;
   var sb=subjOf(p.subj), pages=p.pages||[];
+  var cst=paperCloudState(p), sc=paperScoreText(p);
   var h='<h3>'+esc(p.title||'未命名试卷')+'</h3>'+
-    '<p>'+sb.n+' · '+esc(p.kind||'')+' · '+p.date+' · '+pages.length+' 页</p>'+
+    '<p>'+sb.n+' · '+esc(p.kind||'')+' · '+p.date+' · '+pages.length+' 页'+(sc?(' · '+esc(sc)):'')+'</p>'+
+    '<div class="pr-cloud-note" style="margin:6px 0 10px">'+ic('cloud')+
+      '<span>'+(cst.k==='full'?'整卷已上云（'+paperCimgN(p)+' 页压缩副本），换设备也能翻、能导 PDF；原图仍在本机。'
+        :(cst.k==='part'?'部分页面已上云（'+paperCimgN(p)+'/'+pages.length+' 页）。'
+        :'这份只在当前设备上。点下面「上云」压一份副本，手机/电脑都能看。'))+'</span></div>'+
     (pages.length?'<div class="ph-grid view">'+pages.map(function(pid,i){
       var prev=(i===0 && p.thumb) ? ' src="'+esc(p.thumb)+'"' : '';
-      return '<div class="ph-cell"><img'+prev+' data-page-img="'+esc(pid)+'" data-act="viewPage" data-pid="'+p.id+'" data-i="'+i+'" alt=""><i>第 '+(i+1)+' 页</i></div>';
+      return '<div class="ph-cell"><img'+prev+' data-page-img="'+esc(pid)+'" data-act="viewPage" data-pid="'+p.id+'" data-i="'+i+'" alt=""><i>第 '+(i+1)+' 页</i>'+
+        '<button class="ph-mark" data-act="paperMarkOne" data-id="'+p.id+'" data-i="'+i+'" type="button" title="把这一页里的某道题存进错题本">'+ic('alert')+'标错题</button></div>';
     }).join('')+'</div>':'<div class="ph-empty">'+ic('image')+'<span>这份还没有照片</span></div>')+
     (p.note?'<div class="wq-line" style="margin-top:12px"><span>备注</span>'+esc(p.note)+'</div>':'')+
     '<div class="ma">'+
       '<button class="btn" data-act="pdfOne" data-id="'+p.id+'" type="button">'+ic('download')+'导出 PDF</button>'+
+      (cst.k==='full'||cst.k==='part'
+        ? '<button class="btn" data-act="paperCloudOff" data-id="'+p.id+'" type="button">'+ic('trash')+'移出云端</button>'
+        : '<button class="btn" data-act="paperCloud" data-id="'+p.id+'" type="button">'+ic('cloud')+'上云</button>')+
       '<button class="btn" data-act="editPaper" data-id="'+p.id+'" type="button">'+ic('pen')+'编辑</button>'+
       '<button class="btn btn-danger" data-act="delPaper" data-id="'+p.id+'" type="button">'+ic('trash')+'删除</button>'+
     '</div>';
@@ -5267,18 +5563,19 @@ function openPaperDetail(id){
 function openPaperSync(){
   var all=S.study.papers||[];
   var pages=all.reduce(function(a,p){ return a+paperPages(p); },0);
-  var ts=thumbStat();
+  var ts=thumbStat(), cs=cimgStat();
   var body='<div class="ps-grid">'+
     '<div class="ps-cell"><b>'+all.length+'</b><span>份试卷</span></div>'+
     '<div class="ps-cell"><b>'+pages+'</b><span>页原图</span></div>'+
     '<div class="ps-cell"><b>'+ts.n+'</b><span>张缩略图</span></div>'+
-    '<div class="ps-cell"><b>'+(ts.kb>=1024?(ts.kb/1024).toFixed(1)+'M':ts.kb+'K')+'</b><span>同步体积</span></div>'+
+    '<div class="ps-cell"><b>'+cs.pages+'</b><span>页云端副本</span></div>'+
+    '<div class="ps-cell"><b>'+(cs.mb?cs.mb+'M':(ts.kb>=1024?(ts.kb/1024).toFixed(1)+'M':ts.kb+'K'))+'</b><span>图片同步体积</span></div>'+
   '</div>'+
   '<div class="ps-note">'+ic('cloud')+'<div><b>缩略图自动同步</b><span>每份卷子的首页缩略图跟着云同步走，换设备打开就能看到卷子列表和预览，不用做任何操作。</span></div></div>'+
-  '<div class="ps-note">'+ic('image')+'<div><b>只同步最近 '+THUMB_MAX+' 份</b><span>更早的试卷缩略图留在本机，避免同步快照越滚越大'+(ts.kb>=1200?('（当前已占 '+(ts.kb/1024).toFixed(1)+' MB，偏大）'):'')+'。</span></div></div>'+
-  '<div class="ps-note">'+ic('inbox')+'<div><b>原图留在本机</b><span>一页原图还有几百 KB，全塞进同步快照会把 GitHub 那边撑大、每次同步变慢。所以原图不自动上云。</span></div></div>'+
+  '<div class="ps-note">'+ic('image')+'<div><b>整页副本可按份上云</b><span>在「错题本 → 试卷记录」里点云朵图标，会把每页压到 1000px 左右（约 40–80KB/页）再上云。换设备能翻整卷、也能直接导 PDF。</span></div></div>'+
+  '<div class="ps-note">'+ic('inbox')+'<div><b>原图留在本机</b><span>整页原图（几百 KB/页）不自动上云，同步快照会越滚越大。云端副本总量超 5 MB 时，自动把最早的卷子移出云端，原图不受影响。</span></div></div>'+
   '<div class="ps-note">'+ic('download')+'<div><b>试卷包 = 完整搬迁</b><span>导出会把每页原图打包成一个 .json（含照片本体），在新设备导入即可还原，按 id 去重不会重复。</span></div></div>';
-  openModal('<h3>试卷同步与迁移</h3><p>缩略图随云走，原图按需搬。</p>'+body+
+  openModal('<h3>试卷同步与迁移</h3><p>缩略图自动走云，整页副本按需上云，原图留本机。</p>'+body+
     '<div class="ma">'+
       '<button class="btn" data-act="packImport" type="button">'+ic('refresh')+'导入试卷包</button>'+
       '<button class="btn btn-primary" data-act="packExport" type="button">'+ic('download')+'导出试卷包</button>'+
@@ -5370,6 +5667,7 @@ async function makePaperPdf(ids, oneName){
     for(var j=0;j<pgs.length;j++){
       var b=null;
       try{ b=await idbGet(pgs[j]); }catch(e){}
+      if(!b){ var cu=cimgIndex()[pgs[j]]; if(cu) b=dataURLtoBlob(cu); }   /* 本机没原图就用云端副本 */
       if(!b) continue;
       var bytes=await blobToBytes(b);
       var dim=jpegDim(bytes);
@@ -6064,6 +6362,32 @@ function handleAct(act, el){
       break;
     }
     case 'addPaper': openPaperForm(null); break;
+    case 'wqTab': {
+      S.ui.wqTab = el.getAttribute('data-v')==='papers' ? 'papers' : 'wrongs';
+      saveNow(); renderAll();
+      try{ window.scrollTo({top:0,behavior:'smooth'}); }catch(e){ window.scrollTo(0,0); }
+      break;
+    }
+    case 'paperCloud': {
+      var pc=paperById(id); if(!pc) break;
+      uploadPaperCloud(pc,false);
+      break;
+    }
+    case 'paperCloudOff': {
+      var pco=paperById(id); if(!pco) break;
+      confirmBox('移出云端？','「'+esc(pco.title||'试卷')+'」的整页副本会从同步快照里删掉，原图仍在本机；其它设备就看不到这份的完整照片了。','移出', function(){
+        closeModal(); clearPaperCloud(pco);
+        toast('已移出云端 · 原图仍在本地');
+      });
+      break;
+    }
+    case 'paperMarkOne': paperMarkOne(id, el.getAttribute('data-i')); break;
+    case 'paperMarkPick': {
+      var pmp=paperById(id); if(!pmp) break;
+      if((pmp.pages||[]).length<=1){ paperMarkOne(id, 0); }
+      else { openPaperDetail(id); toast('点某一页上的「标错题」，就从那一页存'); }
+      break;
+    }
     case 'paperSync': openPaperSync(); break;
     case 'packExport': exportPaperPack(); break;
     case 'packImport': { var pf=$('packFile'); if(pf) pf.click(); break; }
@@ -6117,10 +6441,16 @@ function handleAct(act, el){
     }
     case 'delPaper': {
       var dp=paperById(id); if(!dp) break;
-      confirmBox('删除这份试卷？','「'+esc(dp.title||'未命名')+'」的 '+paperPages(dp)+' 页照片会一起删掉，不可恢复。','删除', function(){
+      var dpw=wrongsOfPaper(id).length;
+      confirmBox('删除这份试卷？','「'+esc(dp.title||'未命名')+'」的 '+paperPages(dp)+' 页照片会一起删掉，不可恢复。'+
+        (dpw?('<br><br>从这份卷子里标的 <b>'+dpw+'</b> 道错题会保留，但失去原卷关联。'):''),'删除', function(){
         (dp.pages||[]).forEach(function(pid){ idbDel(pid); delete _objUrls[pid]; });
+        wrongsOfPaper(id).forEach(function(w){
+          delete w.paperId; delete w.pageIdx;
+          w.pages=(w.pages||[]).filter(function(x){ return (dp.pages||[]).indexOf(x)<0; });
+        });
         S.study.papers=S.study.papers.filter(function(x){ return x.id!==id; });
-        delete _pdfPick[id];
+        delete _pdfPick[id]; cimgReset();
         save(); closeModal(); renderAll(); toast('已删除');
       });
       break;
@@ -6180,7 +6510,7 @@ function handleAct(act, el){
       var dw=findWrong(id); if(!dw) break;
       var wdn=wqPagesOf(dw).length + wqFilesOf(dw).length;
       confirmBox('删除这道错题？',(wdn?('附带的 '+wdn+' 张照片 / 文件会一起删掉，'):'')+'删除后不影响成绩记录。','删除', function(){
-        wqPagesOf(dw).forEach(function(pid){ idbDel(pid); delete _objUrls[pid]; });
+        wqPagesOf(dw).forEach(function(pid){ if(imgUsedByPaper(pid)) return; idbDel(pid); delete _objUrls[pid]; });
         wqFilesOf(dw).forEach(function(f){ idbDel(f.id); });
         S.study.wrongs=S.study.wrongs.filter(function(x){ return x.id!==id; });
         save(); renderAll(); toast('已删除');
@@ -6897,11 +7227,28 @@ function bindEvents(){
       pp.title=String(fd.get('title')||'').trim() || (subjOf(pp.subj).n+'试卷');
       pp.date=fd.get('date')||todayStr();
       pp.note=String(fd.get('note')||'').trim();
+      var psRaw=String(fd.get('pscore')||'').trim();
+      if(psRaw===''){ delete pp.score; delete pp.full; }
+      else{
+        var psv=Number(psRaw), pfv=Number(String(fd.get('pfull')||'').trim()||100);
+        if(!isFinite(psv) || psv<0){ toast('得分格式不对'); return; }
+        if(!isFinite(pfv) || pfv<=0) pfv=100;
+        if(psv>pfv){ toast('得分不能超过满分'); return; }
+        pp.score=psv; pp.full=pfv;
+      }
       pp.pages=pgs;
       if(isNewP) S.study.papers.push(pp);
       if(_paperBuf) _paperBuf.dropOnClose=false;   /* 已入库，别在关弹窗时删图 */
       save(); closeModal(); renderAll(); ensureThumbs(1);
-      toast(isNewP?('试卷已保存 · '+pgs.length+' 页'):'已更新');
+      toast(isNewP?('已存档 · '+pgs.length+' 页'):'已更新');
+      /* 新存的卷子自动压一份整页副本上云（10 页以内，太长的留给手动点） */
+      if(pgs.length<=10){
+        setTimeout(function(){
+          uploadPaperCloud(pp,true).then(function(ok){
+            if(ok){ var st=cimgStat(); toast('已自动上云 '+paperCimgN(pp)+' 页 · 云端共 '+st.mb+' MB'); }
+          });
+        }, 500);
+      }
     }else if(f.id==='scoreForm'){
       var sfid=f.getAttribute('data-id');
       var sc=sfid?findScore(sfid):null;
@@ -6948,10 +7295,15 @@ function bindEvents(){
       wq.fix=String(fd.get('fix')||'').trim();
       wq.pages=wqP;
       wq.files=wqF;
+      /* 从试卷记录点「标错题」进来的：记下来源，卡片上能跳回原卷 */
+      if(!wid && _wqPaperLink && wqP.indexOf(_wqPaperLink.pageId)>=0){
+        wq.paperId=_wqPaperLink.pid; wq.pageIdx=_wqPaperLink.idx;
+      }
+      _wqPaperLink=null;
       if(!Array.isArray(wq.vars)) wq.vars=[];
       if(!wq.src) wq.src='manual';
-      /* 编辑时删掉的那几张，保存后才真删 */
-      oldP.forEach(function(pid){ if(wqP.indexOf(pid)<0){ idbDel(pid); delete _objUrls[pid]; } });
+      /* 编辑时删掉的那几张，保存后才真删；和试卷共用的照片不能删 */
+      oldP.forEach(function(pid){ if(wqP.indexOf(pid)<0 && !imgUsedByPaper(pid)){ idbDel(pid); delete _objUrls[pid]; } });
       oldF.forEach(function(f){
         var keep=wqF.filter(function(y){ return y.id===f.id; }).length;
         if(!keep) idbDel(f.id);
