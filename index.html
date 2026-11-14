@@ -2588,7 +2588,7 @@ function vStats(){
       '<div class="sp"><button class="btn btn-sm" data-act="syncNow" type="button">'+ic('refresh')+'立即同步</button></div></div>'+
     '<div class="card-b">'+
       '<div style="font-size:12.5px;color:var(--text-2);line-height:1.75;margin-bottom:14px">'+
-        '数据保存在你的云端数据表里，换设备打开同一链接自动带回。建议每月点一次「导出备份」留一份 JSON 快照。</div>'+
+        '数据同步在你自己的私有 GitHub 仓库里（growth-workspace.json + papers-cloud.json），换设备配一次就能带回。建议每月点一次「导出备份」留一份 JSON 快照。</div>'+
       '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
         '<button class="btn" data-act="export" data-scope="all" type="button">'+ic('download')+'导出备份</button>'+
         '<button class="btn" data-act="clearSample" type="button">'+ic('sparkle')+'清空示例数据</button>'+
@@ -3057,7 +3057,7 @@ function hydrateImgs(){
 }
 
 /* ---------- 试卷缩略图：随云同步的轻量副本 ----------
-   一页原图压缩后还有几百 KB，全塞进快照会把 Gist 撑爆、同步也慢。
+   一页原图压缩后还有几百 KB，全塞进同步文件会把快照撑大、同步也慢。
    这里只同步「首页缩略图」，跨设备能看到有哪些卷子、长什么样；
    要原图就用「试卷包」整体搬迁。 */
 var _thumbBusy=false, _thumbTried={}, _thumbTimer=null, THUMB_MAX=60;
@@ -3128,7 +3128,7 @@ function thumbStat(){
 /* ---------- 试卷整页云端副本 ----------
    原图仍留本机；这里存的是压到 CIMG_W 宽的 JPEG 副本，跟着同步快照走，
    换设备打开能翻整卷、也能直接导 PDF。体积有预算：超了自动把最早的卷子移出云端。 */
-var CIMG_W=1000, CIMG_Q=0.68, CIMG_BUDGET=5*1024*1024, CIMG_MAX_PAPERS=24;
+var CIMG_W=1000, CIMG_Q=0.68, CIMG_BUDGET=15*1024*1024, CIMG_MAX_PAPERS=40;
 var _cimgIdx=null;
 function cimgReset(){ _cimgIdx=null; }
 function cimgIndex(){
@@ -3433,6 +3433,110 @@ function svgScoreChart(list, opt){
   return '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;display:block">'+grid+body+xl+'</svg>';
 }
 
+/* ---------- 学习备份：一键导出 / 恢复 ---------- */
+function studyImgIds(){
+  var ids={};
+  function add(a){ (a||[]).forEach(function(x){ if(x) ids[x]=1; }); }
+  (S.study.papers||[]).forEach(function(p){ add(p.pages); });
+  (S.study.wrongs||[]).forEach(function(w){
+    add(w.pages);
+    (w.vars||[]).forEach(function(v){ add(v.pages); });
+    (w.files||[]).forEach(function(f){ if(f && f.id) ids[f.id]=1; });
+  });
+  if(S.study.draft) add(S.study.draft.pages);
+  return Object.keys(ids);
+}
+
+function studyBackupStat(){
+  var st=S.study||{};
+  return {
+    papers:(st.papers||[]).length,
+    wrongs:(st.wrongs||[]).length,
+    scores:(st.scores||[]).length,
+    drills:(st.drills||[]).length,
+    vars:(st.wrongs||[]).reduce(function(a,w){ return a+((w.vars||[]).length); },0),
+    imgs:studyImgIds().length
+  };
+}
+
+function openStudyBackup(){
+  var s=studyBackupStat();
+  var dataBytes=0;
+  try{ dataBytes=new Blob([JSON.stringify({ study:S.study })]).size; }catch(e){ dataBytes=0; }
+  openModal('<h3>学习数据备份</h3>'+
+    '<p>把学习板块打包成一个文件：试卷记录、成绩、错题和变式、练习卷都在里面，换设备或重装浏览器时能整块还原。</p>'+
+    '<div class="ps-grid">'+
+      '<div class="ps-cell"><b>'+s.papers+'</b><span>份试卷</span></div>'+
+      '<div class="ps-cell"><b>'+s.wrongs+'</b><span>道错题</span></div>'+
+      '<div class="ps-cell"><b>'+s.vars+'</b><span>道变式</span></div>'+
+      '<div class="ps-cell"><b>'+s.imgs+'</b><span>张照片</span></div>'+
+    '</div>'+
+    '<button class="exp-opt" data-act="studyExp" data-img="1" type="button"><div class="ei">'+ic('download')+'</div>'+
+      '<div class="et"><b>下载完整备份（含照片）</b><span>数据 + '+s.imgs+' 张照片原图。照片多时文件几十 MB，打包要几秒，手机上会慢一些</span></div></button>'+
+    '<button class="exp-opt" data-act="studyExp" data-img="0" type="button"><div class="ei">'+ic('cloud')+'</div>'+
+      '<div class="et"><b>只备份数据（不含照片）</b><span>约 '+cloudSizeText(dataBytes)+'，秒下。照片留在本机，换设备后要重新拍或从云同步拉</span></div></button>'+
+    '<button class="exp-opt" data-act="studyImp" type="button"><div class="ei">'+ic('refresh')+'</div>'+
+      '<div class="et"><b>从备份恢复</b><span>选之前导出的 JSON，覆盖当前学习数据（工作板块不受影响）</span></div></button>'+
+    '<div class="exp-note">备份是<b>离线保险</b>，和云同步不冲突：云同步负责日常多端互通，备份负责"万一"——比如误删、换浏览器、云上数据被覆盖。<br>'+
+      '建议每月一次，或者期中期末整理完卷子后导一份。照片原图本来只存在本机，所以想连图一起留，就选"含照片"。</div>'+
+    '<div class="ma"><button class="btn" data-act="closeModal" type="button">关闭</button></div>');
+}
+
+async function studyExport(withImgs){
+  var ids = withImgs ? studyImgIds() : [];
+  var out={ app:'xcx-study-backup', version:1, exportedAt:new Date().toISOString(), study:S.study, imgs:{} };
+  var got=0, miss=0;
+  if(withImgs && ids.length){
+    toast('正在打包 '+ids.length+' 张照片…');
+    for(var i=0;i<ids.length;i++){
+      var b=null;
+      try{ b=await idbGet(ids[i]); }catch(e){}
+      if(!b){ miss++; continue; }
+      var du=await blobToDataURL(b);
+      if(!du){ miss++; continue; }
+      out.imgs[ids[i]]=du; got++;
+    }
+  }
+  if(!got) delete out.imgs;
+  dlBlob(new Blob([JSON.stringify(out)],{type:'application/json'}),
+    'XCX学习备份_'+todayStr()+(withImgs?'_含照片':'')+'.json');
+  closeModal();
+  if(!withImgs) toast('已导出学习数据（不含照片）');
+  else if(!ids.length) toast('已导出 · 当前没有照片可打包');
+  else toast('已导出 · 照片 '+got+' 张'+(miss?(' · '+miss+' 张本机缺失'):''));
+}
+
+async function studyImport(file){
+  if(!file) return;
+  var txt='';
+  try{ txt=await readTextFile(file); }catch(e){ toast('文件读不出来'); return; }
+  var d=null;
+  try{ d=JSON.parse(txt); }catch(e){ toast('不是有效的备份文件'); return; }
+  var st = d && d.study;
+  if(!st || typeof st!=='object' || (!Array.isArray(st.papers) && !Array.isArray(st.wrongs))){
+    toast('这个文件里没有学习数据'); return;
+  }
+  var keys = (d.imgs && typeof d.imgs==='object') ? Object.keys(d.imgs) : [];
+  confirmBox('用备份覆盖学习数据？',
+    '将导入 '+(st.papers||[]).length+' 份试卷、'+(st.wrongs||[]).length+' 道错题、'+(st.scores||[]).length+' 次成绩'+
+    (keys.length?('、'+keys.length+' 张照片'):'')+'。<br>当前学习数据会被替换；待办、项目、会议不受影响。',
+    '覆盖导入', function(){
+      var done=0;
+      function next(i){
+        if(i>=keys.length){
+          S.study=Object.assign({ papers:[], scores:[], wrongs:[], drills:[], draft:null }, st);
+          migrate(); save(); renderAll(); closeModal();
+          toast('学习数据已恢复'+(done?(' · 照片 '+done+' 张'):''));
+          return;
+        }
+        var k=keys[i], blob=d.imgs[k]?dataURLtoBlob(d.imgs[k]):null;
+        if(!blob){ next(i+1); return; }
+        idbPut(k, blob).then(function(){ done++; next(i+1); }).catch(function(){ next(i+1); });
+      }
+      next(0);
+    });
+}
+
 /* ---------- 学习概览 ---------- */
 function vStudy(){
   var scores=(S.study.scores||[]).slice().sort(byDateAsc);
@@ -3484,7 +3588,10 @@ function vStudy(){
   '</div>';
 
   return '<div class="topbar"><div><h1>学习概览</h1>'+
-      '<div class="sub">三年级 · 语文 / 数学 / 英语 · 共 '+scores.length+' 次练习、'+papers.length+' 份试卷</div></div></div>'+
+      '<div class="sub">三年级 · 语文 / 数学 / 英语 · 共 '+scores.length+' 次练习、'+papers.length+' 份试卷</div></div>'+
+      '<div class="topbar-act">'+
+        '<button class="btn" data-act="studyBackup" type="button" style="flex:0 0 auto">'+ic('download')+'备份学习数据</button>'+
+      '</div></div>'+
     '<div class="sub-grid">'+cards+'</div>'+
     quick+chart+wrongCard;
 }
@@ -3861,7 +3968,7 @@ function vWqPapers(){
   }
 
   var cloudLine='<div class="pr-cloud-note">'+ic('cloud')+
-    '<span><b>云端共享</b>：已上云 '+cs.pages+' 页 · '+cs.mb+' MB。换设备打开同一份数据就能翻卷、导 PDF；原图留本机，超 5 MB 自动先把最早的卷子移出云端。</span></div>';
+    '<span><b>云端共享</b>：已上云 '+cs.pages+' 页 · '+cs.mb+' MB。换设备打开同一份数据就能翻卷、导 PDF；原图留本机，云端副本超过 15 MB 时自动先把最早的卷子移出云端。</span></div>';
 
   return '<div class="topbar"><div><h1>错题本</h1>'+
       '<div class="sub">做过的卷子拍照存档（不是练习卷）· 共 '+all.length+' 份 / '+pagesN+' 页 · 云端 '+cs.pages+' 页</div></div>'+
@@ -5573,7 +5680,7 @@ function openPaperSync(){
   '</div>'+
   '<div class="ps-note">'+ic('cloud')+'<div><b>缩略图自动同步</b><span>每份卷子的首页缩略图跟着云同步走，换设备打开就能看到卷子列表和预览，不用做任何操作。</span></div></div>'+
   '<div class="ps-note">'+ic('image')+'<div><b>整页副本可按份上云</b><span>在「错题本 → 试卷记录」里点云朵图标，会把每页压到 1000px 左右（约 40–80KB/页）再上云。换设备能翻整卷、也能直接导 PDF。</span></div></div>'+
-  '<div class="ps-note">'+ic('inbox')+'<div><b>原图留在本机</b><span>整页原图（几百 KB/页）不自动上云，同步快照会越滚越大。云端副本总量超 5 MB 时，自动把最早的卷子移出云端，原图不受影响。</span></div></div>'+
+  '<div class="ps-note">'+ic('inbox')+'<div><b>原图留在本机</b><span>整页原图（几百 KB/页）不自动上云，同步文件会越滚越大。云端副本总量超 15 MB 时，自动把最早的卷子移出云端，原图不受影响。</span></div></div>'+
   '<div class="ps-note">'+ic('download')+'<div><b>试卷包 = 完整搬迁</b><span>导出会把每页原图打包成一个 .json（含照片本体），在新设备导入即可还原，按 id 去重不会重复。</span></div></div>';
   openModal('<h3>试卷同步与迁移</h3><p>缩略图自动走云，整页副本按需上云，原图留本机。</p>'+body+
     '<div class="ma">'+
@@ -6391,6 +6498,16 @@ function handleAct(act, el){
     case 'paperSync': openPaperSync(); break;
     case 'packExport': exportPaperPack(); break;
     case 'packImport': { var pf=$('packFile'); if(pf) pf.click(); break; }
+    /* 学习板块：一键备份 / 恢复 */
+    case 'studyBackup': openStudyBackup(); break;
+    case 'studyExp': studyExport(el.getAttribute('data-img')==='1'); break;
+    case 'studyImp': {
+      var sinp=document.createElement('input');
+      sinp.type='file'; sinp.accept='.json,application/json';
+      sinp.onchange=function(){ var f=sinp.files&&sinp.files[0]; if(f) studyImport(f); };
+      sinp.click();
+      break;
+    }
     case 'editPaper': openPaperForm(id); break;
     case 'openPaper': openPaperDetail(id); break;
     case 'viewPage': {
@@ -7564,16 +7681,42 @@ function localModeHint(){
 }
 
 /* =========================================================
-   云同步 · 单个 JSON 文件（GitHub Gist）
+   云同步 · 私有仓库里的两个 JSON 文件
    ---------------------------------------------------------
-   数据本来就是一整块 JSON，这里只做「读写远端一个文件」：
+   growth-workspace.json 存业务数据（待办/项目/错题…），很小；
+   papers-cloud.json 存试卷整页副本，图片没变就不重传。
    不拆表、不逐条 diff、不依赖 WorkBuddy 登录。
    ========================================================= */
-var CLOUD_FILE_NAME = 'growth-workspace.json';
+var CLOUD_FILE_NAME = 'growth-workspace.json';          /* 业务数据，日常改动只传这个 */
+var CLOUD_IMG_NAME  = 'papers-cloud.json';              /* 试卷整页副本，拍新卷时才传 */
 var CLOUD_CFG_KEY = 'wb_cloud_sync_v1';
+var CLOUD_SOFT_MB = 50;          /* 单文件建议上限，超过就提示 */
+var CLOUD_INLINE_MAX = 800*1024; /* 超过这个体积改走 Git Data API（Contents API 对大文件不可靠） */
+
+/* ---------- UTF-8 安全的 base64 ---------- */
+function b64enc(str){
+  var bytes = new TextEncoder().encode(str), bin = '', CH = 0x8000;
+  for(var i=0;i<bytes.length;i+=CH) bin += String.fromCharCode.apply(null, bytes.subarray(i, i+CH));
+  return btoa(bin);
+}
+function b64dec(b64){
+  var bin = atob(String(b64).replace(/[\r\n\s]/g,'')), bytes = new Uint8Array(bin.length);
+  for(var i=0;i<bin.length;i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+function repoSeg(s){ return String(s||'').split('/').filter(function(x){ return x!==''; }).map(encodeURIComponent).join('/'); }
+function repoPathOk(c){ return !!(c && c.token && c.owner && c.repo); }
 
 function cloudCfg(){
-  try{ return JSON.parse(localStorage.getItem(CLOUD_CFG_KEY) || 'null') || null; }catch(e){ return null; }
+  var c = null;
+  try{ c = JSON.parse(localStorage.getItem(CLOUD_CFG_KEY) || 'null'); }catch(e){ c = null; }
+  if(!c) return null;
+  /* 老配置（Gist 时代）自动补齐：gistId 留着做一次性数据迁移 */
+  if(c.gistId && !c.legacyGist) c.legacyGist = c.gistId;
+  if(!c.branch) c.branch = 'main';
+  if(!c.path) c.path = CLOUD_FILE_NAME;
+  if(!c.imgPath) c.imgPath = CLOUD_IMG_NAME;
+  return c;
 }
 function cloudCfgSet(cfg){
   try{
@@ -7601,15 +7744,37 @@ function cloudTime(ts){
   return (d.getMonth() + 1) + '月' + d.getDate() + '日 ' + hm;
 }
 
-function cloudPayload(){
-  return JSON.stringify({
-    app: 'growth-workbench',
-    version: 1,
-    updatedAt: Date.now(),
-    data: { tasks: S.tasks, projects: S.projects, meetings: S.meetings, flows: S.flows, std: S.std, reviews: S.reviews, study: S.study }
-  });
+function sigOf(s){
+  var h = 5381;
+  for(var i=0;i<s.length;i++) h = ((h<<5) + h + s.charCodeAt(i)) | 0;
+  return s.length + ':' + (h >>> 0).toString(36);
 }
-function cloudApply(remote){
+/* 主文件只放业务数据；试卷整页副本单独一个文件，图片没变就不重传 */
+function cloudPayloadParts(){
+  var study = JSON.parse(JSON.stringify(S.study || {}));
+  var imgs = {}, pages = 0;
+  (study.papers || []).forEach(function(p){
+    if(!p) return;
+    if(p.cimgs && p.cimgs.length){ imgs[p.id] = p.cimgs; pages += p.cimgs.length; }
+    delete p.cimgs;
+  });
+  var at = Date.now();
+  var main = JSON.stringify({
+    app: 'growth-workbench',
+    version: 2,
+    updatedAt: at,
+    data: { tasks: S.tasks, projects: S.projects, meetings: S.meetings, flows: S.flows, std: S.std, reviews: S.reviews, study: study }
+  });
+  var img = JSON.stringify({
+    app: 'growth-workbench',
+    kind: 'paper-pages',
+    version: 1,
+    updatedAt: at,
+    images: imgs
+  });
+  return { main: main, img: img, pages: pages, imgSig: sigOf(JSON.stringify(imgs)) };
+}
+function cloudApply(remote, imgDoc){
   var d = remote && remote.data;
   if(!d) return false;
   S.tasks    = Array.isArray(d.tasks)    ? d.tasks    : [];
@@ -7619,6 +7784,14 @@ function cloudApply(remote){
   if(Array.isArray(d.std) && d.std.length) S.std = d.std;
   S.reviews  = Array.isArray(d.reviews) ? d.reviews : [];
   S.study    = (d.study && typeof d.study==='object') ? d.study : { papers:[], scores:[], wrongs:[] };
+  /* 整页副本在独立文件里；老 Gist 数据是内嵌在 study 里的，两种都吃得下 */
+  var imgs = (imgDoc && imgDoc.images) || null;
+  if(imgs && Array.isArray(S.study.papers)){
+    S.study.papers.forEach(function(p){
+      if(!p) return;
+      if(imgs[p.id]) p.cimgs = imgs[p.id];
+    });
+  }
   migrate();
   saveNow();
   renderAll();
@@ -7642,18 +7815,101 @@ function cloudFail(msg, status){
 }
 function cloudHttpError(status){
   if(status === 401) return cloudFail('Token 无效或已过期，请重新填写', 401);
-  if(status === 403) return cloudFail('GitHub 拒绝请求（权限不足或触发限流）', 403);
-  if(status === 404) return cloudFail('找不到这个 Gist：ID 写错了，或 token 没有 Gists 权限', 404);
+  if(status === 403) return cloudFail('GitHub 拒绝请求：token 权限不足（需要 Contents 读写），或触发了限流', 403);
+  if(status === 404) return cloudFail('找不到仓库或文件：确认「用户名/仓库名」写对，且 token 对这个仓库有 Contents 权限', 404);
+  if(status === 413) return cloudFail('这次提交体积太大，GitHub 拒收：先在「试卷同步」里把云端副本预算调小', 413);
   return cloudFail('GitHub 返回 HTTP ' + status, status);
 }
 
-async function cloudRead(){
+function repoApi(c, tail){
+  return 'https://api.github.com/repos/' + repoSeg(c.owner) + '/' + repoSeg(c.repo) + tail;
+}
+async function repoHead(c, branch){
+  var br = branch || c.branch || 'main';
+  var r = await fetch(repoApi(c, '/git/ref/heads/' + repoSeg(br)), { headers: cloudHeaders(false), cache: 'no-store' });
+  if(r.status === 404) return null;
+  if(!r.ok) throw cloudHttpError(r.status);
+  var j = await r.json();
+  return (j && j.object && j.object.sha) || null;
+}
+
+/* 读一个文件：{text, sha}；文件还不存在返回 null */
+async function repoGet(path, cfg){
+  var c = cfg || cloudCfg();
+  if(!repoPathOk(c)) return null;
+  var url = repoApi(c, '/contents/' + repoSeg(path) + '?ref=' + encodeURIComponent(c.branch || 'main'));
+  var res = await fetch(url, { headers: cloudHeaders(false), cache: 'no-store' });
+  if(res.status === 404){
+    /* 分清「文件还没建」和「仓库根本不存在」 */
+    var rr = await fetch(repoApi(c, ''), { headers: cloudHeaders(false), cache: 'no-store' });
+    if(rr.status === 404) throw cloudFail('找不到仓库 ' + c.owner + '/' + c.repo + '：确认「用户名/仓库名」写对了，并且仓库已经建好', 404);
+    if(!rr.ok) throw cloudHttpError(rr.status);
+    return null;
+  }
+  if(!res.ok) throw cloudHttpError(res.status);
+  var j = await res.json();
+  if(Array.isArray(j)) throw cloudFail('路径「' + path + '」指向的是一个文件夹，请换成文件名', 422);
+  var text = '';
+  if(j.encoding === 'base64' && j.content) text = b64dec(j.content);
+  else if(j.size){
+    /* 超过 1MB 时 Contents API 不给内容，改读原始文件 */
+    var r2 = await fetch(url, { headers: Object.assign(cloudHeaders(false), { 'Accept': 'application/vnd.github.raw' }), cache: 'no-store' });
+    if(!r2.ok) throw cloudHttpError(r2.status);
+    text = await r2.text();
+  }
+  return { text: text, sha: j.sha || '' };
+}
+
+/* 小文件：一次 PUT 搞定 */
+async function repoPutSmall(c, path, text, sha, msg){
+  var body = { message: msg, content: b64enc(text), branch: c.branch || 'main' };
+  if(sha) body.sha = sha;
+  var res = await fetch(repoApi(c, '/contents/' + repoSeg(path)), { method: 'PUT', headers: cloudHeaders(true), body: JSON.stringify(body) });
+  if(!res.ok){
+    var t = '';
+    try{ t = (await res.json()).message || ''; }catch(e){}
+    if(res.status === 404) throw cloudFail('仓库或分支不存在，也可能是 token 没有这个仓库的 Contents 写权限', 404);
+    if(res.status === 409 || (res.status === 422 && /sha/i.test(t))) throw cloudFail('远端刚被别处改过，请点「立即同步」重试', 409);
+    if(res.status === 422) throw cloudFail('GitHub 拒绝了这次提交：' + (t || '检查分支名是否正确'), 422);
+    throw cloudHttpError(res.status);
+  }
+  var j = await res.json();
+  return (j && j.content && j.content.sha) || '';
+}
+
+/* 大文件或一次提交多个文件：走 Git Data API，绕开 Contents API 的体积限制 */
+async function repoPutViaGit(c, files, msg){
+  var br = c.branch || 'main', base = repoApi(c, '');
+  var head = await repoHead(c, br);
+  if(!head) throw cloudFail('仓库还是空的，或分支「' + br + '」不存在：先在 GitHub 网页点 Add a README 初始化一下，再回来同步', 404);
+  var items = [];
+  for(var i=0;i<files.length;i++){
+    var b = await fetch(base + '/git/blobs', { method:'POST', headers: cloudHeaders(true), body: JSON.stringify({ content: b64enc(files[i].text), encoding: 'base64' }) });
+    if(!b.ok) throw cloudHttpError(b.status);
+    items.push({ path: files[i].path, mode: '100644', type: 'blob', sha: (await b.json()).sha });
+  }
+  var cm = await fetch(base + '/git/commits/' + head, { headers: cloudHeaders(false), cache: 'no-store' });
+  if(!cm.ok) throw cloudHttpError(cm.status);
+  var baseTree = ((await cm.json()).tree || {}).sha;
+  var tr = await fetch(base + '/git/trees', { method:'POST', headers: cloudHeaders(true), body: JSON.stringify({ base_tree: baseTree, tree: items }) });
+  if(!tr.ok) throw cloudHttpError(tr.status);
+  var treeSha = (await tr.json()).sha;
+  var nc = await fetch(base + '/git/commits', { method:'POST', headers: cloudHeaders(true), body: JSON.stringify({ message: msg, tree: treeSha, parents: [head] }) });
+  if(!nc.ok) throw cloudHttpError(nc.status);
+  var commitSha = (await nc.json()).sha;
+  var up = await fetch(base + '/git/refs/heads/' + repoSeg(br), { method:'PATCH', headers: cloudHeaders(true), body: JSON.stringify({ sha: commitSha }) });
+  if(!up.ok) throw cloudHttpError(up.status);
+  return commitSha;
+}
+
+/* 老 Gist 数据，只用于一次性迁移 */
+async function gistReadLegacy(){
   var c = cloudCfg();
-  if(!c || !c.token || !c.gistId) return null;
-  var res = await fetch('https://api.github.com/gists/' + encodeURIComponent(c.gistId), { headers: cloudHeaders(false), cache: 'no-store' });
+  if(!c || !c.token || !c.legacyGist) return null;
+  var res = await fetch('https://api.github.com/gists/' + encodeURIComponent(c.legacyGist), { headers: cloudHeaders(false), cache: 'no-store' });
   if(!res.ok) throw cloudHttpError(res.status);
   var g = await res.json();
-  var f = g.files && g.files[CLOUD_FILE_NAME];
+  var f = g.files && (g.files[CLOUD_FILE_NAME] || g.files[Object.keys(g.files||{})[0]]);
   if(!f) return null;
   var text = f.content;
   if(f.truncated && f.raw_url){
@@ -7663,39 +7919,21 @@ async function cloudRead(){
   try{ return JSON.parse(text); }catch(e){ return null; }
 }
 
-async function cloudWrite(text){
-  var c = cloudCfg();
-  if(!c || !c.token) throw cloudFail('还没有配置 GitHub Token', 0);
-  var files = {};
-  files[CLOUD_FILE_NAME] = { content: text };
-
-  if(!c.gistId){
-    var res = await fetch('https://api.github.com/gists', {
-      method: 'POST',
-      headers: cloudHeaders(true),
-      body: JSON.stringify({ description: 'XCX工作台 · 云同步数据', public: false, files: files })
-    });
-    if(!res.ok) throw cloudHttpError(res.status);
-    var g = await res.json();
-    c.gistId = g.id;
-    cloudCfgSet(c);
-    return g.id;
-  }
-
-  var res2 = await fetch('https://api.github.com/gists/' + encodeURIComponent(c.gistId), {
-    method: 'PATCH',
-    headers: cloudHeaders(true),
-    body: JSON.stringify({ files: files })
-  });
-  if(!res2.ok) throw cloudHttpError(res2.status);
-  return c.gistId;
-}
-
 var _cloudBusy = false;
 var _cloudDirty = false;   /* 本机有未推送到云端的改动 */
 var _cloudTimer = null;
+var _imgSig = null;        /* 上次成功上云的试卷页签名，没变就不重传 */
 
-async function cloudSync(manual){
+function cloudSizeText(n){
+  n = Number(n) || 0;
+  return n >= 1048576 ? (n/1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n/1024)) + ' KB';
+}
+function cloudCommitMsg(extra){
+  var d = new Date(), p = function(n){ return ('0'+n).slice(-2); };
+  return (extra || '同步') + ' · ' + (d.getMonth()+1) + '/' + d.getDate() + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+}
+
+async function cloudSync(manual, force){
   if(_cloudBusy) return;
   var c = cloudCfg();
   if(!c || !c.token){
@@ -7703,24 +7941,29 @@ async function cloudSync(manual){
     else setSyncState('off', '本地模式 · 可开启云同步');
     return;
   }
+  if(!repoPathOk(c)){
+    setSyncState('off', '云同步·还差仓库地址');
+    if(manual) openCloudSettings();
+    return;
+  }
   _cloudBusy = true;
   setSyncState('syncing', '同步中…');
   try{
-    var payload = cloudPayload();
+    var parts = cloudPayloadParts();
 
-    if(!c.gistId){
-      await cloudWrite(payload);
-      cloudMarkSynced(JSON.parse(payload).updatedAt);
-      setSyncState('ok', '云同步已开启');
-      if(manual) toast('云端文件已创建，同步开启');
-      return;
-    }
+    var mainFile = await repoGet(c.path, c);
+    var imgFile = null;
+    try{ imgFile = await repoGet(c.imgPath, c); }catch(e){ imgFile = null; }
 
-    var remote = await cloudRead();
-    var rAt = remote ? (Number(remote.updatedAt) || 0) : 0;
+    var remote = null, remoteImg = null;
+    if(mainFile && mainFile.text){ try{ remote = JSON.parse(mainFile.text); }catch(e){ remote = null; } }
+    if(imgFile && imgFile.text){ try{ remoteImg = JSON.parse(imgFile.text); }catch(e){ remoteImg = null; } }
+
+    var rAt = Math.max(remote ? (Number(remote.updatedAt)||0) : 0, remoteImg ? (Number(remoteImg.updatedAt)||0) : 0);
     var base = cloudBase();
+    if(_imgSig === null) _imgSig = remoteImg ? sigOf(JSON.stringify(remoteImg.images || {})) : '';
 
-    if(remote && rAt > base + 1200){
+    if(!force && rAt > base + 1200){
       /* 两端都有新改动：快照同步无法合并，绝不静默覆盖任何一边，交给用户手动裁决 */
       if(!manual && _cloudDirty){
         setSyncState('off', '两端都有改动 · 点「立即同步」处理');
@@ -7731,22 +7974,45 @@ async function cloudSync(manual){
         takeRemote = confirm('云端有更新的数据（' + cloudTime(rAt) + '）。\n\n点「确定」= 载入云端，覆盖本机\n点「取消」= 用本机数据覆盖云端');
       }
       if(takeRemote){
-        cloudApply(remote);
-        cloudMarkSynced(rAt);
+        cloudApply(remote, remoteImg);
+        _imgSig = remoteImg ? sigOf(JSON.stringify(remoteImg.images || {})) : '';
+        cloudMarkSynced(rAt || Date.now());
         setSyncState('ok', '已载入云端 · ' + cloudTime(rAt));
         if(manual) toast('已载入云端最新数据');
         return;
       }
     }
 
-    await cloudWrite(payload);
-    cloudMarkSynced(JSON.parse(payload).updatedAt);
+    /* 1) 数据文件：每次变化都传，体积几十 KB，单次 PUT 最快 */
+    if(parts.main.length > CLOUD_INLINE_MAX) await repoPutViaGit(c, [{ path: c.path, text: parts.main }], cloudCommitMsg('同步数据'));
+    else await repoPutSmall(c, c.path, parts.main, mainFile && mainFile.sha, cloudCommitMsg('同步数据'));
+
+    /* 2) 试卷页文件：只有图片变了才传，体积大，单独提交，不拖慢日常同步 */
+    var sendImg = parts.imgSig !== _imgSig;
+    if(sendImg && parts.pages === 0 && !imgFile) sendImg = false;
+    if(sendImg){
+      try{
+        await repoPutViaGit(c, [{ path: c.imgPath, text: parts.img }], cloudCommitMsg('试卷页 ' + parts.pages + ' 页'));
+        _imgSig = parts.imgSig;
+      }catch(e){
+        /* 页图没上去不影响业务数据，下次拍卷会补上 */
+        cloudMarkSynced(Date.now());
+        setSyncState('ok', '数据已同步 · 试卷页待重传');
+        toast('数据已同步；试卷页这次没传上去（' + ((e && e.message) || '网络问题') + '），下次会自动补');
+        return;
+      }
+    }
+
+    cloudMarkSynced(Date.now());
     setSyncState('ok', '云端已同步 · ' + cloudTime(Date.now()));
-    if(manual) toast('同步完成');
+    if(manual){
+      toast('同步完成 · 数据 ' + cloudSizeText(parts.main.length) +
+        (sendImg ? (' · 试卷页 ' + cloudSizeText(parts.img.length)) : ' · 试卷页未变'));
+    }
   }catch(e){
     setSyncState('off', '同步失败');
     toast(e && e.message ? e.message : '同步失败');
-    if(manual && e && e.status === 401) openCloudSettings();
+    if(manual && e && (e.status === 401 || e.status === 404)) openCloudSettings();
   }finally{
     _cloudBusy = false;
   }
@@ -7762,11 +8028,18 @@ function cloudQueue(instant){
 
 window.__SYNC_ALL__ = function(){ cloudSync(true); };
 window.__WIPE__ = function(cb){
-  if(!cloudHasCfg() || !cloudCfg().gistId){ if(cb) cb(); return; }
-  cloudWrite(cloudPayload()).then(function(){
-    cloudMarkSynced(Date.now());
+  var c = cloudCfg();
+  if(!c || !repoPathOk(c)){ if(cb) cb(); return; }
+  var parts = cloudPayloadParts();
+  (async function(){
+    try{
+      var cur = await repoGet(c.path, c);
+      if(cur) await repoPutSmall(c, c.path, parts.main, cur.sha, cloudCommitMsg('清空数据'));
+      else await repoPutViaGit(c, [{ path: c.path, text: parts.main }], cloudCommitMsg('清空数据'));
+      cloudMarkSynced(Date.now());
+    }catch(e){}
     if(cb) cb();
-  }).catch(function(){ if(cb) cb(); });
+  })();
 };
 
 /* ---------- 设置面板 ---------- */
@@ -7775,27 +8048,85 @@ function closeCloudSettings(){
   if(el && el.parentNode) el.parentNode.removeChild(el);
 }
 
+function cloudParseRepo(s){
+  s = String(s||'').trim();
+  s = s.replace(/^https?:\/\/(www\.)?github\.com\//i, '').replace(/\.git$/i, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
+  var p = s.split('/').filter(function(x){ return !!x; });
+  if(p.length >= 2) return { owner: p[0], repo: p[1] };
+  return null;
+}
+function cloudSibling(path, name){
+  var p = String(path || CLOUD_FILE_NAME), i = p.lastIndexOf('/');
+  return i >= 0 ? p.slice(0, i+1) + name : name;
+}
+function cloudCfgFromForm(){
+  var token   = ($('wbCloudToken').value || '').trim();
+  var repoRaw = ($('wbCloudRepo').value || '').trim();
+  var pathV   = ($('wbCloudPath').value || '').trim() || CLOUD_FILE_NAME;
+  var branch  = ($('wbCloudBranch').value || '').trim() || 'main';
+  if(!token) return { err: '先填 GitHub Token' };
+  var pr = cloudParseRepo(repoRaw);
+  if(!pr) return { err: '仓库写成「用户名/仓库名」，例如 zhangsan/xcx-data' };
+  if(!/^[\w.\-\/]+$/.test(pathV)) return { err: '文件名只能用字母、数字、点、横线，可以带目录' };
+  var old = cloudCfg() || {};
+  var next = { token: token, owner: pr.owner, repo: pr.repo, branch: branch, path: pathV, imgPath: cloudSibling(pathV, CLOUD_IMG_NAME) };
+  if(old.legacyGist) next.legacyGist = old.legacyGist;
+  /* 换了 token 或换了仓库，重新从零对齐 */
+  if(old.token !== token || old.owner !== pr.owner || old.repo !== pr.repo || old.path !== pathV) next.syncedAt = 0;
+  else if(old.syncedAt) next.syncedAt = old.syncedAt;
+  return { cfg: next };
+}
+
 function openCloudSettings(){
   if($('wbCloudMask')) return;
   var c = cloudCfg() || {};
+  var repoVal = (c.owner && c.repo) ? (c.owner + '/' + c.repo) : '';
+  var snap = null;
+  try{ snap = cloudPayloadParts(); }catch(e){ snap = null; }
+  var sizeLine = snap ? ('当前数据 ' + cloudSizeText(snap.main.length) + (snap.pages ? (' · 试卷页 ' + cloudSizeText(snap.img.length) + '（' + snap.pages + ' 页）') : ' · 暂无试卷页')) : '';
+  var inp  = 'width:100%;box-sizing:border-box;padding:10px 12px;font-size:16px;border:1px solid #d5e0dd;border-radius:10px;outline:none;background:#fbfdfc;color:#16211f;';
+  var sml  = 'box-sizing:border-box;padding:8px 10px;font-size:13px;border:1px solid #d5e0dd;border-radius:9px;outline:none;background:#fbfdfc;color:#16211f;';
+  var lbl  = 'display:block;font-size:13px;font-weight:600;margin:16px 0 6px;';
+  var hint = 'font-size:12px;line-height:1.7;color:#7c8b88;margin-top:7px;';
+  var link = 'color:#0d9488;font-weight:600;';
+
   var wrap = document.createElement('div');
   wrap.id = 'wbCloudMask';
   wrap.setAttribute('style', 'position:fixed;inset:0;z-index:99999;background:rgba(10,25,23,.48);display:flex;align-items:center;justify-content:center;padding:16px;');
   wrap.innerHTML =
-      '<div id="wbCloudPanel" style="width:100%;max-width:440px;max-height:88vh;overflow:auto;background:#fff;color:#16211f;border-radius:16px;padding:20px;box-shadow:0 18px 50px rgba(0,0,0,.3);font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',system-ui,sans-serif;">'
-    +   '<div style="font-size:17px;font-weight:700;margin-bottom:6px;">云同步设置</div>'
-    +   '<div style="font-size:13px;line-height:1.65;color:#5b6b68;margin-bottom:4px;">数据存在<b>你自己的私有 GitHub Gist</b> 里，手机和电脑各配一次即可互通。不需要登录 WorkBuddy。</div>'
-    +   '<label style="display:block;font-size:13px;font-weight:600;margin:16px 0 6px;">GitHub Token</label>'
-    +   '<input id="wbCloudToken" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_... 或 ghp_..." value="' + (c.token ? esc(c.token) : '') + '" style="width:100%;box-sizing:border-box;padding:10px 12px;font-size:16px;border:1px solid #d5e0dd;border-radius:10px;outline:none;background:#fbfdfc;color:#16211f;">'
-    +   '<div style="font-size:12px;line-height:1.7;color:#7c8b88;margin-top:7px;">到 <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="color:#0d9488;font-weight:600;">GitHub 新建 Fine-grained token</a>，<b>只勾 Gists → Read and write</b>，有效期随意。Classic token 勾 gist 权限也行。</div>'
-    +   '<label style="display:block;font-size:13px;font-weight:600;margin:16px 0 6px;">Gist ID <span style="font-weight:400;color:#7c8b88;">（留空则首次同步自动创建）</span></label>'
-    +   '<input id="wbCloudGist" type="text" autocomplete="off" spellcheck="false" placeholder="例如 8f3a2c1b9d7e..." value="' + (c.gistId ? esc(c.gistId) : '') + '" style="width:100%;box-sizing:border-box;padding:10px 12px;font-size:16px;border:1px solid #d5e0dd;border-radius:10px;outline:none;background:#fbfdfc;color:#16211f;">'
-    +   '<div style="display:flex;gap:8px;margin-top:20px;">'
+      '<div id="wbCloudPanel" style="width:100%;max-width:460px;max-height:88vh;overflow:auto;background:#fff;color:#16211f;border-radius:16px;padding:20px;box-shadow:0 18px 50px rgba(0,0,0,.3);font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',system-ui,sans-serif;">'
+    +   '<div style="font-size:17px;font-weight:700;margin-bottom:4px;">云同步设置</div>'
+    +   '<div style="font-size:11px;color:#9aa8a5;margin-bottom:9px;">工作台 v1.9 · 同步后端：GitHub 私有仓库（不是 Gist）</div>'
+    +   '<div style="font-size:13px;line-height:1.65;color:#5b6b68;">数据存在<b>你自己的私有 GitHub 仓库</b>里，手机和电脑各配一次即可互通。单文件上限 100MB，你这套数据平时只有几百 KB，够用很多年。</div>'
+    +   '<label style="' + lbl + '">GitHub Token</label>'
+    +   '<input id="wbCloudToken" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_..." value="' + (c.token ? esc(c.token) : '') + '" style="' + inp + '">'
+    +   '<div style="' + hint + '">到 <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="' + link + '">GitHub 新建 Fine-grained token</a>：<b>Repository access</b> 选「Only select repositories」并只勾这一个仓库，<b>Permissions → Contents</b> 选 Read and write。别用全权限 classic token。</div>'
+    +   '<label style="' + lbl + '">仓库 <span style="font-weight:400;color:#7c8b88;">（用户名/仓库名）</span></label>'
+    +   '<input id="wbCloudRepo" type="text" autocomplete="off" spellcheck="false" placeholder="例如 zhangsan/xcx-workbench-data" value="' + esc(repoVal) + '" style="' + inp + '">'
+    +   '<div style="' + hint + '">还没有？<a href="https://github.com/new" target="_blank" rel="noopener" style="' + link + '">建一个仓库</a>，选 <b>Private</b>，顺手勾上 Add a README（仓库空的会同步失败）。</div>'
+    +   '<details style="margin-top:14px;">'
+    +     '<summary style="font-size:12.5px;color:#5b6b68;cursor:pointer;outline:none;">文件名与分支（一般不用改）</summary>'
+    +     '<div style="display:flex;gap:8px;margin-top:8px;">'
+    +       '<input id="wbCloudPath" type="text" placeholder="growth-workspace.json" value="' + esc(c.path || CLOUD_FILE_NAME) + '" style="flex:2;' + sml + '">'
+    +       '<input id="wbCloudBranch" type="text" placeholder="main" value="' + esc(c.branch || 'main') + '" style="flex:1;' + sml + '">'
+    +     '</div>'
+    +     '<div style="' + hint + '">试卷整页副本放在同目录的 <b>papers-cloud.json</b>，图片没变就不重传。</div>'
+    +   '</details>'
+    +   (sizeLine ? '<div style="margin-top:14px;padding:9px 11px;background:#f3f8f7;border-radius:9px;font-size:12px;color:#4c5f5c;line-height:1.6;">' + sizeLine + '</div>' : '')
+    +   '<div style="display:flex;gap:8px;margin-top:18px;">'
     +     '<button id="wbCloudSave" type="button" style="flex:1;padding:11px 16px;font-size:15px;font-weight:600;color:#fff;background:#0d9488;border:0;border-radius:10px;cursor:pointer;">保存并同步</button>'
     +     '<button id="wbCloudClose" type="button" style="padding:11px 16px;font-size:15px;border:1px solid #d5e0dd;background:#fff;border-radius:10px;color:#354744;cursor:pointer;">关闭</button>'
     +   '</div>'
-    +   (c.token ? '<div style="margin-top:16px;text-align:center;"><button id="wbCloudOff" type="button" style="background:none;border:0;color:#b4483f;font-size:13px;cursor:pointer;padding:4px;">断开云同步（不影响已存数据）</button></div>' : '')
     +   '<div id="wbCloudMsg" style="margin-top:10px;font-size:13px;color:#b4483f;line-height:1.5;"></div>'
+    +   '<details style="margin-top:16px;border-top:1px solid #eef2f1;padding-top:12px;">'
+    +     '<summary style="font-size:12.5px;color:#5b6b68;cursor:pointer;outline:none;">从旧 Gist 搬一次数据</summary>'
+    +     '<div style="margin-top:8px;">'
+    +       '<input id="wbCloudGist" type="text" autocomplete="off" spellcheck="false" placeholder="旧 Gist ID" value="' + esc(c.legacyGist || '') + '" style="' + inp + '">'
+    +       '<button id="wbCloudGistIn" type="button" style="margin-top:8px;width:100%;padding:9px 14px;font-size:13.5px;font-weight:600;color:#0d9488;background:#f0f9f8;border:1px solid #cfe9e5;border-radius:9px;cursor:pointer;">读出来，写进仓库</button>'
+    +       '<div style="' + hint + '">先把 Gist 里的数据载入本机，再写到上面这个仓库；仓库里已有的数据会被覆盖。搬完就不用再管 Gist 了。</div>'
+    +     '</div>'
+    +   '</details>'
+    +   (c.token ? '<div style="margin-top:14px;text-align:center;"><button id="wbCloudOff" type="button" style="background:none;border:0;color:#b4483f;font-size:13px;cursor:pointer;padding:4px;">断开云同步（不影响已存数据）</button></div>' : '')
     + '</div>';
   document.body.appendChild(wrap);
 
@@ -7804,20 +8135,37 @@ function openCloudSettings(){
   });
   $('wbCloudClose').addEventListener('click', closeCloudSettings);
   $('wbCloudSave').addEventListener('click', function(){
-    var token = ($('wbCloudToken').value || '').trim();
-    var gist = ($('wbCloudGist').value || '').trim();
     var msg = $('wbCloudMsg');
-    if(!token){ msg.textContent = '先填 GitHub Token'; return; }
-    var old = cloudCfg() || {};
-    var next = { token: token };
-    if(gist) next.gistId = gist;
-    /* 换了 token 或换了一个新 gist，重新从零对齐 */
-    if(old.token !== token || (gist && old.gistId !== gist)) next.syncedAt = 0;
-    else if(old.syncedAt) next.syncedAt = old.syncedAt;
-    cloudCfgSet(next);
+    var r = cloudCfgFromForm();
+    if(r.err){ msg.textContent = r.err; return; }
+    cloudCfgSet(r.cfg);
+    _imgSig = null;
     closeCloudSettings();
     toast('配置已保存，开始同步…');
     cloudSync(true);
+  });
+  $('wbCloudGistIn').addEventListener('click', async function(){
+    var gid = ($('wbCloudGist').value || '').trim();
+    var msg = $('wbCloudMsg');
+    if(!gid){ msg.textContent = '先填旧 Gist ID'; return; }
+    var r = cloudCfgFromForm();
+    if(r.err){ msg.textContent = r.err; return; }
+    r.cfg.legacyGist = gid;
+    r.cfg.syncedAt = 0;
+    cloudCfgSet(r.cfg);
+    _imgSig = null;
+    msg.textContent = '';
+    try{
+      var remote = await gistReadLegacy();
+      if(!remote || !remote.data){ msg.textContent = '没读到 Gist 数据：检查 ID，或这个 token 没有 Gists 读权限（只给 Contents 的新 token 读不了 Gist）。也可以在旧页面「数据总览 → 导出备份」，回来用「从备份恢复」导入。'; return; }
+      if(!confirm('把 Gist 里的数据（' + cloudTime(remote.updatedAt) + '）载入本机，并覆盖仓库？\n\n本机现在的数据会被替换。')) return;
+      cloudApply(remote, null);
+      closeCloudSettings();
+      toast('已载入 Gist 数据，正在写入仓库…');
+      setTimeout(function(){ cloudSync(true, true); }, 300);
+    }catch(e){
+      msg.textContent = (e && e.message) || '读取失败';
+    }
   });
   if($('wbCloudOff')){
     $('wbCloudOff').addEventListener('click', function(){
@@ -7832,9 +8180,14 @@ function openCloudSettings(){
 
 /* ---------- 启动同步 ---------- */
 function initSync(){
-  pushHook = cloudQueue;                 /* save() 之后自动防抖推送 */
+  pushHook = cloudQueue;                 /* save() 之后自动推送到云 */
   if(!cloudHasCfg()){
     setSyncState('off', '本地模式 · 可开启云同步');
+    return;
+  }
+  /* 老配置只有 Gist 的 token，还没填仓库：不静默失败，直接引导 */
+  if(!repoPathOk(cloudCfg())){
+    setSyncState('off', '云同步·点这里换成仓库');
     return;
   }
   _syncState.online = true;
